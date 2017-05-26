@@ -40,12 +40,12 @@ BWHITE=#fbf1c7
  ws(){ # Current Workspace .. 
   ws=`xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}'`
 	case ${ws} in
-		0) echo "%{F$WHITE} ";;  
-		1) echo "%{F$WHITE} ";;
-		2) echo "%{F$WHITE} ";;
-		3) echo "%{F$WHITE} ";;
-		4) echo "%{F$WHITE} ";;
-		*) echo "%{F$WHITE} ";;
+		0) echo "%{F$BORANGE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;  
+		1) echo "%{F$WHITE} %{F$BORANGE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;
+		2) echo "%{F$WHITE} %{F$WHITE}  %{F$BORANGE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;
+		3) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$BORANGE}  %{F$WHITE}  %{F$WHITE} ";;
+		4) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$BORANGE}  %{F$WHITE} ";;
+		*) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$BORANGE} ";;
 	esac
 }
 
