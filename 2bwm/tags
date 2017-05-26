@@ -1,0 +1,322 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ALT	definitions.h	9;"	d
+ATOM	2bwm.c	/^xcb_atom_t ATOM[NB_ATOMS];$/;"	v
+Arg	types.h	/^} Arg;$/;"	t	typeref:union:__anon1
+BOTTOM_LEFT	definitions.h	/^enum {BOTTOM_RIGHT, BOTTOM_LEFT, TOP_RIGHT, TOP_LEFT, MIDDLE};$/;"	e	enum:__anon9
+BOTTOM_RIGHT	definitions.h	/^enum {BOTTOM_RIGHT, BOTTOM_LEFT, TOP_RIGHT, TOP_LEFT, MIDDLE};$/;"	e	enum:__anon9
+BUTTONMASK	definitions.h	2;"	d
+Button	types.h	/^} Button;$/;"	t	typeref:struct:__anon3
+CLEANMASK	definitions.h	7;"	d
+CONTROL	definitions.h	8;"	d
+CURSOR_POSITION	config.h	38;"	d
+Create_Font_Cursor	2bwm.c	/^Create_Font_Cursor(xcb_connection_t *conn, uint16_t glyph)$/;"	f
+DESKTOPCHANGE	config.h	93;"	d
+DIST	Makefile	/^DIST=2bwm-$(VERSION)$/;"	m
+DISTFILES	Makefile	/^DISTFILES=Makefile README.md TODO 2bwm.man $(SRC)$/;"	m
+LENGTH	definitions.h	5;"	d
+LIB_SUFFIX	Makefile	/^LIB_SUFFIX?=lib$/;"	m
+LOOK_INTO	config.h	45;"	d
+MANPREFIX	Makefile	/^MANPREFIX?=$(PREFIX)\/share\/man$/;"	m
+MAXHALF_UNUSED	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+MIDDLE	definitions.h	/^enum {BOTTOM_RIGHT, BOTTOM_LEFT, TOP_RIGHT, TOP_LEFT, MIDDLE};$/;"	e	enum:__anon9
+MIN	definitions.h	6;"	d
+MOD	config.h	3;"	d
+NB_ATOMS	definitions.h	/^enum {wm_delete_window, wm_change_state, NB_ATOMS};$/;"	e	enum:__anon10
+NET_WM_FIXED	definitions.h	3;"	d
+OBJS	Makefile	/^OBJS=2bwm.o$/;"	m
+PREFIX	Makefile	/^PREFIX?=\/usr\/local$/;"	m
+RM	Makefile	/^RM=\/bin\/rm$/;"	m
+SHIFT	definitions.h	10;"	d
+SRC	Makefile	/^SRC=2bwm.c list.h hidden.c config.h$/;"	m
+TARGETS	Makefile	/^TARGETS=2bwm hidden$/;"	m
+TOP_LEFT	definitions.h	/^enum {BOTTOM_RIGHT, BOTTOM_LEFT, TOP_RIGHT, TOP_LEFT, MIDDLE};$/;"	e	enum:__anon9
+TOP_RIGHT	definitions.h	/^enum {BOTTOM_RIGHT, BOTTOM_LEFT, TOP_RIGHT, TOP_LEFT, MIDDLE};$/;"	e	enum:__anon9
+TWOBWM_CURSOR_DOWN	definitions.h	/^enum {TWOBWM_CURSOR_UP, TWOBWM_CURSOR_DOWN, TWOBWM_CURSOR_RIGHT, TWOBWM_CURSOR_LEFT,TWOBWM_CURSOR_UP_SLOW, TWOBWM_CURSOR_DOWN_SLOW, TWOBWM_CURSOR_RIGHT_SLOW, TWOBWM_CURSOR_LEFT_SLOW};$/;"	e	enum:__anon16
+TWOBWM_CURSOR_DOWN_SLOW	definitions.h	/^enum {TWOBWM_CURSOR_UP, TWOBWM_CURSOR_DOWN, TWOBWM_CURSOR_RIGHT, TWOBWM_CURSOR_LEFT,TWOBWM_CURSOR_UP_SLOW, TWOBWM_CURSOR_DOWN_SLOW, TWOBWM_CURSOR_RIGHT_SLOW, TWOBWM_CURSOR_LEFT_SLOW};$/;"	e	enum:__anon16
+TWOBWM_CURSOR_LEFT	definitions.h	/^enum {TWOBWM_CURSOR_UP, TWOBWM_CURSOR_DOWN, TWOBWM_CURSOR_RIGHT, TWOBWM_CURSOR_LEFT,TWOBWM_CURSOR_UP_SLOW, TWOBWM_CURSOR_DOWN_SLOW, TWOBWM_CURSOR_RIGHT_SLOW, TWOBWM_CURSOR_LEFT_SLOW};$/;"	e	enum:__anon16
+TWOBWM_CURSOR_LEFT_SLOW	definitions.h	/^enum {TWOBWM_CURSOR_UP, TWOBWM_CURSOR_DOWN, TWOBWM_CURSOR_RIGHT, TWOBWM_CURSOR_LEFT,TWOBWM_CURSOR_UP_SLOW, TWOBWM_CURSOR_DOWN_SLOW, TWOBWM_CURSOR_RIGHT_SLOW, TWOBWM_CURSOR_LEFT_SLOW};$/;"	e	enum:__anon16
+TWOBWM_CURSOR_RIGHT	definitions.h	/^enum {TWOBWM_CURSOR_UP, TWOBWM_CURSOR_DOWN, TWOBWM_CURSOR_RIGHT, TWOBWM_CURSOR_LEFT,TWOBWM_CURSOR_UP_SLOW, TWOBWM_CURSOR_DOWN_SLOW, TWOBWM_CURSOR_RIGHT_SLOW, TWOBWM_CURSOR_LEFT_SLOW};$/;"	e	enum:__anon16
+TWOBWM_CURSOR_RIGHT_SLOW	definitions.h	/^enum {TWOBWM_CURSOR_UP, TWOBWM_CURSOR_DOWN, TWOBWM_CURSOR_RIGHT, TWOBWM_CURSOR_LEFT,TWOBWM_CURSOR_UP_SLOW, TWOBWM_CURSOR_DOWN_SLOW, TWOBWM_CURSOR_RIGHT_SLOW, TWOBWM_CURSOR_LEFT_SLOW};$/;"	e	enum:__anon16
+TWOBWM_CURSOR_UP	definitions.h	/^enum {TWOBWM_CURSOR_UP, TWOBWM_CURSOR_DOWN, TWOBWM_CURSOR_RIGHT, TWOBWM_CURSOR_LEFT,TWOBWM_CURSOR_UP_SLOW, TWOBWM_CURSOR_DOWN_SLOW, TWOBWM_CURSOR_RIGHT_SLOW, TWOBWM_CURSOR_LEFT_SLOW};$/;"	e	enum:__anon16
+TWOBWM_CURSOR_UP_SLOW	definitions.h	/^enum {TWOBWM_CURSOR_UP, TWOBWM_CURSOR_DOWN, TWOBWM_CURSOR_RIGHT, TWOBWM_CURSOR_LEFT,TWOBWM_CURSOR_UP_SLOW, TWOBWM_CURSOR_DOWN_SLOW, TWOBWM_CURSOR_RIGHT_SLOW, TWOBWM_CURSOR_LEFT_SLOW};$/;"	e	enum:__anon16
+TWOBWM_FOCUS_NEXT	definitions.h	/^enum {TWOBWM_FOCUS_NEXT, TWOBWM_FOCUS_PREVIOUS};$/;"	e	enum:__anon5
+TWOBWM_FOCUS_PREVIOUS	definitions.h	/^enum {TWOBWM_FOCUS_NEXT, TWOBWM_FOCUS_PREVIOUS};$/;"	e	enum:__anon5
+TWOBWM_FULLSCREEN	definitions.h	/^enum {TWOBWM_FULLSCREEN_OVERRIDE_OFFSETS, TWOBWM_FULLSCREEN};$/;"	e	enum:__anon12
+TWOBWM_FULLSCREEN_OVERRIDE_OFFSETS	definitions.h	/^enum {TWOBWM_FULLSCREEN_OVERRIDE_OFFSETS, TWOBWM_FULLSCREEN};$/;"	e	enum:__anon12
+TWOBWM_MAXHALF_FOLD_HORIZONTAL	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+TWOBWM_MAXHALF_FOLD_VERTICAL	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+TWOBWM_MAXHALF_HORIZONTAL_BOTTOM	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+TWOBWM_MAXHALF_HORIZONTAL_TOP	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+TWOBWM_MAXHALF_UNFOLD_HORIZONTAL	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+TWOBWM_MAXHALF_UNFOLD_VERTICAL	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+TWOBWM_MAXHALF_VERTICAL_LEFT	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+TWOBWM_MAXHALF_VERTICAL_RIGHT	definitions.h	/^enum {TWOBWM_MAXHALF_FOLD_HORIZONTAL, TWOBWM_MAXHALF_UNFOLD_HORIZONTAL, TWOBWM_MAXHALF_HORIZONTAL_TOP, TWOBWM_MAXHALF_HORIZONTAL_BOTTOM, MAXHALF_UNUSED,TWOBWM_MAXHALF_VERTICAL_RIGHT, TWOBWM_MAXHALF_VERTICAL_LEFT, TWOBWM_MAXHALF_UNFOLD_VERTICAL, TWOBWM_MAXHALF_FOLD_VERTICAL};$/;"	e	enum:__anon14
+TWOBWM_MAXIMIZE_HORIZONTALLY	definitions.h	/^enum {TWOBWM_MAXIMIZE_HORIZONTALLY, TWOBWM_MAXIMIZE_VERTICALLY};$/;"	e	enum:__anon13
+TWOBWM_MAXIMIZE_VERTICALLY	definitions.h	/^enum {TWOBWM_MAXIMIZE_HORIZONTALLY, TWOBWM_MAXIMIZE_VERTICALLY};$/;"	e	enum:__anon13
+TWOBWM_MOVE	definitions.h	/^enum {TWOBWM_MOVE,TWOBWM_RESIZE};$/;"	e	enum:__anon4
+TWOBWM_MOVE_DOWN	definitions.h	/^enum {TWOBWM_MOVE_LEFT, TWOBWM_MOVE_DOWN, TWOBWM_MOVE_UP, TWOBWM_MOVE_RIGHT,TWOBWM_MOVE_LEFT_SLOW, TWOBWM_MOVE_DOWN_SLOW, TWOBWM_MOVE_UP_SLOW, TWOBWM_MOVE_RIGHT_SLOW};$/;"	e	enum:__anon7
+TWOBWM_MOVE_DOWN_SLOW	definitions.h	/^enum {TWOBWM_MOVE_LEFT, TWOBWM_MOVE_DOWN, TWOBWM_MOVE_UP, TWOBWM_MOVE_RIGHT,TWOBWM_MOVE_LEFT_SLOW, TWOBWM_MOVE_DOWN_SLOW, TWOBWM_MOVE_UP_SLOW, TWOBWM_MOVE_RIGHT_SLOW};$/;"	e	enum:__anon7
+TWOBWM_MOVE_LEFT	definitions.h	/^enum {TWOBWM_MOVE_LEFT, TWOBWM_MOVE_DOWN, TWOBWM_MOVE_UP, TWOBWM_MOVE_RIGHT,TWOBWM_MOVE_LEFT_SLOW, TWOBWM_MOVE_DOWN_SLOW, TWOBWM_MOVE_UP_SLOW, TWOBWM_MOVE_RIGHT_SLOW};$/;"	e	enum:__anon7
+TWOBWM_MOVE_LEFT_SLOW	definitions.h	/^enum {TWOBWM_MOVE_LEFT, TWOBWM_MOVE_DOWN, TWOBWM_MOVE_UP, TWOBWM_MOVE_RIGHT,TWOBWM_MOVE_LEFT_SLOW, TWOBWM_MOVE_DOWN_SLOW, TWOBWM_MOVE_UP_SLOW, TWOBWM_MOVE_RIGHT_SLOW};$/;"	e	enum:__anon7
+TWOBWM_MOVE_RIGHT	definitions.h	/^enum {TWOBWM_MOVE_LEFT, TWOBWM_MOVE_DOWN, TWOBWM_MOVE_UP, TWOBWM_MOVE_RIGHT,TWOBWM_MOVE_LEFT_SLOW, TWOBWM_MOVE_DOWN_SLOW, TWOBWM_MOVE_UP_SLOW, TWOBWM_MOVE_RIGHT_SLOW};$/;"	e	enum:__anon7
+TWOBWM_MOVE_RIGHT_SLOW	definitions.h	/^enum {TWOBWM_MOVE_LEFT, TWOBWM_MOVE_DOWN, TWOBWM_MOVE_UP, TWOBWM_MOVE_RIGHT,TWOBWM_MOVE_LEFT_SLOW, TWOBWM_MOVE_DOWN_SLOW, TWOBWM_MOVE_UP_SLOW, TWOBWM_MOVE_RIGHT_SLOW};$/;"	e	enum:__anon7
+TWOBWM_MOVE_UP	definitions.h	/^enum {TWOBWM_MOVE_LEFT, TWOBWM_MOVE_DOWN, TWOBWM_MOVE_UP, TWOBWM_MOVE_RIGHT,TWOBWM_MOVE_LEFT_SLOW, TWOBWM_MOVE_DOWN_SLOW, TWOBWM_MOVE_UP_SLOW, TWOBWM_MOVE_RIGHT_SLOW};$/;"	e	enum:__anon7
+TWOBWM_MOVE_UP_SLOW	definitions.h	/^enum {TWOBWM_MOVE_LEFT, TWOBWM_MOVE_DOWN, TWOBWM_MOVE_UP, TWOBWM_MOVE_RIGHT,TWOBWM_MOVE_LEFT_SLOW, TWOBWM_MOVE_DOWN_SLOW, TWOBWM_MOVE_UP_SLOW, TWOBWM_MOVE_RIGHT_SLOW};$/;"	e	enum:__anon7
+TWOBWM_NEXT_SCREEN	definitions.h	/^enum {TWOBWM_PREVIOUS_SCREEN, TWOBWM_NEXT_SCREEN};$/;"	e	enum:__anon15
+TWOBWM_NOWS	definitions.h	4;"	d
+TWOBWM_PATH	Makefile	/^TWOBWM_PATH?=${PREFIX}\/bin\/2bwm$/;"	m
+TWOBWM_PREVIOUS_SCREEN	definitions.h	/^enum {TWOBWM_PREVIOUS_SCREEN, TWOBWM_NEXT_SCREEN};$/;"	e	enum:__anon15
+TWOBWM_RESIZE	definitions.h	/^enum {TWOBWM_MOVE,TWOBWM_RESIZE};$/;"	e	enum:__anon4
+TWOBWM_RESIZE_DOWN	definitions.h	/^enum {TWOBWM_RESIZE_LEFT, TWOBWM_RESIZE_DOWN, TWOBWM_RESIZE_UP, TWOBWM_RESIZE_RIGHT,TWOBWM_RESIZE_LEFT_SLOW, TWOBWM_RESIZE_DOWN_SLOW, TWOBWM_RESIZE_UP_SLOW, TWOBWM_RESIZE_RIGHT_SLOW};$/;"	e	enum:__anon6
+TWOBWM_RESIZE_DOWN_SLOW	definitions.h	/^enum {TWOBWM_RESIZE_LEFT, TWOBWM_RESIZE_DOWN, TWOBWM_RESIZE_UP, TWOBWM_RESIZE_RIGHT,TWOBWM_RESIZE_LEFT_SLOW, TWOBWM_RESIZE_DOWN_SLOW, TWOBWM_RESIZE_UP_SLOW, TWOBWM_RESIZE_RIGHT_SLOW};$/;"	e	enum:__anon6
+TWOBWM_RESIZE_KEEP_ASPECT_GROW	definitions.h	/^enum {TWOBWM_RESIZE_KEEP_ASPECT_GROW, TWOBWM_RESIZE_KEEP_ASPECT_SHRINK};$/;"	e	enum:__anon11
+TWOBWM_RESIZE_KEEP_ASPECT_SHRINK	definitions.h	/^enum {TWOBWM_RESIZE_KEEP_ASPECT_GROW, TWOBWM_RESIZE_KEEP_ASPECT_SHRINK};$/;"	e	enum:__anon11
+TWOBWM_RESIZE_LEFT	definitions.h	/^enum {TWOBWM_RESIZE_LEFT, TWOBWM_RESIZE_DOWN, TWOBWM_RESIZE_UP, TWOBWM_RESIZE_RIGHT,TWOBWM_RESIZE_LEFT_SLOW, TWOBWM_RESIZE_DOWN_SLOW, TWOBWM_RESIZE_UP_SLOW, TWOBWM_RESIZE_RIGHT_SLOW};$/;"	e	enum:__anon6
+TWOBWM_RESIZE_LEFT_SLOW	definitions.h	/^enum {TWOBWM_RESIZE_LEFT, TWOBWM_RESIZE_DOWN, TWOBWM_RESIZE_UP, TWOBWM_RESIZE_RIGHT,TWOBWM_RESIZE_LEFT_SLOW, TWOBWM_RESIZE_DOWN_SLOW, TWOBWM_RESIZE_UP_SLOW, TWOBWM_RESIZE_RIGHT_SLOW};$/;"	e	enum:__anon6
+TWOBWM_RESIZE_RIGHT	definitions.h	/^enum {TWOBWM_RESIZE_LEFT, TWOBWM_RESIZE_DOWN, TWOBWM_RESIZE_UP, TWOBWM_RESIZE_RIGHT,TWOBWM_RESIZE_LEFT_SLOW, TWOBWM_RESIZE_DOWN_SLOW, TWOBWM_RESIZE_UP_SLOW, TWOBWM_RESIZE_RIGHT_SLOW};$/;"	e	enum:__anon6
+TWOBWM_RESIZE_RIGHT_SLOW	definitions.h	/^enum {TWOBWM_RESIZE_LEFT, TWOBWM_RESIZE_DOWN, TWOBWM_RESIZE_UP, TWOBWM_RESIZE_RIGHT,TWOBWM_RESIZE_LEFT_SLOW, TWOBWM_RESIZE_DOWN_SLOW, TWOBWM_RESIZE_UP_SLOW, TWOBWM_RESIZE_RIGHT_SLOW};$/;"	e	enum:__anon6
+TWOBWM_RESIZE_UP	definitions.h	/^enum {TWOBWM_RESIZE_LEFT, TWOBWM_RESIZE_DOWN, TWOBWM_RESIZE_UP, TWOBWM_RESIZE_RIGHT,TWOBWM_RESIZE_LEFT_SLOW, TWOBWM_RESIZE_DOWN_SLOW, TWOBWM_RESIZE_UP_SLOW, TWOBWM_RESIZE_RIGHT_SLOW};$/;"	e	enum:__anon6
+TWOBWM_RESIZE_UP_SLOW	definitions.h	/^enum {TWOBWM_RESIZE_LEFT, TWOBWM_RESIZE_DOWN, TWOBWM_RESIZE_UP, TWOBWM_RESIZE_RIGHT,TWOBWM_RESIZE_LEFT_SLOW, TWOBWM_RESIZE_DOWN_SLOW, TWOBWM_RESIZE_UP_SLOW, TWOBWM_RESIZE_RIGHT_SLOW};$/;"	e	enum:__anon6
+TWOBWM_TELEPORT_BOTTOM_LEFT	definitions.h	/^enum {TWOBWM_TELEPORT_CENTER_X, TWOBWM_TELEPORT_TOP_RIGHT, TWOBWM_TELEPORT_BOTTOM_RIGHT,TWOBWM_TELEPORT_CENTER, TWOBWM_TELEPORT_BOTTOM_LEFT, TWOBWM_TELEPORT_TOP_LEFT, TWOBWM_TELEPORT_CENTER_Y};$/;"	e	enum:__anon8
+TWOBWM_TELEPORT_BOTTOM_RIGHT	definitions.h	/^enum {TWOBWM_TELEPORT_CENTER_X, TWOBWM_TELEPORT_TOP_RIGHT, TWOBWM_TELEPORT_BOTTOM_RIGHT,TWOBWM_TELEPORT_CENTER, TWOBWM_TELEPORT_BOTTOM_LEFT, TWOBWM_TELEPORT_TOP_LEFT, TWOBWM_TELEPORT_CENTER_Y};$/;"	e	enum:__anon8
+TWOBWM_TELEPORT_CENTER	definitions.h	/^enum {TWOBWM_TELEPORT_CENTER_X, TWOBWM_TELEPORT_TOP_RIGHT, TWOBWM_TELEPORT_BOTTOM_RIGHT,TWOBWM_TELEPORT_CENTER, TWOBWM_TELEPORT_BOTTOM_LEFT, TWOBWM_TELEPORT_TOP_LEFT, TWOBWM_TELEPORT_CENTER_Y};$/;"	e	enum:__anon8
+TWOBWM_TELEPORT_CENTER_X	definitions.h	/^enum {TWOBWM_TELEPORT_CENTER_X, TWOBWM_TELEPORT_TOP_RIGHT, TWOBWM_TELEPORT_BOTTOM_RIGHT,TWOBWM_TELEPORT_CENTER, TWOBWM_TELEPORT_BOTTOM_LEFT, TWOBWM_TELEPORT_TOP_LEFT, TWOBWM_TELEPORT_CENTER_Y};$/;"	e	enum:__anon8
+TWOBWM_TELEPORT_CENTER_Y	definitions.h	/^enum {TWOBWM_TELEPORT_CENTER_X, TWOBWM_TELEPORT_TOP_RIGHT, TWOBWM_TELEPORT_BOTTOM_RIGHT,TWOBWM_TELEPORT_CENTER, TWOBWM_TELEPORT_BOTTOM_LEFT, TWOBWM_TELEPORT_TOP_LEFT, TWOBWM_TELEPORT_CENTER_Y};$/;"	e	enum:__anon8
+TWOBWM_TELEPORT_TOP_LEFT	definitions.h	/^enum {TWOBWM_TELEPORT_CENTER_X, TWOBWM_TELEPORT_TOP_RIGHT, TWOBWM_TELEPORT_BOTTOM_RIGHT,TWOBWM_TELEPORT_CENTER, TWOBWM_TELEPORT_BOTTOM_LEFT, TWOBWM_TELEPORT_TOP_LEFT, TWOBWM_TELEPORT_CENTER_Y};$/;"	e	enum:__anon8
+TWOBWM_TELEPORT_TOP_RIGHT	definitions.h	/^enum {TWOBWM_TELEPORT_CENTER_X, TWOBWM_TELEPORT_TOP_RIGHT, TWOBWM_TELEPORT_BOTTOM_RIGHT,TWOBWM_TELEPORT_CENTER, TWOBWM_TELEPORT_BOTTOM_LEFT, TWOBWM_TELEPORT_TOP_LEFT, TWOBWM_TELEPORT_CENTER_Y};$/;"	e	enum:__anon8
+VERSION	Makefile	/^VERSION=2014-8$/;"	m
+WORKSPACES	definitions.h	1;"	d
+X11_INCLUDE	Makefile	/^X11_INCLUDE?=\/usr\/local\/include$/;"	m
+additem	list.h	/^struct item *additem(struct item **mainlist)$/;"	f
+addmonitor	2bwm.c	/^addmonitor(xcb_randr_output_t id, char *name,const int16_t x, const int16_t y,$/;"	f
+addtoclientlist	2bwm.c	/^static void addtoclientlist(const xcb_drawable_t id)$/;"	f	file:
+addtoworkspace	2bwm.c	/^addtoworkspace(struct client *client, uint32_t ws)$/;"	f
+always_on_top	2bwm.c	/^always_on_top()$/;"	f
+arg	types.h	/^	const Arg arg;$/;"	m	struct:__anon2
+arg	types.h	/^	const Arg arg;$/;"	m	struct:__anon3
+arrangewindows	2bwm.c	/^arrangewindows(void)$/;"	f
+arrbymon	2bwm.c	/^arrbymon(struct monitor *monitor)$/;"	f
+atomnames	2bwm.c	/^static const char *atomnames[NB_ATOMS][1] = {$/;"	v	file:
+base_height	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
+base_width	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
+borders	config.h	/^static const uint8_t borders[] = {4,10,4,10};$/;"	v
+borderwidth	types.h	/^	int8_t borderwidth;             \/\/ Do we draw borders for non-focused window? If so, how large?$/;"	m	struct:conf
+button	types.h	/^	unsigned int mask, button;$/;"	m	struct:__anon3
+buttonpress	2bwm.c	/^buttonpress(xcb_generic_event_t *ev)$/;"	f
+buttons	config.h	/^static Button buttons[] = {$/;"	v
+centerpointer	2bwm.c	/^centerpointer(xcb_drawable_t win, struct client *cl)$/;"	f
+changescreen	2bwm.c	/^changescreen(const Arg *arg)$/;"	f
+changeworkspace	2bwm.c	/^changeworkspace(const Arg *arg)$/;"	f
+changeworkspace_helper	2bwm.c	/^changeworkspace_helper(const uint32_t ws)$/;"	f
+check_name	2bwm.c	/^check_name(struct client *client)$/;"	f
+circulaterequest	2bwm.c	/^circulaterequest(xcb_generic_event_t *ev)$/;"	f
+cleanup	2bwm.c	/^cleanup(void)$/;"	f
+cleanup	hidden.c	/^void cleanup(void)$/;"	f
+click1	config.h	/^static const char *click1[]    = { "xdotool","click", "1", NULL };$/;"	v
+click2	config.h	/^static const char *click2[]    = { "xdotool","click", "2", NULL };$/;"	v
+click3	config.h	/^static const char *click3[]    = { "xdotool","click", "3", NULL };$/;"	v
+client	types.h	/^struct client {                     \/\/ Everything we know about a window.$/;"	s
+clientmessage	2bwm.c	/^clientmessage(xcb_generic_event_t *ev)$/;"	f
+colors	config.h	/^static const char *colors[] = {"#cb2d3e","#30122d","#870734","#30122d","#ef473a","#ffd6bf","#ef473a"};$/;"	v
+com	types.h	/^	const char** com;$/;"	m	union:__anon1
+conf	types.h	/^struct conf {$/;"	s
+conf	types.h	/^} conf;$/;"	v	typeref:struct:conf
+confignotify	2bwm.c	/^confignotify(xcb_generic_event_t *ev)$/;"	f
+configurerequest	2bwm.c	/^configurerequest(xcb_generic_event_t *ev)$/;"	f
+configwin	2bwm.c	/^configwin(xcb_window_t win, uint16_t mask, const struct winconf *wc)$/;"	f
+conn	2bwm.c	/^xcb_connection_t *conn;             \/\/ Connection to X server.$/;"	v
+conn	hidden.c	/^xcb_connection_t *conn;$/;"	v
+create_back_win	2bwm.c	/^create_back_win(void)$/;"	f
+cursor_move	2bwm.c	/^cursor_move(const Arg *arg)$/;"	f
+curws	2bwm.c	/^static uint8_t curws = 0;                  \/\/ Current workspace.$/;"	v	file:
+data	list.h	/^    void *data;$/;"	m	struct:item
+delallitems	list.h	/^void delallitems(struct item **list, int *stored)$/;"	f
+deletewin	2bwm.c	/^deletewin()$/;"	f
+delfromworkspace	2bwm.c	/^delfromworkspace(struct client *client, uint32_t ws)$/;"	f
+delitem	list.h	/^void delitem(struct item **mainlist, struct item *item)$/;"	f
+delmonitor	2bwm.c	/^delmonitor(struct monitor *mon)$/;"	f
+destroynotify	2bwm.c	/^destroynotify(xcb_generic_event_t *ev)$/;"	f
+empty_col	types.h	/^	uint32_t focuscol,unfocuscol,fixedcol,unkillcol,empty_col,fixed_unkil_col,outer_border_col;$/;"	m	struct:conf
+enable_compton	types.h	/^	bool enable_compton;$/;"	m	struct:conf
+enternotify	2bwm.c	/^enternotify(xcb_generic_event_t *ev)$/;"	f
+events	2bwm.c	/^static void (*events[XCB_NO_OPERATION])(xcb_generic_event_t *e);$/;"	v	file:
+ewmh	2bwm.c	/^xcb_ewmh_connection_t *ewmh;        \/\/ Ewmh Connection.$/;"	v
+ewmh_init	2bwm.c	/^ewmh_init(void)$/;"	f
+findclient	2bwm.c	/^findclient(const xcb_drawable_t *win)$/;"	f
+findclones	2bwm.c	/^findclones(xcb_randr_output_t id, const int16_t x, const int16_t y)$/;"	f
+findhidden	hidden.c	/^int findhidden(void)$/;"	f
+findmonbycoord	2bwm.c	/^findmonbycoord(const int16_t x, const int16_t y)$/;"	f
+findmonitor	2bwm.c	/^findmonitor(xcb_randr_output_t id)$/;"	f
+fitonscreen	2bwm.c	/^fitonscreen(struct client *client)$/;"	f
+fix	2bwm.c	/^fix()$/;"	f
+fixed	types.h	/^	bool fixed,unkillable,vertmaxed,hormaxed,maxed,verthor,ignore_borders,iconic;$/;"	m	struct:client
+fixed_unkil_col	types.h	/^	uint32_t focuscol,unfocuscol,fixedcol,unkillcol,empty_col,fixed_unkil_col,outer_border_col;$/;"	m	struct:conf
+fixedcol	types.h	/^	uint32_t focuscol,unfocuscol,fixedcol,unkillcol,empty_col,fixed_unkil_col,outer_border_col;$/;"	m	struct:conf
+fixwindow	2bwm.c	/^fixwindow(struct client *client)$/;"	f
+focuscol	types.h	/^	uint32_t focuscol,unfocuscol,fixedcol,unkillcol,empty_col,fixed_unkil_col,outer_border_col;$/;"	m	struct:conf
+focusnext	2bwm.c	/^focusnext(const Arg *arg)$/;"	f
+focusnext_helper	2bwm.c	/^focusnext_helper(bool arg)$/;"	f
+focuswin	2bwm.c	/^struct client *focuswin;            \/\/ Current focus window.$/;"	v	typeref:struct:client
+forgetclient	2bwm.c	/^forgetclient(struct client *client)$/;"	f
+forgetwin	2bwm.c	/^forgetwin(xcb_window_t win)$/;"	f
+freeitem	list.h	/^void freeitem(struct item **list, int *stored,struct item *item)$/;"	f
+func	types.h	/^	void (*func)(const Arg *);$/;"	m	struct:__anon2
+func	types.h	/^	void (*func)(const Arg *);$/;"	m	struct:__anon3
+get_unkil_state	2bwm.c	/^get_unkil_state(xcb_drawable_t win)$/;"	f
+get_wm_state	hidden.c	/^uint32_t get_wm_state(xcb_drawable_t win)$/;"	f
+getatom	2bwm.c	/^getatom(const char *atom_name)$/;"	f
+getatom	hidden.c	/^xcb_atom_t getatom(char *atom_name)$/;"	f
+getcolor	2bwm.c	/^getcolor(const char *hex)$/;"	f
+getgeom	2bwm.c	/^getgeom(const xcb_drawable_t *win, int16_t *x, int16_t *y, uint16_t *width,$/;"	f
+getmonsize	2bwm.c	/^getmonsize(int8_t with_offsets, int16_t *mon_x, int16_t *mon_y,$/;"	f
+getoutputs	2bwm.c	/^getoutputs(xcb_randr_output_t *outputs, const int len,$/;"	f
+getpointer	2bwm.c	/^getpointer(const xcb_drawable_t *win, int16_t *x, int16_t *y)$/;"	f
+getrandr	2bwm.c	/^getrandr(void)$/;"	f
+getwmdesktop	2bwm.c	/^uint32_t getwmdesktop(xcb_drawable_t win)$/;"	f
+gmrun	config.h	/^static const char *gmrun[]     = { "\/usr\/bin\/gmrun",NULL};$/;"	v
+grabbuttons	2bwm.c	/^grabbuttons(struct client *c)$/;"	f
+grabkeys	2bwm.c	/^grabkeys(void)$/;"	f
+halfandcentered	config.h	/^static void halfandcentered(const Arg *arg)$/;"	f
+handle_keypress	2bwm.c	/^handle_keypress(xcb_generic_event_t *e)$/;"	f
+height	types.h	/^	uint16_t     width,height;$/;"	m	struct:winconf
+height	types.h	/^	uint16_t width,height;          \/\/ Width,Height in pixels.$/;"	m	struct:client
+height	types.h	/^	uint16_t width,height;          \/\/ Width\/Height in pixels.$/;"	m	struct:monitor
+height	types.h	/^	uint16_t width,height;$/;"	m	struct:sizepos
+height_inc	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
+hide	2bwm.c	/^hide(void)$/;"	f
+hormaxed	types.h	/^	bool fixed,unkillable,vertmaxed,hormaxed,maxed,verthor,ignore_borders,iconic;$/;"	m	struct:client
+i	types.h	/^	const int8_t i;$/;"	m	union:__anon1
+iconic	types.h	/^	bool fixed,unkillable,vertmaxed,hormaxed,maxed,verthor,ignore_borders,iconic;$/;"	m	struct:client
+iconname	hidden.c	/^bool iconname     = false;$/;"	v
+id	types.h	/^	xcb_drawable_t id;              \/\/ ID of this window.$/;"	m	struct:client
+id	types.h	/^	xcb_randr_output_t id;$/;"	m	struct:monitor
+ignore_borders	types.h	/^	bool fixed,unkillable,vertmaxed,hormaxed,maxed,verthor,ignore_borders,iconic;$/;"	m	struct:client
+ignore_names	config.h	/^static const char *ignore_names[] = {"bar", "xclock"};$/;"	v
+init	hidden.c	/^void init(void)$/;"	f
+inverted_colors	config.h	/^static const bool inverted_colors = true;$/;"	v
+inverted_colors	types.h	/^	bool inverted_colors;$/;"	m	struct:conf
+item	list.h	/^struct item$/;"	s
+item	types.h	/^	struct item *item;              \/\/ Pointer to our place in output list.$/;"	m	struct:monitor	typeref:struct:monitor::item
+key	types.h	/^} key;$/;"	t	typeref:struct:__anon2
+keys	config.h	/^static key keys[] = {$/;"	v
+keysym	types.h	/^	xcb_keysym_t keysym;$/;"	m	struct:__anon2
+listitems	list.h	/^void listitems(struct item *mainlist)$/;"	f
+main	2bwm.c	/^main(void)$/;"	f
+main	hidden.c	/^int main(int argc, char **argv)$/;"	f
+mask	types.h	/^	unsigned int mask, button;$/;"	m	struct:__anon3
+max_height	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
+max_width	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
+maxed	types.h	/^	bool fixed,unkillable,vertmaxed,hormaxed,maxed,verthor,ignore_borders,iconic;$/;"	m	struct:client
+maxhalf	2bwm.c	/^maxhalf(const Arg *arg)$/;"	f
+maximize	2bwm.c	/^maximize(const Arg *arg)$/;"	f
+maximize_helper	2bwm.c	/^maximize_helper(struct client *client,uint16_t mon_x, uint16_t mon_y,$/;"	f
+maxvert_hor	2bwm.c	/^maxvert_hor(const Arg *arg)$/;"	f
+menucmd	config.h	/^static const char *menucmd[]   = { "dmenu_run", "-fn", "Hermit:size=11", "-nb", "#282828", "-nf", "#fbf1c7", "-sb", "#928374", "-sf", "#fbf1c7", "-h", "22", NULL };$/;"	v
+min_height	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
+min_width	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
+mod	types.h	/^	unsigned int mod;$/;"	m	struct:__anon2
+monitor	types.h	/^	struct monitor *monitor;        \/\/ The physical output this window is on.$/;"	m	struct:client	typeref:struct:client::monitor
+monitor	types.h	/^struct monitor {$/;"	s
+monlist	2bwm.c	/^static struct item *monlist = NULL;        \/\/ List of all physical monitor outputs.$/;"	v	typeref:struct:item	file:
+mousemotion	2bwm.c	/^mousemotion(const Arg *arg)$/;"	f	file:
+mousemove	2bwm.c	/^mousemove(const int16_t rel_x, const int16_t rel_y)$/;"	f
+mouseresize	2bwm.c	/^mouseresize(struct client *client, const int16_t rel_x, const int16_t rel_y)$/;"	f
+movelim	2bwm.c	/^movelim(struct client *client)$/;"	f
+movements	config.h	/^static const uint16_t movements[] = {20,40,15,400};$/;"	v
+movepointerback	2bwm.c	/^movepointerback(const int16_t startx, const int16_t starty,$/;"	f
+moveresize	2bwm.c	/^moveresize(xcb_drawable_t win, const uint16_t x, const uint16_t y,$/;"	f
+movestep	2bwm.c	/^movestep(const Arg *arg)$/;"	f
+movetohead	list.h	/^void movetohead(struct item **mainlist, struct item *item)$/;"	f
+movewindow	2bwm.c	/^movewindow(xcb_drawable_t win, const int16_t x, const int16_t y)$/;"	f
+name	types.h	/^	char *name;$/;"	m	struct:monitor
+newwin	2bwm.c	/^newwin(xcb_generic_event_t *ev)$/;"	f
+next	list.h	/^    struct item *next;$/;"	m	struct:item	typeref:struct:item::item
+nextworkspace	2bwm.c	/^nextworkspace()$/;"	f
+noborder	2bwm.c	/^noborder(int16_t *temp,struct client *client, bool set_unset)$/;"	f
+numlockmask	2bwm.c	/^static unsigned int numlockmask = 0;$/;"	v	file:
+offsets	config.h	/^static const uint8_t offsets[] = {0,24,0,24};$/;"	v
+origsize	types.h	/^	struct sizepos origsize;        \/\/ Original size if we're currently maxed.$/;"	m	struct:client	typeref:struct:client::sizepos
+outer_border	types.h	/^	int8_t outer_border;            \/\/ The size of the outer border$/;"	m	struct:conf
+outer_border_col	types.h	/^	uint32_t focuscol,unfocuscol,fixedcol,unkillcol,empty_col,fixed_unkil_col,outer_border_col;$/;"	m	struct:conf
+prev	list.h	/^    struct item *prev;$/;"	m	struct:item	typeref:struct:item::item
+prevworkspace	2bwm.c	/^prevworkspace()$/;"	f
+printcommand	hidden.c	/^bool printcommand = false;$/;"	v
+printhelp	hidden.c	/^void printhelp(void)$/;"	f
+raise_current_window	2bwm.c	/^raise_current_window(void)$/;"	f
+raiseorlower	2bwm.c	/^raiseorlower()$/;"	f
+raisewindow	2bwm.c	/^raisewindow(xcb_drawable_t win)$/;"	f
+randrbase	2bwm.c	/^int randrbase;                      \/\/ Beginning of RANDR extension events.$/;"	v
+resize	2bwm.c	/^resize(xcb_drawable_t win, const uint16_t width, const uint16_t height)$/;"	f
+resize_by_line	config.h	/^static const bool     resize_by_line          = true;$/;"	v
+resize_keep_aspect_ratio	config.h	/^static const float    resize_keep_aspect_ratio= 1.03;$/;"	v
+resizelim	2bwm.c	/^resizelim(struct client *client)$/;"	f
+resizestep	2bwm.c	/^resizestep(const Arg *arg)$/;"	f
+resizestep_aspect	2bwm.c	/^resizestep_aspect(const Arg *arg)$/;"	f
+run	2bwm.c	/^run(void)$/;"	f
+saveorigsize	2bwm.c	/^saveorigsize(struct client *client)$/;"	f
+screen	2bwm.c	/^xcb_screen_t     *screen;           \/\/ Our current screen.$/;"	v
+screen	hidden.c	/^xcb_screen_t *screen;$/;"	v
+sendtonextworkspace	2bwm.c	/^sendtonextworkspace(const Arg *arg)$/;"	f
+sendtoprevworkspace	2bwm.c	/^sendtoprevworkspace(const Arg *arg)$/;"	f
+sendtoworkspace	2bwm.c	/^sendtoworkspace(const Arg *arg)$/;"	f
+setborders	2bwm.c	/^setborders(struct client *client,const bool isitfocused)$/;"	f
+setfocus	2bwm.c	/^setfocus(struct client *client)\/\/ Set focus on window client.$/;"	f
+setunfocus	2bwm.c	/^void setunfocus(void)$/;"	f
+setup	2bwm.c	/^setup(int scrno)$/;"	f
+setup_keyboard	2bwm.c	/^setup_keyboard(void)$/;"	f
+setuprandr	2bwm.c	/^setuprandr(void)$/;"	f
+setupscreen	2bwm.c	/^setupscreen(void)$/;"	f
+setupwin	2bwm.c	/^setupwin(xcb_window_t win)$/;"	f
+sibling	types.h	/^	xcb_window_t sibling;$/;"	m	struct:winconf
+sigcatch	2bwm.c	/^sigcatch(const int sig)$/;"	f
+sigcode	2bwm.c	/^int sigcode;                        \/\/ Signal code. Non-zero if we've been interruped by a signal.$/;"	v
+sizepos	types.h	/^struct sizepos {$/;"	s
+snapwindow	2bwm.c	/^snapwindow(struct client *client)$/;"	f	file:
+stackmode	types.h	/^	uint8_t      stackmode;$/;"	m	struct:winconf
+start	2bwm.c	/^start(const Arg *arg)$/;"	f
+teleport	2bwm.c	/^teleport(const Arg *arg)$/;"	f
+terminal	config.h	/^static const char *terminal[]  = { "termite", NULL };$/;"	v
+top_win	2bwm.c	/^static xcb_drawable_t top_win=0;           \/\/ Window always on top.$/;"	v	file:
+twobwm_exit	2bwm.c	/^twobwm_exit()$/;"	f
+twobwm_restart	2bwm.c	/^twobwm_restart(void)$/;"	f
+unfocuscol	types.h	/^	uint32_t focuscol,unfocuscol,fixedcol,unkillcol,empty_col,fixed_unkil_col,outer_border_col;$/;"	m	struct:conf
+unkillable	2bwm.c	/^unkillable()$/;"	f
+unkillable	types.h	/^	bool fixed,unkillable,vertmaxed,hormaxed,maxed,verthor,ignore_borders,iconic;$/;"	m	struct:client
+unkillablewindow	2bwm.c	/^unkillablewindow(struct client *client)$/;"	f
+unkillcol	types.h	/^	uint32_t focuscol,unfocuscol,fixedcol,unkillcol,empty_col,fixed_unkil_col,outer_border_col;$/;"	m	struct:conf
+unmapnotify	2bwm.c	/^unmapnotify(xcb_generic_event_t *ev)$/;"	f
+unmax	2bwm.c	/^unmax(struct client *client)$/;"	f
+updateclientlist	2bwm.c	/^updateclientlist(void)$/;"	f
+usercoord	types.h	/^	bool usercoord;                 \/\/ X,Y was set by -geom.$/;"	m	struct:client
+verthor	types.h	/^	bool fixed,unkillable,vertmaxed,hormaxed,maxed,verthor,ignore_borders,iconic;$/;"	m	struct:client
+vertmaxed	types.h	/^	bool fixed,unkillable,vertmaxed,hormaxed,maxed,verthor,ignore_borders,iconic;$/;"	m	struct:client
+width	types.h	/^	uint16_t     width,height;$/;"	m	struct:winconf
+width	types.h	/^	uint16_t width,height;          \/\/ Width,Height in pixels.$/;"	m	struct:client
+width	types.h	/^	uint16_t width,height;          \/\/ Width\/Height in pixels.$/;"	m	struct:monitor
+width	types.h	/^	uint16_t width,height;$/;"	m	struct:sizepos
+width_inc	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
+winconf	types.h	/^struct winconf {                    \/\/ Window configuration data.$/;"	s
+winitem	types.h	/^	struct item *winitem;           \/\/ Pointer to our place in global windows list.$/;"	m	struct:client	typeref:struct:client::item
+winlist	2bwm.c	/^static struct item *winlist = NULL;        \/\/ Global list of all client windows.$/;"	v	typeref:struct:item	file:
+wm_change_state	definitions.h	/^enum {wm_delete_window, wm_change_state, NB_ATOMS};$/;"	e	enum:__anon10
+wm_delete_window	definitions.h	/^enum {wm_delete_window, wm_change_state, NB_ATOMS};$/;"	e	enum:__anon10
+wm_icon_name	hidden.c	/^xcb_atom_t wm_icon_name;$/;"	v
+wm_state	hidden.c	/^xcb_atom_t wm_state;$/;"	v
+wsitem	types.h	/^	struct item *wsitem[WORKSPACES];\/\/ Pointer to our place in every workspace window list.$/;"	m	struct:client	typeref:struct:client::item
+wslist	2bwm.c	/^static struct item *wslist[WORKSPACES];$/;"	v	typeref:struct:item	file:
+x	types.h	/^	int16_t      x, y;$/;"	m	struct:winconf
+x	types.h	/^	int16_t x, y;                   \/\/ X\/Y coordinate.$/;"	m	struct:client
+x	types.h	/^	int16_t x, y;$/;"	m	struct:sizepos
+x	types.h	/^	int16_t y,x;                    \/\/ X and Y.$/;"	m	struct:monitor
+xcb_get_keycodes	2bwm.c	/^xcb_get_keycodes(xcb_keysym_t keysym)$/;"	f
+xcb_get_keysym	2bwm.c	/^xcb_get_keysym(xcb_keycode_t keycode)$/;"	f	file:
+xcb_screen_of_display	2bwm.c	/^xcb_screen_of_display(xcb_connection_t *con, int screen)$/;"	f
+y	types.h	/^	int16_t      x, y;$/;"	m	struct:winconf
+y	types.h	/^	int16_t x, y;                   \/\/ X\/Y coordinate.$/;"	m	struct:client
+y	types.h	/^	int16_t x, y;$/;"	m	struct:sizepos
+y	types.h	/^	int16_t y,x;                    \/\/ X and Y.$/;"	m	struct:monitor
