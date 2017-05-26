@@ -1,198 +1,143 @@
-#!/bin/bash
-#  ██                       
-# ░██                       
-# ░██       ██████   ██████ 
-# ░██████  ░░░░░░██ ░░██░░█ 
-# ░██░░░██  ███████  ░██ ░  
-# ░██  ░██ ██░░░░██  ░██    
-# ░██████ ░░████████░███    
-# ░░░░░    ░░░░░░░░ ░░░     
-# nxll <nxll@taknik.io>
+#!/bin/sh
 
-#RESTART
-pkill lemonbar
+# ObliviousGmn, June 2015
+# https://github.com/ObliviousGmn
+# Panel for Lemonbar ..
 
-#COLORS
-fg="#B8B9B4"
-bg="#21211F"
+# Fonts
+FONT1="-misc-profont-medium-r-semicondensed--12-110-75-75-c-60-iso10646-1"
+FONT2="-lucy-tewi-medium-r-normal--11-90-75-75-p-58-iso10646-1"
 
-hint="#5E5E5C"
-nblk="#292927"
-bblk="#2E2E2C"
-nred="#939490"
-bred="#989995"
-ngrn="#5E5E5C"
-bgrn="#636361"
-nylw="#B6B8B3"
-bylw="#BBBDB8"
-nblu="#727370"
-bblu="#777875"
-nmag="#D1D1CB"
-bmag="#D6D6D0"
-ncyn="#636361"
-bcyn="#696966"
-nwht="#AAABA6"
-bwht="#AFB0AB"
+# Icons ..
+ICON1="-misc-stlarch-medium-r-normal--10-100-75-75-c-80-iso10646-1"
+ICON2="-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1"
 
-#VARS
-font="FontAwesome:regular:size=9"
-glyph="-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1"
-height=18
-border=8
-muslength=60
-interface=wls1
-#actchar="+"
-#selchar="+"
-#actchar=""
-#selchar=""
+# Panel
+notifybar_g="1920x24+0+0"
 
-if pgrep herbstluftwm; then
-	monitor=${1:-0}
-	bh=$(( $height + ($border * 2)))
-	herbstclient pad $monitor $bh
-fi
+# Colors
+BG=#282828
+FG=#fe8019
+BLACK=#282828
+BBLACK=#32302f
+RED=#cc241d
+BRED=#fb4934
+ORANGE=#d65d0e
+BORANGE=#fe8019
+GREEN=#98971a
+BGREEN=#b8bb26
+YELLOW=#d79921
+BYELLOW=#fabd2f
+BLUE=#458588
+BBLUE=#83a598
+MAGENTA=#b16286
+BMAGENTA=#d3869b
+WHITE=#ebdbb2
+BWHITE=#fbf1c7
 
-WRKL() {
-	wrkspce=$(xprop -root _NET_CURRENT_DESKTOP | sed -e 's/_NET_CURRENT_DESKTOP(CARDINAL) = //')
+
+
+ ws(){ # Current Workspace .. 
+  ws=`xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}'`
+	case ${ws} in
+		0) echo " ";;
+		1) echo " ";;
+		2) echo " ";;
+		3) echo " ";;
+		4) echo " ";;
+		*) echo " ";;
+	esac
+}
+
+ menu(){ # Useless for now ..
+	echo "%{B$BBLUE}%{F$BG} GMN  %{B-}%{F-}"
+}
+
+ cpuload(){ # CPUs temp ..
+  cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
+  cpuload+="% CPU"
+	#echo "%{F$BYELLOW} %{F-} ${cpuload}"
+	echo "%{F$BYELLOW} % ${cpuload}"
+}
 	
-	if [ "${wrkspce}" = "0" ] ;
-	then 
-		echo "%{B$hint} %{F$bg}000%{F-} %{B$nblk} 001 010 011 100 %{B-}"
-	elif [ "${wrkspce}" = "1" ] ;
-	then
-		echo "%{B$nblk} 000 %{B$hint} %{F$bg}001%{F-} %{B$nblk} 010 011 100 %{B-}"
-	elif [ "${wrkspce}" = "2" ] ;
-	then 
-		echo "%{B$nblk} 000 001 %{B$hint} %{F$bg}010%{F-} %{B$nblk} 011 100 %{B-}"
-	elif [ "${wrkspce}" = "3" ] ;
-	then 
-		echo "%{B$nblk} 000 001 010 %{B$hint} %{F$bg}011%{F-} %{B$nblk} 100 %{B-}"
-	elif [ "${wrkspce}" = "4" ] ;
-	then 
-		echo "%{B$nblk} 000 001 010 011 %{B$hint} %{F$bg}100%{F-} %{B-}"
-    else
-		echo "%{B$hint} %{F$bg}NONE%{F-} %{B-}"
-	fi
+ fan(){ # Fan speeds ..
+  fan=`sensors | awk '/fan1/ {print $2,$3}'`
+	echo "%{F$BORANGE}  %{F-} ${fan}"
 }
 
-WRK() {
-	wrkspce=$(xprop -root _NET_CURRENT_DESKTOP | sed -e 's/_NET_CURRENT_DESKTOP(CARDINAL) = //')
-	
-	if [ "${wrkspce}" = "0" ] ;
-	then 
-		echo "%{B$hint} %{F$bg}0:0%{F-} %{B-}"
-	elif [ "${wrkspce}" = "1" ] ;
-	then
-		echo "%{B$hint} %{F$bg}0:1%{F-} %{B-}"
-	elif [ "${wrkspce}" = "2" ] ;
-	then 
-		echo "%{B$hint} %{F$bg}0:2%{F-} %{B-}"
-	elif [ "${wrkspce}" = "3" ] ;
-	then 
-		echo "%{B$hint} %{F$bg}0:3%{F-} %{B-}"
-	elif [ "${wrkspce}" = "4" ] ;
-	then 
-		echo "%{B$hint} %{F$bg}0:4%{F-} %{B-}"
-    else
-		echo "%{B$hint} %{F$bg}NONE%{F-} %{B-}"
-	fi
+ memory(){
+  mem=$(free -m | awk 'NR==2 {print $3}')
+        mem+="MB"
+        #echo "%{F$BMAGENTA}  %{F-}${mem} RAM"
+	echo "%{F$BMAGENTA}  ${mem} RAM"
+	  }
+
+ clockdate() {
+	clockd=$(date +' %d   %b')
+        clockt=%{F$FG}$glyclock$%{F$MAG}$(date +' %R')%{F-}
+        echo "%{F$BORANGE}  %{F-} ${clockd}"
+	  }
+
+ clocktime() {
+	clockt=$(date +' %R')
+        echo "%{F$BORANGE}   %{F-} ${clockt}"
+	  }
+
+ clock(){ # Clock, obv ..
+  clock=`date "+%b %d %Y %I:%M"`
+	#echo "%{F$BORANGE} %{F-} ${clock}"
+        echo "%{F$BORANGE}  ${clock}"
 }
 
-WIN() {
-    #echo -n "%{B$hint}%{F$bg}  %{F-}%{B-}"
-	echo -n "%{B$bblk}%{F$fg} $(wname $(pfw)) %{F-}%{B-}"
+ vol(){ # Volume, Sets to Headset when switched ..
+  switch=`amixer get Master | awk '/Mono:/ {print $6}'`
+  vol=`amixer get Master | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+  hsvol=`amixer get PCM | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+
+  if [ "$switch" = "[on]" ]; then
+	#echo "%{F$BBLUE}  %{F-} ${vol}"
+	echo "%{F$BBLUE}   ${vol}"
+  elif [ "$switch" = "[off]" ]; then
+	#echo "%{F$BRED}  %{F-} MUTE"
+        echo "%{F$BRED}   MUTE"
+  else
+	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
+        echo "%{F$BBLUE}   ${hsvol}"
+  fi
 }
 
-MUSIC() {
-	playing=$(mpc status | sed -n 2p | cut -c1-9)
-	
-		if [ "${playing}" = "[playing]" ]; then
-        	symbol="%{B$bblk} %{F$fg}%{F-} %{B-}"
-			song="%{B$nblk} $(mpc current -f "%artist% - %title%" | cut -c1-$muslength) %{B-}"
-		elif [ ${playing} = "[paused]" ]; then
-			symbol="%{B$bblk} %{F$fg}%{F-} %{B-}"
-			song="%{B$nblk} $(mpc current -f "%artist% - %title%" | cut -c1-$muslength) %{B-}"
-		elif [ ! "${playing}" = "[playing]" ]; then
-			symbol="%{B$bblk} %{F$fg}%{F-} %{B-}"
-			song="%{B$nblk} ··· %{B-}"
-		fi
+ mus(){ # Current song ..
+  mus=`mpc current -f %title%`
 
-    echo -n "${symbol}${song}"
+  if [[ $mus ]]; then
+ 	#echo "%{F$BORANGE}  %{F-} ${mus}"
+	echo "%{F$BORANGE}   ${mus}"
+  fi
 }
 
-VOL() {
-	getvol=$(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1  )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
-	
-	echo -n "%{B$bblk}  %{B$nblk} $getvol% %{B-}"
-}
+# last(){ # Weechat, Last highlight ..
+#  last=`(tail -n1) <$HOME/Gmnbox/Panel/Weelog`
 
-BAT() {
-    percent=$(cat /sys/class/power_supply/BAT0/capacity)
-    status=$(cat /sys/class/power_supply/BAT0/status)
-
-    if test $status = "Charging"; then
-        symbol=""
-        echo -n "%{B$bblk} ${symbol} %{B-}"
-    elif test $status = "Full"; then
-        symbol=""
-        echo -n "%{B$bblk} ${symbol} %{B-}"
-    else
-        if test $percent -gt 66; then
-            symbol=""
-            echo -n "%{B$bblk} ${symbol} %{B-}"
-        elif test $percent -gt 34; then
-            symbol=""
-            echo -n "%{B$bblk} ${symbol} %{B-}"
-        else
-		symbol=""
-            echo -n "%{B$bblk} ${symbol} %{B-}"
-        fi
-    fi
-
-	echo -e "%{B$nblk} $percent% %{B-}"
-}
-
-#NET() {
-#	symbol="%{B$bblk}  %{B-}"
-#	disconnected=$(iw $interface link | awk '/Not/ {print $1}')
-
-#	ssid=$(
-#	if [ "$disconnected" = "Not" ]; then
-#		echo "NOT CONNECTED"
-#	else
-#		iw $interface link | grep 'SSID' | sed 's/SSID: //' | sed 's/\t//'
-#	fi)
-#
-#	echo -n "${symbol}%{B$nblk} ${ssid} %{B-}"
+#  if [[ $last ]]; then
+#  	echo "%{A:cat /dev/null > $HOME/Gmnbox/Panel/Weelog:}${last}%{A}"
+#  fi
 #}
 
-network() {
-	ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
-	test -n "${ping}" && echo %{F$FG}$glyint$SEP%{F$MAG}$int$SEP${F-} || echo "%{F$RED}$glyint$SEP%{F-} No Connection"
-	}	
-
-DATE() {
-    echo -n "%{B$bblk} %{F$fg}$(date "+%d/%m")%{F-} %{B-}"
+ net(){ # Connected or nah? ..
+  ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
+  test -n "${ping}" && echo "%{F$BGREEN}    " || echo "%{F$BRED}   %{F-} No Connection"
 }
 
-CLOCK() {
-    echo -n "%{B$hint}%{F$bg} $(date "+%H:%M") %{F-}%{B-}"
-}
+while :; do
 
-BAR() {
-    #ADD ALL THE THINGS
-    while true; do
-		buf="$(WRK) $(MUSIC)%{c}%{r}$(VOL)  $(NET) $(DATE) $(CLOCK)" 
-		echo "$buf"	
-        sleep 0.1
-    done | lemonbar -f $glyph \
-        -f "$font" \
-        -F "$fg" \
-        -B "$bg" \
-        -u "$border" \
-		-r "$border" \
-		-R "$bg" \
-        -g "1264x$height+0+0" | sh &
-}
+ # Run ping in intervals ..
+ [[ loops -eq 15 ]] && loops=0
+ [[ loops -eq 0 ]] && ping=$(net)
+ loops=$(( loops + 1 ))
 
-BAR > /dev/null
+	echo "  $(ws)  %{c}$(mus) %{r}$(vol) $(cpuload) $(memory) $(net) $(clock)  "
+         sleep 0.5	
+		 
+ done | lemonbar -g $notifybar_g -f "source code pro:bold:size=9" -f "FontAwesome:regular:size=9" -B "$BG" -F "$WHITE" -d -p | \
+	while read line; do eval "$line"; done &
+
