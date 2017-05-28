@@ -75,7 +75,6 @@ Plug 'tpope/vim-endwise',
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/vimshell.vim'
 Plug 'justinmk/vim-gtfo'
-Plug 'justinmk/vim-dirvish'
 Plug 'dietsche/vim-lastplace'
 Plug 'ervandew/supertab'
 Plug 'Konfekt/FastFold'
@@ -339,7 +338,7 @@ set numberwidth=1
 set foldmethod=indent
 set foldlevel=999
 set linebreak
-set listchars=tab:▸\ ,extends:❯,precedes:❮,nbsp:·,trail:■
+set listchars=tab:\|\ ,extends:❯,precedes:❮,nbsp:·,trail:■
 set list
 if has('linebreak')
   set showbreak=↪
@@ -926,7 +925,7 @@ let g:airline#extensions#tabline#enabled       =  1
 let g:airline#extensions#tabline#tab_nr_type   =  1 " tab number
 let g:airline#extensions#tabline#fnamecollapse =  1 " /a/m/model.rb
 let g:airline#extensions#hunks#non_zero_only   =  1 " git gutter
-let g:airline#extension#tmuxline#enabled       =  1
+let g:airline#extension#tmuxline#enabled       =  0
 
 
 
@@ -983,8 +982,8 @@ let g:airline#extension#tmuxline#enabled       =  1
   " indentLines"{{{
   "nnoremap <Leader>i :IndentLinesToggle<CR>
   " use custom filetype detection for better vim-plug compatibility
-  "let g:indentLine_char = '|'
-  "let g:indentLine_color_gui = '#83a598'
+  let g:indentLine_char = '|'
+  let g:indentLine_color_gui = '#665c54'
   "let g:indentLine_fileType = ['']
   "augroup ft_indentLine
     "au!
@@ -992,6 +991,7 @@ let g:airline#extension#tmuxline#enabled       =  1
   "augroup END
 
   " indent-guides
+  "let g:indent_guides_enable_on_vim_startup = 1
   "let g:indent_guides_start_level = 2
   "let g:indent_guides_start_size = 1
   
@@ -1031,37 +1031,6 @@ let g:airline#extension#tmuxline#enabled       =  1
   augroup END
   " }}}
 
-  " Dirvish {{{
-  " disable netrw
-  let g:loaded_netrw = 1
-  let g:loaded_netrwPlugin = 1
-  " open current file's directory
-  nnoremap <silent> - :Dirvish %<CR>
-  " open current working directory
-  nnoremap <silent> + :Dirvish<CR>
-  augroup my_dirvish_events
-    au!
-    " " I use <CR> to enter cmdline mode,
-    " " so use o to open
-    " au FileType dirvish
-    "       \ nnoremap <buffer> <CR> :
-    "       \|xnoremap <buffer> <CR> :
-    "       \|nnoremap <buffer> o :call dirvish#open("edit", 0)<CR>
-    "       \|xnoremap <buffer> o :call dirvish#open("edit", 0)<CR>
-    "       \|nnoremap <buffer> h :call dirvish#open("split", 0)<CR>
-    "       \|xnoremap <buffer> h :call dirvish#open("split", 0)<CR>
-    "       \|nnoremap <buffer> l :call dirvish#open("vsplit", 0)<CR>
-    "       \|xnoremap <buffer> l :call dirvish#open("vsplit", 0)<CR>
-    " map gh to hide "hidden" files. (Unix only)
-    au FileType dirvish nnoremap <buffer> gh
-          \ :g@\v/\.[^\/]+/?$@d<CR>
-    au FileType dirvish set nobuflisted
-  augroup END
-  " }}}
-
-  " gtfo.vim {{{
-  let g:gtfo#terminals = { 'win' : 'C:\WINDOWS\system32\cmd.exe /k' }
-  " }}}
 
   " " switch.vim {{{
   " let g:switch_mapping = "<Leader>s"
