@@ -39,7 +39,7 @@ static const uint8_t borders[] = {4,10,4,10};
 #define LOOK_INTO "WM_NAME"
 static const char *ignore_names[] = {"bar", "xclock"};
 ///--Menus and Programs---///
-static const char *menucmd[]   = { "dmenu_run", "-fn", "Hermit:size=11", "-nb", "#282828", "-nf", "#fbf1c7", "-sb", "#928374", "-sf", "#fbf1c7", "-h", "22", NULL };
+static const char *menucmd[]   = { "rofi", "-show", "run", NULL };
 static const char *gmrun[]     = { "/usr/bin/gmrun",NULL};
 static const char *terminal[]  = { "termite", NULL };
 static const char *click1[]    = { "xdotool","click", "1", NULL };
