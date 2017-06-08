@@ -19,15 +19,9 @@ static const uint8_t offsets[] = {0,24,0,24};
  *2)fixedcol         3)unkilcol
  *4)fixedunkilcol    5)outerbordercol
  *6)emptycol         */
-/*static const char *colors[] = {"#fe8019","#282828","#83a598","#282828","#8ec07c","#fbf1c7","#8ec07c"};
-*/
 
 static const char *colors[] = {"#cb2d3e","#30122d","#870734","#30122d","#ef473a","#ffd6bf","#ef473a"};
 
-/*
- * If you are using a composition manager enable the COMPTON flag in the Makefile
- * (By changing -DNCOMPTON to -DCOMPTON)
- */
 /* if this is set to true the inner border and outer borders colors will be swapped */
 static const bool inverted_colors = true;
 ///---Cursor---///
