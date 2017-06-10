@@ -7,7 +7,7 @@
 " STARTUP {{{
 " ===========================================================================
 
-redir @v
+
 " let s:is_cygwin = has('win32unix') || has('win64unix')
 " let s:is_mac = has('gui_macvim') || has('mac')
 let s:is_windows = has('win32') || has('win64')
@@ -19,9 +19,6 @@ elseif s:is_nvim
   let s:myvimdir ="~/.config/nvim"
 endif
 
-" use Vim settings over obsolescent Vi settings
-" probably not necessary, but w/e
-set nocompatible
 
 " enables filetype detection, ftplugins, and indent files
 filetype plugin indent on
@@ -87,6 +84,8 @@ Plug 'AndrewRadev/splitjoin.vim',
 Plug 'junegunn/gv.vim',    { 'on': 'GV' }
 Plug 'szw/vim-g',          { 'on': 'Google' }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
+Plug 'mhinz/vim-grepper'
+
 
 " Text Objects
 Plug 'kana/vim-textobj-user' |
@@ -95,6 +94,7 @@ Plug 'kana/vim-textobj-user' |
       \ Plug 'kana/vim-textobj-function' |
       \ Plug 'reedes/vim-textobj-sentence'
 Plug 'wellle/targets.vim'
+Plug 'coderifous/textobj-word-column.vim'
 
 " Operators
 Plug 'tpope/vim-surround'
@@ -111,6 +111,7 @@ Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
 Plug 'mhinz/vim-Startify'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+"Plug 'itchyny/lightline.vim'
 Plug 'kkoenig/wimproved.vim'
 Plug 'AssailantLF/vim-active-numbers'
 Plug 'gcavallanti/vim-noscrollbar'
@@ -121,6 +122,7 @@ Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
 Plug 'nathanaelkane/vim-indent-guides',       
 Plug 'flazz/vim-colorschemes'
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Panels/Toggleable
 "Plug 'majutsushi/Tagbar',  { 'on': 'TagbarToggle' }
@@ -253,8 +255,8 @@ if s:is_windows
 endif
 silent! set mouse=a
 
-" system clipboard uses the unnamed register
-set clipboard=unnamed,unnamedplus
+" system clipboard uses the unnamedplus register
+set clipboard^=unnamedplus,unnamed
 
 " command-line completion settings
 set wildmenu
@@ -267,7 +269,6 @@ set wildignore+=*.spl                            " compiled spelling word lists
 set wildignore+=*.sw?                            " Vim swap files
 set wildignore+=*.DS_Store                       " OSX garbage
 
-set wildignore+=*.pyc                            " Python byte code
 
 " backups, swapfiles, & undofiles in one place
 let s:tempdir=expand(s:myvimdir."/tmp")
@@ -332,6 +333,7 @@ set ruler
 set number
 set guioptions=
 set t_Co=256
+set term=screen-256color
 set cpoptions+=$
 set splitright
 set numberwidth=1
@@ -368,6 +370,13 @@ else
   set statusline+=\ %P
 endif
 set statusline+=%8(%l,%v%)\ 
+" Disable Background Color Erase (BCE) so that color schemes
+" render properly when inside 256-color tmux and GNU screen.
+if &term =~ '256color'
+  set t_ut=
+endif
+
+
 
 augroup vimrc_appearance_and_formatting
   au!
@@ -390,17 +399,7 @@ augroup END
 
 " GUI Settings {{{
   if has("gui_running")
-  if has("gui_gtk2")
-    set guifont=Hermit\ Medium\ 10
-  elseif has("gui_photon")
-    set guifont=Hermit:s10
-  elseif has("gui_kde")
-    set guifont=Hermit/10/-1/5/50/0/0/0/1/0
-  elseif has("x11")
-    set guifont=-*-hermitr-medium-r-normal-*-*-180-*-*-m-*-*
-  else
-    set guifont=Hermit:h10:cDEFAULT
-  endif
+  set guifont=Iosevka:h20
 endif
   " }}}
 
@@ -978,6 +977,17 @@ let g:airline#extension#tmuxline#enabled       =  0
   nnoremap <Leader>G :Goyo<CR>
   " }}}
 
+  " tmux-navigator{{{
+  let g:tmux_navigator_no_mappings = 1
+
+
+  nnoremap <silent> {Left-Mapping} :TmuxNavigateLeft<cr>
+  nnoremap <silent> {Down-Mapping} :TmuxNavigateDown<cr>
+  nnoremap <silent> {Up-Mapping} :TmuxNavigateUp<cr>
+  nnoremap <silent> {Right-Mapping} :TmuxNavigateRight<cr>
+  nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
+
+"}}}
 
   " indentLines"{{{
   "nnoremap <Leader>i :IndentLinesToggle<CR>
@@ -1091,6 +1101,7 @@ let g:airline#extension#tmuxline#enabled       =  0
   " UltiSnips {{{
   " disable ListSnippits in favor of Supertab's 'tab literal'
   " it's <C-Tab> by default
+  let g:UltiSnipsExpandTrigger='<C-{>'
   let g:UltiSnipsListSnippets='<C-}>'
   " }}}
 
@@ -1098,4 +1109,4 @@ endif
 
 " }}}
 " ===========================================================================
-redir END
+
