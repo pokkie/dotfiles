@@ -49,7 +49,6 @@ call plug#begin()
 " PLUGINS
 
 " Convenience/Miscellaneous
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-eunuch'
@@ -64,6 +63,7 @@ Plug 'dietsche/vim-lastplace'
 Plug 'justinmk/vim-dirvish'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf'
+Plug 'benmills/vimux'
 Plug 'ervandew/supertab'
 Plug 'Konfekt/FastFold'
 Plug 'SirVer/UltiSnips'
@@ -94,8 +94,48 @@ Plug 'chaoren/vim-wordmotion'
 Plug 'justinmk/vim-ipmotion'
 Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
 
-" Programming 
+" Generic Programming Support
+Plug 'tobyS/vmustache'
+Plug 'elzr/vim-json'
+
+
+" Git Support
+Plug 'kablamo/vim-git-log'
+Plug 'gregsexton/gitv'
+Plug 'tpope/vim-fugitive'
+
+" Javascript
+Plug 'pangloss/vim-javascript'
+Plug 'maksimr/vim-jsbeautify'
+
+" Markdown / Writting
+Plug 'reedes/vim-pencil'
+Plug 'tpope/vim-markdown'
+Plug 'jtratner/vim-flavored-markdown'
+Plug 'LanguageTool'
+
 Plug 'w0rp/ale'
+
+" Erlang Support
+Plug 'vim-erlang/vim-erlang-tags'
+Plug 'vim-erlang/vim-erlang-runtime'
+Plug 'vim-erlang/vim-erlang-omnicomplete'
+Plug 'vim-erlang/vim-erlang-compiler'
+
+" Elixir Support 
+Plug 'elixir-lang/vim-elixir'
+Plug 'avdgaag/vim-phoenix'
+Plug 'mmorearty/elixir-ctags'
+Plug 'mattreduce/vim-mix'
+Plug 'BjRo/vim-extest'
+Plug 'frost/vim-eh-docs'
+Plug 'slashmili/alchemist.vim'
+Plug 'tpope/vim-endwise'
+Plug 'jadercorrea/elixir_generator.vim'
+
+
+" Elm Support
+Plug 'lambdatoast/elm.vim'
 
 " Appearance/UI
 Plug 'mhinz/vim-Startify'
@@ -112,8 +152,8 @@ Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
 Plug 'flazz/vim-colorschemes'
 
 " Panels/Toggleable
-"Plug 'majutsushi/Tagbar',  { 'on': 'TagbarToggle' }
-Plug 'majutsushi/Tagbar'
+
+Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree',    { 'on': 'UndotreeToggle' }
 Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlP', 'CtrlPMRU', 'CtrlPBuffer', 'CtrlPLine'] }
 
@@ -236,6 +276,9 @@ set list
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:■
 set number
 set relativenumber
+
+" Enable Elite mode, no ARRRRRRRRROWS !!!!
+let g:elite_mode=1
 
 set numberwidth=1
 set ruler
@@ -767,6 +810,42 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   " xnoremap gx  <Plug>(Exchange)
   " }}}
 
+  " Markdown Syntax Support
+  augroup markdown
+      au!
+      au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+  augroup END
+
+  
+  " Vim-pencil Configuration
+  augroup pencil
+    autocmd!
+    autocmd FileType markdown,mkd call pencil#init()
+    autocmd FileType text         call pencil#init()
+  augroup END
+
+  " Elixir Tagbar Configuration
+  let g:tagbar_type_elixir = {
+    \ 'ctagstype' : 'elixir',
+    \ 'kinds' : [
+        \ 'f:functions',
+        \ 'functions:functions',
+        \ 'c:callbacks',
+        \ 'd:delegates',
+        \ 'e:exceptions',
+        \ 'i:implementations',
+        \ 'a:macros',
+        \ 'o:operators',
+        \ 'm:modules',
+        \ 'p:protocols',
+        \ 'r:records',
+        \ 't:tests'
+    \ ]
+    \ }
+
+
+
+
   " Fzf Configuration{{{
   " This is the default extra key bindings
   let g:fzf_action = {
@@ -1018,9 +1097,13 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   nnoremap <Leader><C-P> :CtrlP<Space>
   " }}}
 
-  """""""""""""""""""""""""""""""""""""
-  " Mappings configurationn
-  """""""""""""""""""""""""""""""""""""
+ 
+  " Mappings configurationn{{{
+
+
+
+
+
 
 
 
@@ -1043,7 +1126,7 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   
   " Advanced customization using autoload functions
   inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
-
+"}}}
 
   " UltiSnips {{{
   " disable ListSnippits in favor of Supertab's 'tab literal'

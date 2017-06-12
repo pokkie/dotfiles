@@ -277,6 +277,7 @@ set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:■
 set number
 set relativenumber
 
+
 set numberwidth=1
 set ruler
 " a ruler on steroids
