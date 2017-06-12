@@ -1,77 +1,205 @@
-#!/bin/sh
+#!/bin/bash
+## information bar
 
-NBARS=$(echo $(cat $HOME/bin/barscript | grep "## " | wc -l))
+## colors and  fonts
+RED=#fb4934
+GRN=#98961a
+YLW=#fabd2f
+CYN=#8ec07c
+WHT=#ebdbb2
+#MAG=#d3869b
+#MAG=#f7d7da
+FG=#FECEA8
+#FG=#f3bbd6
+DCN=#689d6a
+BBLK=#83a598
+#BG=#272521
+BG=#2A363B
+MAG=#FF847C
+BLK=#282828
+DFLT=#E84A5F
+notifybar_g="1920x24+0+0"
 
-CBARS=$(echo $(ps aux | grep lemonbar | wc -l))
+## glyphs
+glymem=""
+glycpu=""
+# glybat=""
+glypkg=""
+glyclock=""
+glycal=""
+glyint=""
+glyw0=""
+glyw1=""
+glyw2=""
+glyw3=""
+glyw4=""
+glyw5=""
+glyw=(I II III IV V VI)
 
-if [ $CBARS -ge $NBARS ] ; then exit 0; fi
+## extras
+SEP=" - "
+SEP=" "
+SEP2="  "
+SEP4="    "
+SEP6="       "
+SEP8="        "
+SEP24="                        "
+## information section
+status() {
+	  cpuld() {
+		    cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
+		    cpuload+="%"
+		    echo %{F$FG}$glycpu %{F$MAG}$cpuload%{F-}
+	  }
+    memory() {
+        mem=$(free -m | awk 'NR==2 {print $3}')
+        mem+="MB"
+#	  memory() {
+#		    mem=$(top -n1 | grep Mem | awk '{print $4}' | cut -d "/" -f 1)
+#		    mem+="%"
+		    echo %{F$FG}$glymem$SEP%{F$MAG}$mem%{F-}
+	  }
+#	  battery() {
+#			  bat=$(cat /sys/class/power_supply/BAT0/capacity)
+#			  batper="%"
+#			  rem=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "time\ to\ empty" | awk '{ print $4, $5}')
+#			  disc=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state" | awk '{ print $2}')
+#			  if [ $disc = "charging" ]; then
+#				    glybat=""
+#			  elif [ "$bat" -gt 75 ]; then
+#				    glybat=""
+#			  elif [ "$bat" -gt 50 ]; then
+#				    glybat=""
+#			  elif [ "$bat" -gt 25 ]; then
+#				    glybat=""
+#			  else
+#				    glybat=""
+#			  fi
+#			  echo %{F$FG}$glybat%{F$MAG}$SEP$bat$batper$SEP$rem$SEP%{F-t}
+#	  }
+	  #    pkman() {
+	  #        pkr=$(pacman -Qu | wc -l)
+	  #        echo %{F$WHT}$glypkg$pkr$SEP${F-}
+	  #    }
+#	  wireless() {
+#        con=$(iw wlp3s0 link)
+#        if [ $con = "Not connected." ]; then
+#            wl="Not connected"
+#        else
+#            wl=iw wlp3s0 link | grep 'SSID' | sed 's/SSID: //' | sed 's/\t//'
+#        fi
+#			  wl=$(ping -c 1 8.8.8.8 >/dev/null 2>&1 && 
+#			           echo ":)" || echo ":(")
+#			  echo %{F$FG}$glyint$SEP%{F$MAG}$wl$SEP${F-}
+#	  }
 
-sleep 0.5
+	  network() {
+    			#read lo int1 int2 <<< `ip link | sed -n 's/^[0-9]: \(.*\):.*$/\1/p'`
+    			#if iwconfig $int1 >/dev/null 2>&1; then
+        		#	wifi=$int1
+        		#	eth0=$int2
+    			#else
+        		#	wifi=$int2
+        		#	eth0=$int1
+    			#fi
+    			#ip link show $eth0 | grep 'state UP' >/dev/null && int=$eth0 ||int=$wifi
 
-FONT="-ypn-envypn-medium-r-normal--10-150-75-75-c-90-iso8859-1"
-FCOLOR1="#fbf1c7"
-FCOLOR2="#d65d0e"
-FCOLOR3="#280202"
-BCOLOR1="#282828"
-BCOLOR2="#928374"
-BCOLOR3="#bb3627"
+    			#int=eth0
+			ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
+			test -n "${ping}" && echo %{F$FG}$glyint$SEP%{F$MAG}$int$SEP${F-} || echo "%{F$RED}$glyint$SEP%{F-} No Connection"
+	}	
+	  vol() {
+			  mut=$(pactl list sinks | grep Mute | awk '{print $2}')
+			  if [ $mut = "yes" ]; then
+				    vlm="0%"
+				    glyvol=""
+			  else
+			      vlm=$(pactl list sinks | grep -m 1 Volume | awk '{print $5}')
+			      glyvol=""
+			  fi
+		    echo %{F$FG}$glyvol$SEP%{F$MAG}$vlm$SEP${F-}
+	  }
+	  
+	  workspaces() {
+	active=$(xprop -root _NET_CURRENT_DESKTOP | sed -e 's/_NET_CURRENT_DESKTOP(CARDINAL) = //')
+        c=0
+        tops=""
+	if [ "$active" -eq 0 ]; then
+		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
+	elif [ "$active" -eq 1 ]; then
+		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
+	elif [ "$active" -eq 2 ]; then
+		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
+	elif [ "$active" -eq 3 ]; then
+		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
+	elif [ "$active" -eq 4 ]; then
+		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
+	elif [ "$active" -eq 5 ]; then
+		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
+	fi
+        echo ${tops}
+    }
+#	  workspaces() {
+#        all=($(bspc query --desktops))
+#        length=$(bspc query -D | wc -l)
+#        active=$(bspc query --desktops --desktop focused)
+#        c=0
+#        tops=""
+#        while [ $c -lt $length ]
+#        do
+#            if [ $active = ${all[c]} ]; then
+#                tops[c]=%{F$FG}${all[c]}${F-}
+#            else
+#                tops[c]=%{F$MAG}${all[c]}${F-}
+#            fi
+#            c=$[$c+1]
+#        done
+#        echo ${tops[@]}
+#}
+	  music() {
+		    check=$(ps aux | grep "mpc" | grep -v grep)
+		    stat=$(mpc -f %artist% | sed -n 2p | cut -d "[" -f2 | cut -d "]" -f1) 
+    		if [[ -z "$check" ]]; then
+			      mus="No Music Playing"
+			      glymus=""
+			      echo %{F$FG}$glymus$SEP%{F$MAG}$mus$SEP${F-}
+		    elif [ "$stat" = "" ]; then
+			      mus="No Music Playing"
+			      glymus=""
+			      echo %{F$FG}$glymus$SEP%{F$MAG}$mus${F-}
+	    elif [ ""$stat"" = "paused" ]; then
+			      glymus=""
+			      curr=$(mpc current)
+            curr+=" - "
+            time=$(mpc -f %artist% | grep 2 | sed 's/^.*(//;s/)$//')
+			      echo %{F$FG}$glymus$SEP%{F$MAG}$curr$time${F-}
+			      #echo $curr
+		    elif [ "$stat" = "playing" ]; then
+			      glymus=""
+			      curr=$(mpc current)
+            curr+=" - "
+            time=$(mpc -f %artist% | grep 2 | sed 's/^.*(//;s/)$//')
+			      echo %{F$FG}$glymus$SEP%{F$MAG}$curr$time${F-}
+			      #echo $curr
+		    fi
+	  }
+	  clockdate() {
+			  clockd=%{F$FG}$glycal%{F$MAG}$(date +%{F$MAG}' %d   %b')%{F-}
+		    clockt=%{F$FG}$glyclock$%{F$MAG}$(date +' %R')%{F-}
+		    echo $clockd
+	  }
+	  clocktime() {
+		    clockt=%{F$FG}$glyclock%{F$MAG}$(date +' %R')%{F-}
+		    echo $clockt
+	  }
+	  echo "%{l}$SEP2$(workspaces)$SEP%{c}$SEP2$(memory)$SEP2$(cpuld)$SEP2$(network)$SEP2$(music)$SEP2$(vol)$SEP2%{r}$(clockdate)$SEP2$(clocktime)$SEP2"
+}
 
-BAROPTS="-u 2 -U $FCOLOR2 -B $BCOLOR1 -F $FCOLOR1 -f $FONT -b -d"
-
-## WORKSPACES
-FCOLOR2="#ff4936"
-xprop -spy -root _NET_CURRENT_DESKTOP | \
-while read line; do
-  num=$(echo $line | awk '{print $3}')
-  echo -n "%{c}"
-  case $num in
-    0) echo " %{F$FCOLOR2}%{+u} 1 %{F-}%{-u}  2   3   4   5 " ;;
-    1) echo "  1  %{F$FCOLOR2}%{+u} 2 %{F-}%{-u}  3   4   5 " ;;
-    2) echo "  1   2  %{F$FCOLOR2}%{+u} 3 %{F-}%{-u}  4   5 " ;;
-    3) echo "  1   2   3  %{F$FCOLOR2}%{+u} 4 %{F-}%{-u}  5 " ;;
-    4) echo "  1   2   3   4  %{F$FCOLOR2}%{+u} 5 %{F-}%{-u}" ;;
-  esac
-done | lemonbar $BAROPTS -g "640x20+640+0" &
-
-## MUSIC
-FLAG=""
-NCMLAUNCH="urxvtc -g 60x12 -e ncmpcpp"
-MTOGGLE="mpc toggle > /dev/null"
-MSETTINGS="%{B$BCOLOR2}%{O10}%{A:$MTOGGLE:}%{A3:$NCMLAUNCH:}"
-while :; do
-  if [ ! "x$FLAG" = "x" ] ; then mpc idle > /dev/null; fi
-  FLAG="f"
-  current=$(echo -n $(mpc status) | sed 's/].*/]\ \ /' | sed 's/volume.*//')
-  if [ "x$current" = "x" ] ; then current="[None]  "; fi
-  echo "$MSETTINGS$current%{A3}%{A}%{B-} "
-done | lemonbar $BAROPTS -a 2 -g "640x20+0+0" | sh &
-
-## CLOCK
-while :; do
-  echo "%{r}%{B$BCOLOR2}$(date '+  %a %b %_d %Y %H:%M  ')%{B-}";
-  sleep 15;
-done | lemonbar $BAROPTS -g "640x20+1280+0" &
-
-## AC STATUS
-#ARG=""
-#while :; do
-#  acpi_listen -c $ARG > /dev/null 2>&1
-#  ARG=1
-#  echo -n "%{B$BCOLOR3}%{l}%{O15}"
-#  acpi | awk '{if ($3 != "Discharging,")
-#                 printf("AC: On   \n");
-#               else
-#                 printf("AC: Off  \n");}'
-#done | lemonbar $BAROPTS -g "75x26+1780+0" &
-
-## BATTERY
-#while :; do
-#  bat=$(acpi | awk '{gsub("[%,]", ""); print $4}')
-#  WRN=""
-#  if [ 15 -ge $bat ] ; then
-#    if [ 3 -ge $bat ] ; then mpg123 $HOME/.res/alert.mp3 ; fi
-#    WRN="%{F$FCOLOR3}"
-#  fi
-#  echo "%{B$BCOLOR3}%{r}${WRN}  Bat: ${bat}%{F-}%{O10}%{B-}"
-#  sleep 45;
-#done | lemonbar $BAROPTS -g "65x26+1855+0" &
+## populate and display
+#sleep 2 && popup "   :: dmtwm 1.0 ::   " 3 &
+#pamixer --get-volume # resolves no text at start bug
+while true
+do
+	  echo "$(status)"
+	  sleep 1
+done | lemonbar -g $notifybar_g -o 0 -a 10 -f 'source code pro:bold:size=9' -o -2 -f 'FontAwesome:regular:size=9' -B $BG -F $WHT -d | sh

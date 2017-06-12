@@ -1,4 +1,3 @@
-
 " vim: set foldmethod=marker:
 " Author: Austin Smith <AssailantLF@gmail.com>
 " Source: https://gitlab.com/AssailantLF/dotfiles
@@ -50,16 +49,6 @@ call plug#begin()
 " PLUGINS
 
 " Convenience/Miscellaneous
-Plug 'lokaltog/vim-easymotion' " The way yo navigate a file quickly, regardless of language
-Plug 'PeterRincker/vim-argumentative' " Alows to change the order of arguments with ease
-Plug 'Raimondi/delimitMate' " Automatically match pairs intelligently
-Plug 'jeffkreeftmeijer/vim-numbertoggle'
-Plug 'helino/vim-json' 
-Plug 'ternjs/tern_for_vim' " Javascript completion
-Plug 'Rykka/riv.vim' " restructuredText plugin
-Plug 'tpope/vim-sensible' 
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-vinegar' 
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-eunuch'
@@ -69,10 +58,12 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-endwise',
       \ { 'for': [ 'vim', 'c', 'cpp', 'lua', 'ruby', 'sh', 'zsh', 'snippets' ] }
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Shougo/vimshell.vim'
 Plug 'justinmk/vim-gtfo'
 Plug 'dietsche/vim-lastplace'
+Plug 'justinmk/vim-dirvish'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'benmills/vimux'
 Plug 'ervandew/supertab'
 Plug 'Konfekt/FastFold'
 Plug 'SirVer/UltiSnips'
@@ -84,8 +75,6 @@ Plug 'AndrewRadev/splitjoin.vim',
 Plug 'junegunn/gv.vim',    { 'on': 'GV' }
 Plug 'szw/vim-g',          { 'on': 'Google' }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
-Plug 'mhinz/vim-grepper'
-
 
 " Text Objects
 Plug 'kana/vim-textobj-user' |
@@ -94,7 +83,6 @@ Plug 'kana/vim-textobj-user' |
       \ Plug 'kana/vim-textobj-function' |
       \ Plug 'reedes/vim-textobj-sentence'
 Plug 'wellle/targets.vim'
-Plug 'coderifous/textobj-word-column.vim'
 
 " Operators
 Plug 'tpope/vim-surround'
@@ -106,12 +94,53 @@ Plug 'chaoren/vim-wordmotion'
 Plug 'justinmk/vim-ipmotion'
 Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
 
+" Generic Programming Support
+Plug 'tobyS/vmustache'
+Plug 'elzr/vim-json'
+
+
+" Git Support
+Plug 'kablamo/vim-git-log'
+Plug 'gregsexton/gitv'
+Plug 'tpope/vim-fugitive'
+
+" Javascript
+Plug 'pangloss/vim-javascript'
+Plug 'maksimr/vim-jsbeautify'
+
+" Markdown / Writting
+Plug 'reedes/vim-pencil'
+Plug 'tpope/vim-markdown'
+Plug 'jtratner/vim-flavored-markdown'
+Plug 'LanguageTool'
+
+Plug 'w0rp/ale'
+
+" Erlang Support
+Plug 'vim-erlang/vim-erlang-tags'
+Plug 'vim-erlang/vim-erlang-runtime'
+Plug 'vim-erlang/vim-erlang-omnicomplete'
+Plug 'vim-erlang/vim-erlang-compiler'
+
+" Elixir Support 
+Plug 'elixir-lang/vim-elixir'
+Plug 'avdgaag/vim-phoenix'
+Plug 'mmorearty/elixir-ctags'
+Plug 'mattreduce/vim-mix'
+Plug 'BjRo/vim-extest'
+Plug 'frost/vim-eh-docs'
+Plug 'slashmili/alchemist.vim'
+Plug 'tpope/vim-endwise'
+Plug 'jadercorrea/elixir_generator.vim'
+
+
+" Elm Support
+Plug 'lambdatoast/elm.vim'
 
 " Appearance/UI
 Plug 'mhinz/vim-Startify'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'itchyny/lightline.vim'
 Plug 'kkoenig/wimproved.vim'
 Plug 'AssailantLF/vim-active-numbers'
 Plug 'gcavallanti/vim-noscrollbar'
@@ -119,108 +148,18 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'on': 'RainbowParentheses' }
 Plug 'junegunn/vim-easy-align',   { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'junegunn/goyo.vim',         { 'on': 'Goyo' }
 Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
-Plug 'nathanaelkane/vim-indent-guides',       
+Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
 Plug 'flazz/vim-colorschemes'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'christoomey/vim-tmux-navigator'
 
 " Panels/Toggleable
-"Plug 'majutsushi/Tagbar',  { 'on': 'TagbarToggle' }
-Plug 'majutsushi/Tagbar'
+
+Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree',    { 'on': 'UndotreeToggle' }
 Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlP', 'CtrlPMRU', 'CtrlPBuffer', 'CtrlPLine'] }
 
-" Programming languages and tools
-
-Plug 'othree/html5-syntax.vim'
-Plug 'othree/html5.vim'
-Plug 'groenewege/vim-less'
-Plug 'rhysd/vim-clang-format'
-
-" c
-Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
-Plug 'ludwig/split-manpage.vim'
-
-
-" elixir
-Plug 'elixir-lang/vim-elixir'
-Plug 'carlosgaldino/elixir-snippets'
-
-
-" erlang
-Plug 'jimenezrick/vimerl'
-
-
-" go
-"" Go Lang Bundle
-Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
-
-
-" haskell
-"" Haskell Bundle
-Plug 'eagletmt/neco-ghc'
-Plug 'dag/vim2hs'
-Plug 'pbrisbin/vim-syntax-shakespeare'
-
-
-" html
-"" HTML Bundle
-Plug 'hail2u/vim-css3-syntax'
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'tpope/vim-haml'
-Plug 'mattn/emmet-vim'
-
-
-" javascript
-Plug 'pangloss/vim-javascript'
-Plug 'jelera/vim-javascript-syntax'
-
-
-" lisp
-"" Lisp Bundle
-Plug 'vim-scripts/slimv.vim'
-
-
-" ocaml
-"" OCaml Bundle
-Plug 'def-lkb/ocp-indent-vim'
-
-
-" python
-"" Python Bundle
-Plug 'davidhalter/jedi-vim'
-
-
-" ruby
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-rake'
-Plug 'tpope/vim-projectionist'
-Plug 'thoughtbot/vim-rspec'
-Plug 'ecomba/vim-ruby-refactoring'
-Plug 'vim-scripts/matchit.zip'
-
-
-" rust
-" Vim racer
-Plug 'racer-rust/vim-racer'
-
-" Rust.vim
-Plug 'rust-lang/rust.vim'
-
-
-" scala
-" sbt-vim
-Plug 'ktvoelker/sbt-vim'
-" vim-scala
-Plug 'derekwyatt/vim-scala'
-
-
-
-
-
-" au! User indentLine doau indentLine Syntax | au BufRead * IndentLinesReset
+au! User indentLine doau indentLine Syntax | au BufRead * IndentLinesReset
 " ^ fix for lazy loading with indentLine ^
-"autocmd * indentLinesReset
+
 call plug#end()
 
 " }}}
@@ -249,14 +188,15 @@ set virtualedit=all
 set nostartofline
 set sessionoptions-=options
 set sessionoptions-=folds
-set path=.,**
+set path+=**
+set modeline
 if s:is_windows
   set makeprg=build.bat
 endif
 silent! set mouse=a
 
 " system clipboard uses the unnamedplus register
-set clipboard^=unnamedplus,unnamed
+set clipboard=unnamedplus,unnamed
 
 " command-line completion settings
 set wildmenu
@@ -268,7 +208,6 @@ set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
 set wildignore+=*.spl                            " compiled spelling word lists
 set wildignore+=*.sw?                            " Vim swap files
 set wildignore+=*.DS_Store                       " OSX garbage
-
 
 " backups, swapfiles, & undofiles in one place
 let s:tempdir=expand(s:myvimdir."/tmp")
@@ -318,7 +257,7 @@ augroup END
 
 " default tab settings
 set smarttab
-set shiftwidth=4 tabstop=4 softtabstop=-1 expandtab
+set shiftwidth=4 softtabstop=-1 expandtab
 
 " indenting/formatting
 set autoindent
@@ -327,21 +266,23 @@ set textwidth=80
 set encoding=utf-8
 
 " mostly aesthetic options
-set laststatus=2
-set ruler
-"set relativenumber
-set number
-set guioptions=
-set t_Co=256
-set term=screen-256color
 set cpoptions+=$
-set splitright
-set numberwidth=1
-set foldmethod=indent
 set foldlevel=999
+set foldmethod=indent
+set guioptions=
+set laststatus=2
 set linebreak
-set listchars=tab:\|\ ,extends:❯,precedes:❮,nbsp:·,trail:■
 set list
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:■
+set number
+set relativenumber
+
+set numberwidth=1
+set ruler
+" a ruler on steroids
+set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
+set splitright
+set t_Co=256
 if has('linebreak')
   set showbreak=↪
   silent! set breakindent
@@ -353,13 +294,10 @@ syntax on
 
 set background=dark
 silent! colorscheme gruvbox
-
 " fallback default colorscheme
 if !exists('g:colors_name')
   colorscheme desert
 endif
-
-
 
 " standard status line if lightline isn't enabled
 " (pretty much the same layout as default lightline)
@@ -370,13 +308,13 @@ else
   set statusline+=\ %P
 endif
 set statusline+=%8(%l,%v%)\ 
+
+
 " Disable Background Color Erase (BCE) so that color schemes
 " render properly when inside 256-color tmux and GNU screen.
 if &term =~ '256color'
   set t_ut=
 endif
-
-
 
 augroup vimrc_appearance_and_formatting
   au!
@@ -397,11 +335,7 @@ augroup vimrc_appearance_and_formatting
 
 augroup END
 
-" GUI Settings {{{
-  if has("gui_running")
-  set guifont=Iosevka:h20
-endif
-  " }}}
+
 
 " }}}
 " ===========================================================================
@@ -602,6 +536,8 @@ nnoremap <silent> <Leader>V :tabnew $MYVIMRC<CR>
 nnoremap <Leader>f :find<Space>
 nnoremap <Leader>s :write<CR>
 nnoremap <Leader>h :help<Space>
+" :help on the word under the cursor
+nnoremap <Leader>H :help <C-R><C-W><CR>
 
 " save my pinky some stress
 nnoremap <Leader><Space> :
@@ -705,8 +641,6 @@ function! s:RestartVim()
   endif
 endfunction
 command! -bar RestartVim call <SID>RestartVim()
-
-
 
 " toggle syntax highlighting
 " useful when Vim is crippled by its inefficient highlighting
@@ -815,11 +749,6 @@ endfor
 " Clear Trailing White spaces
 cabbrev ctw s/\s\+$//e
 
-" ...
-augroup top_o_file
-  au!
-  au BufEnter d*_*y.txt normal! gg
-augroup END
 
 " }}}
 " ===========================================================================
@@ -854,10 +783,7 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   " Startify {{{
   augroup startify_maps
     au!
-    " " I use <CR> to enter command line mode,
-    " " so use o to open files instead.
-    " au User Startified unmap <buffer> <CR>
-    " au User Startified nmap <buffer> o <Plug>(startify-open-buffers)
+ 
     au User Startified setlocal relativenumber number
   augroup END
   let g:ctrlp_reuse_window = 'startify'
@@ -881,54 +807,124 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   " xnoremap gx  <Plug>(Exchange)
   " }}}
 
+  " Markdown Syntax Support
+  augroup markdown
+      au!
+      au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+  augroup END
 
   
-"}}}
+  " Vim-pencil Configuration
+  augroup pencil
+    autocmd!
+    autocmd FileType markdown,mkd call pencil#init()
+    autocmd FileType text         call pencil#init()
+  augroup END
+
+  " Elixir Tagbar Configuration
+  let g:tagbar_type_elixir = {
+    \ 'ctagstype' : 'elixir',
+    \ 'kinds' : [
+        \ 'f:functions',
+        \ 'functions:functions',
+        \ 'c:callbacks',
+        \ 'd:delegates',
+        \ 'e:exceptions',
+        \ 'i:implementations',
+        \ 'a:macros',
+        \ 'o:operators',
+        \ 'm:modules',
+        \ 'p:protocols',
+        \ 'r:records',
+        \ 't:tests'
+    \ ]
+    \ }
+
+
+
+
+  " Fzf Configuration{{{
+  " This is the default extra key bindings
+  let g:fzf_action = {
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+
+  " Default fzf layout
+  " - down / up / left / right
+  let g:fzf_layout = { 'down': '~40%' }
+
+  " In Neovim, you can set up fzf window using a Vim command
+  let g:fzf_layout = { 'window': 'enew' }
+  let g:fzf_layout = { 'window': '-tabnew' }
+
+  " Customize fzf colors to match your color scheme
+  let g:fzf_colors =
+    \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
+  " Enable per-command history.
+  " CTRL-N and CTRL-P will be automatically bound to next-history and
+  " previous-history instead of down and up. If you don't like the change,
+  " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+  let g:fzf_history_dir = '~/.local/share/fzf-history' 
+ "}}}
  
-" airline"{{{
-let g:airline_theme                            =  "gruvbox"
-let g:airline_powerline_fonts                  =  1
 
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
+  " airline"{{{
+  let g:airline_theme                            =  "gruvbox"
+  let g:airline_powerline_fonts                  =  1
 
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.maxlinenr = '☰'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = '∄'
-let g:airline_symbols.whitespace = 'Ξ'
+  if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+  endif
 
-" powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+  " unicode symbols
+  let g:airline_left_sep = '»'
+  let g:airline_left_sep = '▶'
+  let g:airline_right_sep = '«'
+  let g:airline_right_sep = '◀'
+  let g:airline_symbols.crypt = '🔒'
+  let g:airline_symbols.linenr = '␊'
+  let g:airline_symbols.maxlinenr = '☰'
+  let g:airline_symbols.branch = '⎇'
+  let g:airline_symbols.paste = 'ρ'
+  let g:airline_symbols.spell = 'Ꞩ'
+  let g:airline_symbols.notexists = '∄'
+  let g:airline_symbols.whitespace = 'Ξ'
 
-" let g:airline_section_warning = airline#section#create([ "syntastic" ])
-let g:airline#extensions#branch#empty_message  =  "No SCM"
-let g:airline#extensions#whitespace#enabled    =  0
-let g:airline#extensions#syntastic#enabled     =  1
-let g:airline#extensions#tabline#enabled       =  1
-let g:airline#extensions#tabline#tab_nr_type   =  1 " tab number
-let g:airline#extensions#tabline#fnamecollapse =  1 " /a/m/model.rb
-let g:airline#extensions#hunks#non_zero_only   =  1 " git gutter
-let g:airline#extension#tmuxline#enabled       =  0
+  " powerline symbols
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
+
+  " let g:airline_section_warning = airline#section#create([ "syntastic" ])
+  let g:airline#extensions#branch#empty_message  =  "No SCM"
+  let g:airline#extensions#whitespace#enabled    =  0
+  let g:airline#extensions#syntastic#enabled     =  1
+  let g:airline#extensions#tabline#enabled       =  1
+  let g:airline#extensions#tabline#tab_nr_type   =  1 " tab number
+  let g:airline#extensions#tabline#fnamecollapse =  1 " /a/m/model.rb
+  let g:airline#extensions#hunks#non_zero_only   =  1 " git gutter
+  let g:airline#extension#tmuxline#enabled       =  1
 
 
 
-"}}}
+  "}}}
 
 
   " wimproved.vim {{{
@@ -955,58 +951,22 @@ let g:airline#extension#tmuxline#enabled       =  0
   nmap ga <Plug>(EasyAlign)
   " }}}
 
-  " vim-clang-format {{{
-  let g:clang_format#style_options = {
-            \ "AccessModifierOffset" : -4,
-            \ "AllowShortIfStatementsOnASingleLine" : "true",
-            \ "AlwaysBreakTemplateDeclarations" : "true",
-            \ "Standard" : "C++11"}
-
-  " map to <Leader>cf in C++ code
-  autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-  autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-  " if you install vim-operator-user
-  autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
-  " Toggle auto formatting:
-  nmap <Leader>C :ClangFormatAutoToggle<CR>
-
- "}}}
-  
   " Goyo {{{
   " toggle Goyo (distraction free editing)
   nnoremap <Leader>G :Goyo<CR>
   " }}}
 
-  " tmux-navigator{{{
-  let g:tmux_navigator_no_mappings = 1
-
-
-  nnoremap <silent> {Left-Mapping} :TmuxNavigateLeft<cr>
-  nnoremap <silent> {Down-Mapping} :TmuxNavigateDown<cr>
-  nnoremap <silent> {Up-Mapping} :TmuxNavigateUp<cr>
-  nnoremap <silent> {Right-Mapping} :TmuxNavigateRight<cr>
-  nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
-
-"}}}
-
-  " indentLines"{{{
-  "nnoremap <Leader>i :IndentLinesToggle<CR>
+  " indentLine {{{
+  nnoremap <Leader>i :IndentLinesToggle<CR>
   " use custom filetype detection for better vim-plug compatibility
-  let g:indentLine_char = '|'
-  let g:indentLine_color_gui = '#665c54'
-  "let g:indentLine_fileType = ['']
-  "augroup ft_indentLine
-    "au!
-    "au FileType c,cpp IndentLinesEnable
-  "augroup END
+  let g:indentLine_enabled = 0
+  let g:indentLine_fileType = ['']
+  augroup ft_indentLine
+    au!
+    au FileType c,cpp IndentLinesEnable
+  augroup END
+  " }}}
 
-  " indent-guides
-  "let g:indent_guides_enable_on_vim_startup = 1
-  "let g:indent_guides_start_level = 2
-  "let g:indent_guides_start_size = 1
-  
-  
-"}}}
   " ipmotion {{{
   " Skip over closed folds with { and }
   let g:ip_skipfold = 1
@@ -1041,6 +1001,37 @@ let g:airline#extension#tmuxline#enabled       =  0
   augroup END
   " }}}
 
+  " Dirvish {{{
+  " disable netrw
+  let g:loaded_netrw = 1
+  let g:loaded_netrwPlugin = 1
+  " open current file's directory
+  nnoremap <silent> - :Dirvish %<CR>
+  " open current working directory
+  nnoremap <silent> + :Dirvish<CR>
+  augroup my_dirvish_events
+    au!
+    " " I use <CR> to enter cmdline mode,
+    " " so use o to open
+    " au FileType dirvish
+    "       \ nnoremap <buffer> <CR> :
+    "       \|xnoremap <buffer> <CR> :
+    "       \|nnoremap <buffer> o :call dirvish#open("edit", 0)<CR>
+    "       \|xnoremap <buffer> o :call dirvish#open("edit", 0)<CR>
+    "       \|nnoremap <buffer> h :call dirvish#open("split", 0)<CR>
+    "       \|xnoremap <buffer> h :call dirvish#open("split", 0)<CR>
+    "       \|nnoremap <buffer> l :call dirvish#open("vsplit", 0)<CR>
+    "       \|xnoremap <buffer> l :call dirvish#open("vsplit", 0)<CR>
+    " map gh to hide "hidden" files. (Unix only)
+    au FileType dirvish nnoremap <buffer> gh
+          \ :g@\v/\.[^\/]+/?$@d<CR>
+    au FileType dirvish set nobuflisted
+  augroup END
+  " }}}
+
+  " gtfo.vim {{{
+  let g:gtfo#terminals = { 'win' : 'C:\WINDOWS\system32\cmd.exe /k' }
+  " }}}
 
   " " switch.vim {{{
   " let g:switch_mapping = "<Leader>s"
@@ -1058,6 +1049,10 @@ let g:airline#extension#tmuxline#enabled       =  0
   " }}}
 
   " Sayonara {{{
+  " close buffer
+  nnoremap gs :Sayonara<CR>
+  " close buffer, don't close window
+  nnoremap gS :Sayonara!<CR>
   " close buffer
   nnoremap gs :Sayonara<CR>
   " close buffer, don't close window
@@ -1088,6 +1083,7 @@ let g:airline#extension#tmuxline#enabled       =  0
   let g:ctrlp_arg_map = 1
   " change default CtrlP mapping
   let g:ctrlp_map = '<Leader>p'
+
   " shortcuts
   nnoremap <Leader>p :CtrlP<CR>
   nnoremap <Leader>b :CtrlPBuffer<CR>
@@ -1097,6 +1093,37 @@ let g:airline#extension#tmuxline#enabled       =  0
   nnoremap <Leader><C-L> :CtrlPLine<CR>
   nnoremap <Leader><C-P> :CtrlP<Space>
   " }}}
+
+ 
+  " Mappings configurationn{{{
+
+
+
+
+
+
+
+
+
+  " Mapping selecting Mappings
+  nmap <leader><tab> <plug>(fzf-maps-n)
+  xmap <leader><tab> <plug>(fzf-maps-x)
+  omap <leader><tab> <plug>(fzf-maps-o)
+
+  " Shortcuts
+  nnoremap <Leader>o :Files<CR> 
+  nnoremap <Leader>O :CtrlP<CR>
+  nnoremap <Leader>w :w<CR>
+
+  " Insert mode completion
+  imap <c-x><c-k> <plug>(fzf-complete-word)
+  imap <c-x><c-f> <plug>(fzf-complete-path)
+  imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+  imap <c-x><c-l> <plug>(fzf-complete-line)
+  
+  " Advanced customization using autoload functions
+  inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
+"}}}
 
   " UltiSnips {{{
   " disable ListSnippits in favor of Supertab's 'tab literal'

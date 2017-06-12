@@ -27,7 +27,7 @@ nitrogen --restore
 
 mpd &
 
-urxvtd -q -o -f
+#urxvtd -q -o -f
 
 #exec startxfce4
 #exec frankenwm
@@ -48,5 +48,8 @@ export PANEL_FIFO=/tmp/panel-fifo
 #~/.config/scripts/bar/dwmbar.sh &
 #exec dwm
 
-~/bin/barscript1 &
+# wallpaper 
+wal -i "$(< "${HOME}/.cache.wal/wal")"
+
+~/bin/barscript &
 exec 2bwm
