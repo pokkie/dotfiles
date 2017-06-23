@@ -122,7 +122,7 @@ click2	config.h	/^static const char *click2[]    = { "xdotool","click2", "1", NU
 click3	config.h	/^static const char *click3[]    = { "xdotool","click3", "1", NULL};$/;"	v
 client	types.h	/^struct client {                     \/\/ Everything we know about a window.$/;"	s
 clientmessage	2bwm.c	/^clientmessage(xcb_generic_event_t *ev)$/;"	f
-colors	config.h	/^static const char *colors[] = {"#fe8019","#928374","#8ec07c","#fb4934","#d3869b","#fbf1c7","#a89984"};$/;"	v
+colors	config.h	/^static const char *colors[] = {"#fe8019","#928374","#8ec07c","#fb4934","#d3869b","#ebdbb2","#a89984"};$/;"	v
 com	types.h	/^	const char** com;$/;"	m	union:__anon1
 conf	types.h	/^struct conf {$/;"	s
 conf	types.h	/^} conf;$/;"	v	typeref:struct:conf
