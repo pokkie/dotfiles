@@ -1044,7 +1044,7 @@ setup_keyboard(void)
 
 	numlock = xcb_get_keycodes(XK_Num_Lock);
 
-	for (i=0; i<8; i++) {
+	for (i=4; i<8; i++) {
 		for (j=0; j<reply->keycodes_per_modifier; j++) {
 			xcb_keycode_t keycode = modmap[i
 				* reply->keycodes_per_modifier + j];
@@ -2475,10 +2475,13 @@ handle_keypress(xcb_generic_event_t *e)
 	xcb_key_press_event_t *ev       = (xcb_key_press_event_t *)e;
 	xcb_keysym_t           keysym   = xcb_get_keysym(ev->detail);
 
-	for (unsigned int i=0; i<LENGTH(keys); i++)
+	for (unsigned int i=0; i<LENGTH(keys); i++) {
 		if (keysym == keys[i].keysym && CLEANMASK(keys[i].mod)
-				== CLEANMASK(ev->state) && keys[i].func)
+				== CLEANMASK(ev->state) && keys[i].func) {
 			keys[i].func(&keys[i].arg);
+			break;
+		}
+	}
 }
 
 /* Helper function to configure a window. */
@@ -2793,8 +2796,13 @@ buttonpress(xcb_generic_event_t *ev)
 				== CLEANMASK(e->state)){
 			if ((focuswin==NULL) && buttons[i].func == mousemotion)
 				return;
-
-			buttons[i].func(&(buttons[i].arg));
+			if (buttons[i].root_only) {
+				if (e->event == e->root && e->child == 0)
+					buttons[i].func(&(buttons[i].arg));
+			}
+			else {
+				buttons[i].func(&(buttons[i].arg));
+			}
 		}
 }
 
@@ -3013,15 +3021,17 @@ grabbuttons(struct client *c)
 	};
 
 	for (unsigned int b=0; b<LENGTH(buttons); b++)
-		for (unsigned int m=0; m<LENGTH(modifiers); m++)
-			xcb_grab_button(conn, 1, c->id,
-					XCB_EVENT_MASK_BUTTON_PRESS,
-					XCB_GRAB_MODE_ASYNC,
-					XCB_GRAB_MODE_ASYNC,
-					screen->root, XCB_NONE,
-					buttons[b].button,
-					buttons[b].mask|modifiers[m]
-			);
+		if (!buttons[b].root_only) {
+			for (unsigned int m=0; m<LENGTH(modifiers); m++)
+				xcb_grab_button(conn, 1, c->id,
+						XCB_EVENT_MASK_BUTTON_PRESS,
+						XCB_GRAB_MODE_ASYNC,
+						XCB_GRAB_MODE_ASYNC,
+						screen->root, XCB_NONE,
+						buttons[b].button,
+						buttons[b].mask|modifiers[m]
+				);
+		}
 }
 
 void
