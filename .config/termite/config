@@ -9,7 +9,7 @@ allow_bold = false
 dynamic_title = true
 urgent_on_bell = true
 clickable_url = true
-font = Iosevka Term 11
+font = Iosevka Term 13
 #font = Anonymice Pro  Powerline 12
 scrollback_lines = 1000
 search_wrap = true
@@ -83,7 +83,7 @@ color15 = #ebdbb2
 
 
 [hints]
-font = Iosevka Term 11
+font = Iosevka Term 12
 #foreground = #dcdccc
 #background = #3f3f3f
 #padding = 2
