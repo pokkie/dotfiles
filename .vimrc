@@ -294,7 +294,7 @@ set list
 set listchars=tab:‣\ ,extends:›,precedes:‹,nbsp:·,trail:■
 "set listchars=tab:‣\ ,trail:·,precedes:«,extends:»,eol:¬
 set number 
-set relativenumber
+"set relativenumber
 
 
 set numberwidth=1
@@ -981,6 +981,7 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   " use custom filetype detection for better vim-plug compatibility
   let g:indentLine_enabled = 0
   let g:indentLine_fileType = ['']
+  let g:indentLine_char = '|'
   augroup ft_indentLine
     au!
     au FileType c,cpp IndentLinesEnable
