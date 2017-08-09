@@ -1,0 +1,36 @@
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
+
+export TERM=xterm-256color
+[ -n "$TMUX " ] && export TERM=screen-256color
+
+. /etc/profile
+. ~/z.sh
+
+# Import color scheme from 'wal'
+export PATH=$PATH:/data/packages/wal
+(wal -r &)
+
+# Git repo for dot management
+alias config='/usr/bin/git --git-dir=/home/dagnachew/.cfg --work-tree=/home/dagnachew'
+
+# VPN
+alias vpn='sudo openvpn /etc/openvpn/CA_Montreal.conf & '
+
+# Network restart
+alias netrestart='sudo systemctl restart NetworkManager.service'
+
+# Virtual environement
+
+source /usr/share/autoenv/activate.sh
