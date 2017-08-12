@@ -166,7 +166,8 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'on': 'RainbowParentheses' }
 Plug 'junegunn/vim-easy-align',   { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'junegunn/goyo.vim',         { 'on': 'Goyo' }
 Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
-Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
+"Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
+"Plug 'nathanaelkane/vim-indent-guides'
 Plug 'flazz/vim-colorschemes'
 
 " Panels/Toggleable
@@ -175,7 +176,7 @@ Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree',    { 'on': 'UndotreeToggle' }
 Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlP', 'CtrlPMRU', 'CtrlPBuffer', 'CtrlPLine'] }
 
-au! User indentLine doau indentLine Syntax | au BufRead * IndentLinesReset
+"au! User indentLine doau indentLine Syntax | au BufRead * IndentLinesReset
 " ^ fix for lazy loading with indentLine ^
 
 call plug#end()
@@ -241,6 +242,10 @@ if has('persistent_undo')
   let &undodir=s:tempdir
 endif
 
+" change the color of SignColumn
+highlight clear SignColumn
+
+
 " autocmds
 augroup vimrc_general
   au!
@@ -291,8 +296,8 @@ set guioptions=
 set laststatus=2
 set linebreak
 set list
-set listchars=tab:‣\ ,extends:›,precedes:‹,nbsp:·,trail:■
-"set listchars=tab:‣\ ,trail:·,precedes:«,extends:»,eol:¬
+set listchars=tab:▸\ ,extends:›,precedes:‹,nbsp:·,trail:·
+
 set number 
 "set relativenumber
 
@@ -318,6 +323,7 @@ silent! colorscheme gruvbox
 if !exists('g:colors_name')
   colorscheme desert
 endif
+
 
 " standard status line if lightline isn't enabled
 " (pretty much the same layout as default lightline)
@@ -977,15 +983,15 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   " }}}
 
   " indentLine {{{
-  nnoremap <Leader>i :IndentLinesToggle<CR>
+  "nnoremap <Leader>i :IndentLinesToggle<CR>
   " use custom filetype detection for better vim-plug compatibility
-  let g:indentLine_enabled = 0
-  let g:indentLine_fileType = ['']
-  let g:indentLine_char = '|'
-  augroup ft_indentLine
-    au!
-    au FileType c,cpp IndentLinesEnable
-  augroup END
+  "let g:indentLine_enabled = 0
+  "let g:indentLine_fileType = ['']
+  "let g:indentLine_char = '|'
+  "augroup ft_indentLine
+  "  au!
+  "  au FileType c,cpp IndentLinesEnable
+  "augroup END
   " }}}
 
   " ipmotion {{{
