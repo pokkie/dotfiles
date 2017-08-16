@@ -104,7 +104,7 @@ arrbymon	2bwm.c	/^arrbymon(struct monitor *monitor)$/;"	f
 atomnames	2bwm.c	/^static const char *atomnames[NB_ATOMS][1] = {$/;"	v	file:
 base_height	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
 base_width	types.h	/^	uint16_t max_width, max_height,min_width, min_height, width_inc, height_inc,base_width, base_height;$/;"	m	struct:client
-borders	config.h	/^static const uint8_t borders[] = {6,10,10,6};$/;"	v
+borders	config.h	/^static const uint8_t borders[] = {6,12,12,6};$/;"	v
 borderwidth	types.h	/^	int8_t borderwidth;             \/\/ Do we draw borders for non-focused window? If so, how large?$/;"	m	struct:conf
 button	types.h	/^	unsigned int mask, button;$/;"	m	struct:__anon3
 buttonpress	2bwm.c	/^buttonpress(xcb_generic_event_t *ev)$/;"	f
@@ -122,7 +122,7 @@ click2	config.h	/^static const char *click2[]    = { "xdotool","click2", "1", NU
 click3	config.h	/^static const char *click3[]    = { "xdotool","click3", "1", NULL};$/;"	v
 client	types.h	/^struct client {                     \/\/ Everything we know about a window.$/;"	s
 clientmessage	2bwm.c	/^clientmessage(xcb_generic_event_t *ev)$/;"	f
-colors	config.h	/^static const char *colors[] = {"#fe8019","#928374","#8ec07c","#fb4934","#d3869b","#ebdbb2","#a89984"};$/;"	v
+colors	config.h	/^static const char *colors[] = {"#e0f2ec","#326d78","#82aea9","#a85659","#e1d9ce","#a7d2cd","#11292e"};$/;"	v
 com	types.h	/^	const char** com;$/;"	m	union:__anon1
 conf	types.h	/^struct conf {$/;"	s
 conf	types.h	/^} conf;$/;"	v	typeref:struct:conf
@@ -282,7 +282,7 @@ snapwindow	2bwm.c	/^snapwindow(struct client *client)$/;"	f	file:
 stackmode	types.h	/^	uint8_t      stackmode;$/;"	m	struct:winconf
 start	2bwm.c	/^start(const Arg *arg)$/;"	f
 teleport	2bwm.c	/^teleport(const Arg *arg)$/;"	f
-terminal	config.h	/^static const char *terminal[]  = { "termite", NULL};$/;"	v
+terminal	config.h	/^static const char *terminal[]  = { "st", NULL};$/;"	v
 top_win	2bwm.c	/^static xcb_drawable_t top_win=0;           \/\/ Window always on top.$/;"	v	file:
 twobwm_exit	2bwm.c	/^twobwm_exit()$/;"	f
 twobwm_restart	2bwm.c	/^twobwm_restart(void)$/;"	f

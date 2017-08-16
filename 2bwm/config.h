@@ -19,7 +19,7 @@ static const uint8_t offsets[] = {0,24,0,24};
  *2)fixedcol         3)unkilcol
  *4)fixedunkilcol    5)outerbordercol
  *6)emptycol         */
-static const char *colors[] = {"#fe8019","#928374","#8ec07c","#fb4934","#d3869b","#ebdbb2","#a89984"};
+static const char *colors[] = {"#e0f2ec","#326d78","#82aea9","#a85659","#e1d9ce","#a7d2cd","#11292e"};
 /* if this is set to true the inner border and outer borders colors will be swapped */
 static const bool inverted_colors = true;
 ///---Cursor---///
@@ -32,7 +32,7 @@ static const bool inverted_colors = true;
 /*0) Outer border size. If you put this negative it will be a square.
  *1) Full borderwidth    2) Magnet border size
  *3) Resize border size  */
-static const uint8_t borders[] = {6,10,10,6};
+static const uint8_t borders[] = {6,12,12,6};
 /* Windows that won't have a border.
  * It uses substring comparison with what is found in the WM_NAME
  * attribute of the window. You can test this using `xprop WM_NAME`
@@ -41,7 +41,7 @@ static const uint8_t borders[] = {6,10,10,6};
 static const char *ignore_names[] = {"bar", "xclock"};
 ///--Menus and Programs---///
 static const char *menucmd[]   = { "rofi", "-show", "run", NULL };
-static const char *terminal[]  = { "termite", NULL};
+static const char *terminal[]  = { "st", NULL};
 static const char *filemanager[] = { "thunar", NULL};
 static const char *click1[]    = { "xdotool","click1", "1", NULL};
 static const char *click2[]    = { "xdotool","click2", "1", NULL};
@@ -114,7 +114,7 @@ static key keys[] = {
     // Teleport the window to an area of the screen.
     // Center:
     {  MOD ,              XK_g,          teleport,          {.i=TWOBWM_TELEPORT_CENTER}},
-    // Center y:
+    // Center y:               
     {  MOD |SHIFT,        XK_g,          teleport,          {.i=TWOBWM_TELEPORT_CENTER_Y}},
     // Center x:
     {  MOD |CONTROL,      XK_g,          teleport,          {.i=TWOBWM_TELEPORT_CENTER_X}},
@@ -186,7 +186,9 @@ static key keys[] = {
     // Start programs
     {  MOD ,              XK_d,          start,             {.com = menucmd}},
     {  MOD ,              XK_Return,                    start,             {.com = terminal}},
-    {  MOD,               XK_t,                         start,             {.com = filemanager}},
+    {  MOD |SHIFT,        XK_t,                         start,             {.com = filemanager}},
+    
+    
     // Exit or restart 2bwm
     {  MOD |CONTROL,      XK_q,          twobwm_exit,       {.i=0}},
     {  MOD |CONTROL,      XK_r,          twobwm_restart,    {.i=0}},
