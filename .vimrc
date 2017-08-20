@@ -169,6 +169,10 @@ Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
 "Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
 "Plug 'nathanaelkane/vim-indent-guides'
 Plug 'flazz/vim-colorschemes'
+Plug 'joshdick/onedark.vim'
+Plug 'rakr/vim-one'
+Plug 'chriskempson/base16-vim'
+Plug 'dylanaraps/wal'
 
 " Panels/Toggleable
 
@@ -318,12 +322,12 @@ endif
 syntax on
 
 set background=dark
-silent! colorscheme gruvbox
+colorscheme gruvbox
+"silent! colorscheme onedark
 " fallback default colorscheme
-if !exists('g:colors_name')
-  colorscheme desert
-endif
-
+"if !exists('g:colors_name')
+"  colorscheme desert
+"endif
 
 " standard status line if lightline isn't enabled
 " (pretty much the same layout as default lightline)
