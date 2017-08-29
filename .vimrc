@@ -72,12 +72,12 @@ Plug 'SirVer/UltiSnips'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-orgmode'
 " Plug 'AndrewRadev/switch.vim'
-Plug 'AndrewRadev/splitjoin.vim',
+"Plug 'AndrewRadev/splitjoin.vim',
       \ { 'for': [ 'vim', 'c', 'cpp', 'lua', 'python', 'ruby', 'go' ] }
 Plug 'junegunn/gv.vim',    { 'on': 'GV' }
 Plug 'szw/vim-g',          { 'on': 'Google' }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
-
+Plug 'mhinz/vim-grepper'
 " Text Objects
 Plug 'kana/vim-textobj-user' |
       \ Plug 'kana/vim-textobj-entire'   |
@@ -85,6 +85,7 @@ Plug 'kana/vim-textobj-user' |
       \ Plug 'kana/vim-textobj-function' |
       \ Plug 'reedes/vim-textobj-sentence'
 Plug 'wellle/targets.vim'
+Plug 'coderifous/textobj-word-clumn.vim'
 
 " Operators
 Plug 'tpope/vim-surround'
@@ -157,6 +158,7 @@ Plug 'klen/python-mode'
 
 " Appearance/UI
 Plug 'mhinz/vim-Startify'
+Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'kkoenig/wimproved.vim'
@@ -195,7 +197,7 @@ set incsearch
 set ignorecase
 set smartcase
 set autoread
-set lazyredraw
+set nolazyredraw 
 set gdefault
 set showcmd
 set vb t_vb=
@@ -219,7 +221,7 @@ endif
 silent! set mouse=a
 
 " system clipboard uses the unnamedplus register
-set clipboard=unnamedplus,unnamed
+set clipboard^=unnamedplus,unnamed
 
 " command-line completion settings
 set wildmenu
@@ -320,6 +322,9 @@ else
 endif
 
 syntax on
+
+
+set guifont=Iosevka\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 
 set background=dark
 colorscheme gruvbox
