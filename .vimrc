@@ -85,7 +85,7 @@ Plug 'kana/vim-textobj-user' |
       \ Plug 'kana/vim-textobj-function' |
       \ Plug 'reedes/vim-textobj-sentence'
 Plug 'wellle/targets.vim'
-Plug 'coderifous/textobj-word-clumn.vim'
+Plug 'coderifous/textobj-word-column.vim'
 
 " Operators
 Plug 'tpope/vim-surround'
