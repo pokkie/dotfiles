@@ -15,24 +15,33 @@ ICON2="-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1"
 # Panel
 notifybar_g="1920x24+0+0"
 
+# Char glyps for powerline fonts
+sep_left=""                     # Powerline separator left
+sep_right=""                    # Powerline separator right
+sep_l_left=""                   # Powerline light separator left
+sep_l_right=""                  # Powerline light sepatator right
+
+
+
+
 # Colors
-BG=#282828
-FG=#fe8019
+BG=#112233
+FG=#ddccaa
 BLACK=#282828
 BBLACK=#32302f
-RED=#cc241d
-BRED=#fb4934
+RED=#bb4444
+BRED=#cc3344
 ORANGE=#d65d0e
-BORANGE=#fe8019
+BORANGE=#ff6644
 GREEN=#98971a
-BGREEN=#b8bb26
+BGREEN=#557777
 YELLOW=#d79921
 BYELLOW=#fabd2f
 BLUE=#458588
-BBLUE=#83a598
-MAGENTA=#b16286
+BBLUE=#334466
+MAGENTA=#996699
 BMAGENTA=#d3869b
-WHITE=#f2e5bc
+WHITE=#ddccaa
 BWHITE=#fbf1c7
 
 
@@ -40,12 +49,12 @@ BWHITE=#fbf1c7
  ws(){ # Current Workspace .. 
   ws=`xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}'`
 	case ${ws} in
-		0) echo "%{F$BORANGE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;  
-		1) echo "%{F$WHITE} %{F$BORANGE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;
-		2) echo "%{F$WHITE} %{F$WHITE}  %{F$BORANGE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;
-		3) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$BORANGE}  %{F$WHITE}  %{F$WHITE} ";;
-		4) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$BORANGE}  %{F$WHITE} ";;
-		*) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$BORANGE} ";;
+		0) echo "%{F$BORANGE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;  
+		1) echo "%{F$WHITE} %{F$BORANGE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;
+		2) echo "%{F$WHITE} %{F$WHITE}  %{F$BORANGE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE} ";;
+		3) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$BORANGE}  %{F$WHITE}  %{F$WHITE} ";;
+		4) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$BORANGE}  %{F$WHITE} ";;
+		*) echo "%{F$WHITE} %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$WHITE}  %{F$BORANGE} ";;
 	esac
 }
 
@@ -57,7 +66,7 @@ BWHITE=#fbf1c7
   cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
   cpuload+="% CPU"
 	#echo "%{F$BYELLOW} %{F-} ${cpuload}"
-	echo "%{F$BYELLOW}  ${cpuload}"
+	echo "%{F$RED}  ${cpuload}"
 }
 	
  fan(){ # Fan speeds ..
@@ -79,19 +88,20 @@ BWHITE=#fbf1c7
 }
 
  vol(){ # Volume, Sets to Headset when switched ..
-  switch=`amixer get Master | awk '/Mono:/ {print $6}'`
-  vol=`amixer get Master | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
-  hsvol=`amixer get PCM | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+  switch=`amixer -c 0 get Master | awk '/Mono:/ {print $6}'`
+  vol=`amixer -c 0 get Master | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+  hsvol=`amixer -c 0 get PCM | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+
 
   if [ "$switch" = "[on]" ]; then
 	#echo "%{F$BBLUE}  %{F-} ${vol}"
-	echo "%{F$BBLUE}   ${vol}"
+	echo "%{F$YELLOW}   ${vol}"
   elif [ "$switch" = "[off]" ]; then
 	#echo "%{F$BRED}  %{F-} MUTE"
         echo "%{F$BRED}   MUTE"
   else
 	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
-        echo "%{F$BBLUE}   ${hsvol}"
+        echo "%{F$YELLOW}   ${hsvol}"
   fi
 }
 
