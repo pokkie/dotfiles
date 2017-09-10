@@ -29,18 +29,18 @@ BG=#112233
 FG=#ddccaa
 BLACK=#282828
 BBLACK=#32302f
-RED=#bb4444
-BRED=#cc3344
+RED=#dd6677
+BRED=#771144
 ORANGE=#d65d0e
 BORANGE=#ff6644
 GREEN=#98971a
 BGREEN=#557777
-YELLOW=#d79921
+YELLOW=#dd9999
 BYELLOW=#fabd2f
-BLUE=#458588
-BBLUE=#334466
-MAGENTA=#996699
-BMAGENTA=#d3869b
+BLUE=#88aaee
+BBLUE=#ccddff
+MAGENTA=#664477
+BMAGENTA=#bb99aa
 WHITE=#ddccaa
 BWHITE=#fbf1c7
 
@@ -66,7 +66,7 @@ BWHITE=#fbf1c7
   cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
   cpuload+="% CPU"
 	#echo "%{F$BYELLOW} %{F-} ${cpuload}"
-	echo "%{F$RED}  ${cpuload}"
+	echo "%{F$BMAGENTA}  ${cpuload}"
 }
 	
  fan(){ # Fan speeds ..
@@ -78,7 +78,7 @@ BWHITE=#fbf1c7
   mem=$(free -m | awk 'NR==2 {print $3}')
         mem+="MB"
         #echo "%{F$BMAGENTA}  %{F-}${mem} RAM"
-	echo "%{F$BMAGENTA}  ${mem} RAM"
+	echo "%{F$WHITE}  ${mem} RAM"
 	  }
 
  clock(){ # Clock, obv ..
@@ -95,13 +95,13 @@ BWHITE=#fbf1c7
 
   if [ "$switch" = "[on]" ]; then
 	#echo "%{F$BBLUE}  %{F-} ${vol}"
-	echo "%{F$YELLOW}   ${vol}"
+	echo "%{F$BLUE}   ${vol}"
   elif [ "$switch" = "[off]" ]; then
 	#echo "%{F$BRED}  %{F-} MUTE"
         echo "%{F$BRED}   MUTE"
   else
 	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
-        echo "%{F$YELLOW}   ${hsvol}"
+        echo "%{F$BLUE}   ${hsvol}"
   fi
 }
 
