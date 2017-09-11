@@ -18,7 +18,6 @@ elseif s:is_nvim
   let s:myvimdir ="~/.config/nvim"
 endif
 
-
 " enables filetype detection, ftplugins, and indent files
 filetype plugin indent on
 
@@ -71,7 +70,8 @@ Plug 'Shougo/neocomplete.vim'
 Plug 'SirVer/UltiSnips'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-orgmode'
-" Plug 'AndrewRadev/switch.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'wesQ3/vim-windowswap'
 "Plug 'AndrewRadev/splitjoin.vim',
       \ { 'for': [ 'vim', 'c', 'cpp', 'lua', 'python', 'ruby', 'go' ] }
 Plug 'junegunn/gv.vim',    { 'on': 'GV' }
@@ -98,9 +98,14 @@ Plug 'justinmk/vim-ipmotion'
 Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
 
 " Generic Programming Support
+Plug 'jakedouglas/excuberant-ctags'
+Plug 'honza/vim-snippets'
+Plug 'Townk/vim-autoclose'
+Plug 'tomtom/tcomment_vim'
 Plug 'tobyS/vmustache'
+Plug 'janko-m/vim-test'
+"Plug 'vim-syntastic/syntastic'
 Plug 'elzr/vim-json'
-
 
 " Git Support
 Plug 'kablamo/vim-git-log'
@@ -118,7 +123,6 @@ Plug 'othree/html5.vim', {'on_ft':['html']}
 Plug 'ap/vim-css-color', {'on_ft':['css','scss','sass','less','styl']}
 Plug 'mattn/emmet-vim', {'on_ft':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache','handlebars']}
 Plug 'lepture/vim-jinja'
-
 
 " Markdown / Writting
 Plug 'reedes/vim-pencil'
@@ -144,7 +148,6 @@ Plug 'frost/vim-eh-docs'
 Plug 'slashmili/alchemist.vim'
 Plug 'tpope/vim-endwise'
 Plug 'jadercorrea/elixir_generator.vim'
-
 
 " Elm Support
 Plug 'lambdatoast/elm.vim'
@@ -307,7 +310,6 @@ set listchars=tab:▸\ ,extends:›,precedes:‹,nbsp:·,trail:·
 set number 
 "set relativenumber
 
-
 set numberwidth=1
 set ruler
 " a ruler on steroids
@@ -369,8 +371,6 @@ augroup vimrc_appearance_and_formatting
   au InsertLeave * :set listchars+=trail:■
 
 augroup END
-
-
 
 " }}}
 " ===========================================================================
@@ -659,7 +659,6 @@ nnoremap \y ggVG"+y
 
 " }}}
 " ---------------------------------------------------------------------------
-
 " }}}
 " ===========================================================================
 " FUNCTIONS, COMMANDS, MISC {{{
@@ -784,7 +783,6 @@ endfor
 " Clear Trailing White spaces
 cabbrev ctw s/\s\+$//e
 
-
 " }}}
 " ===========================================================================
 " PLUGIN SETTINGS {{{
@@ -876,8 +874,6 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
     \ }
 
 
-
-
   " Fzf Configuration{{{
   " This is the default extra key bindings
   let g:fzf_action = {
@@ -915,11 +911,14 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   let g:fzf_history_dir = '~/.local/share/fzf-history' 
  "}}}
  
+  " Syntastic 
+  "set statusline+=%#warningmsg#
+  "set statusline+=%{SyntasticStatuslineFlag()}
+  "set statusline+=%*
 
-  " airline"{{{
-  let g:airline_theme                            =  "gruvbox"
-  let g:airline_powerline_fonts                  =  1
-
+  " airline {{{
+  let g:airline_theme = "gruvbox"
+  let g:airline_powerline_fonts = 1
   if !exists('g:airline_symbols')
       let g:airline_symbols = {}
   endif
@@ -956,12 +955,16 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   let g:airline#extensions#tabline#fnamecollapse =  1 " /a/m/model.rb
   let g:airline#extensions#hunks#non_zero_only   =  1 " git gutter
   let g:airline#extension#tmuxline#enabled       =  1
+"}}}
 
-
-
+  " Vim-Test{{{
+  let test#strategy = "vimux"
+"}}}
+  
+  " Vim-Alchemist{{{
+  let g:alchemist_tag_disable = 1
   "}}}
-
-
+  
   " wimproved.vim {{{
   " toggle fullscreen
   nnoremap <F11> :WToggleFullscreen<CR>
@@ -1129,17 +1132,8 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   nnoremap <Leader><C-L> :CtrlPLine<CR>
   nnoremap <Leader><C-P> :CtrlP<Space>
   " }}}
-
  
   " Mappings configurationn{{{
-
-
-
-
-
-
-
-
 
   " Mapping selecting Mappings
   nmap <leader><tab> <plug>(fzf-maps-n)
@@ -1203,15 +1197,6 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
   " Close popup by <Space>.
   "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-  " AutoComplPop like behavior.
-  "let g:neocomplete#enable_auto_select = 1
-
-  " Shell like behavior(not recommended).
-  "set completeopt+=longest
-  "let g:neocomplete#enable_auto_select = 1
-  "let g:neocomplete#disable_auto_complete = 1
-  "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
   " Enable omni completion.
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
