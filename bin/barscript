@@ -110,10 +110,10 @@ BWHITE=#fbf1c7
 }
 
  mus(){ # Current song ..
-  mus=`mpc current -f %title%`
+  mus=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
 
   if [[ $mus ]]; then
- 	echo "%{F$BBLUE}  %{F-} ${mus}"
+ 	echo "%{F$BORANGE}  %{F-} ${mus}"
   fi
 }
 
