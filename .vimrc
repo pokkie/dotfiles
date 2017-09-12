@@ -346,6 +346,8 @@ else
 endif
 set statusline+=%8(%l,%v%)\ 
 
+" Enable Elite mode, no ARRRRRRRROWS !!!!
+let g:elite_mode=1
 
 " Disable Background Color Erase (BCE) so that color schemes
 " render properly when inside 256-color tmux and GNU screen.
@@ -1135,6 +1137,9 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
  
   " Mappings configurationn{{{
 
+  map <C-n> :NerdTreeToggle<CR>
+  map <C-m> :TagbarToggle<CR>
+  
   " Mapping selecting Mappings
   nmap <leader><tab> <plug>(fzf-maps-n)
   xmap <leader><tab> <plug>(fzf-maps-x)
