@@ -98,12 +98,13 @@ Plug 'justinmk/vim-ipmotion'
 Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
 
 " Generic Programming Support
-Plug 'jakedouglas/excuberant-ctags'
+Plug 'jakedouglas/exuberant-ctags'
 Plug 'honza/vim-snippets'
 Plug 'Townk/vim-autoclose'
 Plug 'tomtom/tcomment_vim'
 Plug 'tobyS/vmustache'
 Plug 'janko-m/vim-test'
+Plug 'sheerun/vim-polyglot'
 "Plug 'vim-syntastic/syntastic'
 Plug 'elzr/vim-json'
 
@@ -111,6 +112,7 @@ Plug 'elzr/vim-json'
 Plug 'kablamo/vim-git-log'
 Plug 'gregsexton/gitv'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Javascript
 Plug 'pangloss/vim-javascript'
@@ -159,6 +161,9 @@ Plug 'megaannum/vimside'
 " Python
 Plug 'klen/python-mode'
 
+" R programming support
+Plug 'jalvesaq/Nvim-R'
+
 " Appearance/UI
 Plug 'mhinz/vim-Startify'
 Plug 'ryanoasis/vim-devicons'
@@ -178,7 +183,8 @@ Plug 'joshdick/onedark.vim'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 Plug 'dylanaraps/wal'
-
+Plug 'dracula/vim'
+Plug 'NLKNguyen/papercolor-theme'
 " Panels/Toggleable
 
 Plug 'majutsushi/tagbar'
@@ -307,8 +313,13 @@ set linebreak
 set list
 set listchars=tab:▸\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
-set number 
-"set relativenumber
+set number relativenumber
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 
 set numberwidth=1
 set ruler
@@ -326,7 +337,7 @@ endif
 syntax on
 
 
-set guifont=Iosevka\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
+set guifont=Fira\ Code\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 
 set background=dark
 colorscheme gruvbox
@@ -347,7 +358,7 @@ endif
 set statusline+=%8(%l,%v%)\ 
 
 " Enable Elite mode, no ARRRRRRRROWS !!!!
-let g:elite_mode=1
+let g:elite_mode = 1
 
 " Disable Background Color Erase (BCE) so that color schemes
 " render properly when inside 256-color tmux and GNU screen.
