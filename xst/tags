@@ -106,7 +106,7 @@ MODE_REVERSE	src/st.c	/^	MODE_REVERSE     = 1 << 7,$/;"	e	enum:term_mode	file:
 MODE_SIXEL	src/st.c	/^	MODE_SIXEL       = 1 << 22,$/;"	e	enum:term_mode	file:
 MODE_UTF8	src/st.c	/^	MODE_UTF8        = 1 << 21,$/;"	e	enum:term_mode	file:
 MODE_WRAP	src/st.c	/^	MODE_WRAP        = 1 << 0,$/;"	e	enum:term_mode	file:
-MODKEY	src/config.h	138;"	d
+MODKEY	src/config.h	140;"	d
 MouseKey	src/st.c	/^} MouseKey;$/;"	t	typeref:struct:__anon11	file:
 MouseShortcut	src/st.c	/^} MouseShortcut;$/;"	t	typeref:struct:__anon6	file:
 NUMMAXLEN	src/st.c	71;"	d	file:
@@ -224,10 +224,10 @@ cyo	src/st.c	/^	int cyo; \/* char y offset *\/$/;"	m	struct:__anon5	file:
 dc	src/st.c	/^static DC dc;$/;"	v	file:
 defaultattr	src/config.h	/^static unsigned int defaultattr = 11;$/;"	v
 defaultbg	src/config.h	/^static unsigned int defaultbg = 257;$/;"	v
-defaultcs	src/config.h	/^static unsigned int defaultcs = 256;$/;"	v
+defaultcs	src/config.h	/^static unsigned int defaultcs = 258;$/;"	v
 defaultfg	src/config.h	/^static unsigned int defaultfg = 256;$/;"	v
 defaultfontsize	src/st.c	/^static double defaultfontsize = 0;$/;"	v	file:
-defaultrcs	src/config.h	/^static unsigned int defaultrcs = 257;$/;"	v
+defaultrcs	src/config.h	/^static unsigned int defaultrcs = 259;$/;"	v
 depth	src/st.c	/^	int depth; \/*  bit depth *\/$/;"	m	struct:__anon5	file:
 descent	src/st.c	/^	int descent;$/;"	m	struct:__anon14	file:
 die	src/st.c	/^die(const char *errstr, ...)$/;"	f
@@ -247,7 +247,7 @@ f	src/st.c	/^	float f;$/;"	m	union:__anon10	file:
 fg	src/st.c	/^	uint32_t fg;      \/* foreground  *\/$/;"	m	struct:__anon1	file:
 flags	src/st.c	/^	int flags;$/;"	m	struct:__anon17	file:
 focus	src/st.c	/^focus(XEvent *ev)$/;"	f
-font	src/config.h	/^static char *font = "Iosevka Term:pixelsize=16:antialias=true:autohint=true;";$/;"	v
+font	src/config.h	/^static char *font = "Fira Code:pixelsize=17:antialias=true:autohint=true;";$/;"	v
 font	src/st.c	/^	Font font, bfont, ifont, ibfont;$/;"	m	struct:__anon15	file:
 font	src/st.c	/^	XftFont *font;$/;"	m	struct:__anon17	file:
 forceselmod	src/config.h	/^static uint forceselmod = ShiftMask;$/;"	v

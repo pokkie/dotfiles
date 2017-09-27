@@ -3,10 +3,10 @@
 #define histsize 2000
 
 static unsigned int cols = 80;
-static unsigned int rows = 30;
+static unsigned int rows = 24;
 
 /* ref: http://freedesktop.org/software/fontconfig/fontconfig-user.html */
-static char *font = "Fira Code:pixelsize=17:antialias=true:autohint=true";
+static char *font = "Fira Code:pixelsize=17:antialias=true:autohint=true;";
 
 /* exec precedence: -e arg, utmp option, SHELL env var, /etc/passwd shell */
 static char *shell = "\0";
@@ -55,42 +55,44 @@ static int alpha = 0xff;
 static unsigned int doubleclicktimeout = 300;
 static unsigned int tripleclicktimeout = 600;
 static char *utmp = NULL;
-static int borderpx = 2;
+static int borderpx = 10;
 static int bold_font = 0;
 static char stty_args[] = "stty raw pass8 nl -echo -iexten -cstopb 38400";
 static unsigned int xfps = 120;
 static unsigned int actionfps = 30;
 static char *termname = "st-256color";
 static char *colorname[] = {
-	"#141E1E",
-	"#12272D",
-	"#2E2B32",
-	"#4F2E38",
-	"#6D3137",
-	"#574637",
-	"#273747",
-	"#5A394A",
-	"#314A57",
-	"#595660",
-	"#9D565C",
-	"#AE484B",
-	"#C39473",
-	"#857188",
-	"#71939E",
-	"#BCB4A7",
+	"#1d2021", /* hard contrast: #1d2021 / soft contrast: #32302f */
+	"#cc241d",
+	"#98971a",
+	"#d79921",
+	"#458588",
+	"#b16286",
+	"#689d6a",
+	"#a89984",
+	"#928374",
+	"#fb4934",
+	"#b8bb26",
+	"#fabd2f",
+	"#83a598",
+	"#d3869b",
+	"#8ec07c",
+	"#ebdbb2",
 
 	[255] = 0,
 
-	"#5A394A",
-	"#141E1E",
+	"#ebdbb2", 		/* [default] defaultfg */
+	"#1d2021",		/* [default] defaultbg */
+	"#ebdbb2",              /* [default] defaultcs */
+	"#1e1e1e",		/* [default] defaultrcs */
 	"black",
 };
 
 /* fg, bg, cursor, reverse cursor (references colorname indexes) */
 static unsigned int defaultfg = 256;
 static unsigned int defaultbg = 257;
-static unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 257;
+static unsigned int defaultcs = 258;
+static unsigned int defaultrcs = 259;
 
 /* 2 4 6 7: █ _ | ☃ */
 static unsigned int cursorshape = 2;
@@ -151,8 +153,8 @@ static Shortcut shortcuts[] = {
 	{ MODKEY|ShiftMask,     XK_C,           clipcopy,       {.i =  0} },
 	{ MODKEY|ShiftMask,     XK_V,           clippaste,      {.i =  0} },
 	{ MODKEY,               XK_Num_Lock,    numlock,        {.i =  0} },
-        { MODKEY,               XK_Control_L,   iso14755,       {.i =  0} },
-	{ MODKEY,               XK_u,           externalpipe,   {.v = "xurls | eval dmenu $(dmenu_options) | xargs -r $BROWSER" } },
+  { MODKEY,               XK_Control_L,   iso14755,       {.i =  0} },
+	{ MODKEY,               'u',            externalpipe,   {.v = "xurls | eval dmenu $(dmenu_options) | xargs -r $BROWSER" } },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
 	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 };
