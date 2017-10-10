@@ -1,147 +1,122 @@
-# Credentials ---------------------------------
-# For use with "plain" IMAP synchronisation
-set imap_user       = "dagnachewa@gmail.com"
-set imap_pass       = ""
-set smtp_url        = "SMTP://dagnachewa@gmail.com@smtp.gmail.com:587"
-#set smtp_pass       = "some.password"
-set imap_keepalive = 900
+source "gpg -d ~/.mutt/passwords.gpg |"
 
-set header_cache="~/.mutt/cache/headers"
-set message_cachedir="~/.mutt/cache/bodies"
-set certificate_file=~/.mutt/certificates
+set editor		= "vim"
+set edit_headers	= yes
+
+# Gmail info
+set imap_server	    	= "dagnachewa@gmail.com"
+set imap_keepalive      = 30
+unset imap_passive  	                        # allow mutt to open new imap connection
+set folder	        = "imaps://imap.gmail.com"
+set spoolfile	        = "+[Gmail]/All Mail"
+set postponed	        = "+[Gmail]/Drafts"
+set header_cache        = ~/.mutt/dagnachewa/headers
+set message_cachedir	= ~/.mutt/dagnachewa/bodies
+set certificate file	= ~/.mutt/certificates
+set smtp_url	        = "smtp://dagnachewa@smtp.gmail.com:587/"
+set move	        = no
 
 
-set ssl_starttls = yes
-set ssl_force_tls = yes
+#set folder             = ~/Mail                                       # mailbox location
+#set tmpdir             = "/tmp"
+#set record             = "+sent" 
+#set mbox               = "+mbox"
+#set postponed          = "+postponed"
 
-# How often should mutt check for new mail? ----
-set mail_check      = 0
+set quit                = ask-yes                                      # confirm before quitting
+set wait_key            = no                                           # Don't ask me to press a key to continue after I did a shell escape and came back
+set mbox_type           = Maildir                                      # mailbox type
+set timeout             = 60                                           # idle time before scanning
+set mail_check          = 60                                           # minimum time between scans
+set delete                                                             # don't ask, just do
+unset confirmappend                                                    # When saving a message, append the message to an existing mailbox without asking (Why should it ask, anyway? Mailboxes generally have multiple messages...)
+unset mark_old                                                         # read/new is good enough for me
+set beep_new                                                           # bell on new mails
+set pipe_decode                                                        # strip headers and eval mimes when piping
+set thorough_search                                                    # strip headers and eval mimes before searching
 
-# Notify me of new mail ------------------------
-#set timeout        = 15
-#set imap_check_subscribed
+ignore *                                                               # ignore all headers
+unignore from: to: cc: date: subject:                                  # show only these
+unhdr_order *                                                          # some distros order things by default
+hdr_order from: to: cc: date: subject:                                 # and in this order
 
-# GMail Folders --------------------------------
-# For use with "plain" IMAP synchronisation
-set folder         = "imaps://imap.gmail.com:993"
-#set spoolfile      = "+INBOX"
-set spoolfile       = imaps://imap.gmail.com:993/INBOX
-#set postponed      = "+Drafts"
-#set record         = "+Sent Mail"
-set record="+[Gmail]/Sent Mail"
-set postponed="+[Gmail]/Drafts"
-#set trash          = "+Bin"
-
-## General mutt settings file
-set realname        = "Dagnachew Argaw"
-set charset         = "utf-8"
-
-# How often should mutt check for new mail? ----
-set mail_check=30000
-
-#set folder = "~/.mutt/mail"
-#set folder = "imaps://imap.gmail.com"
-#set spoolfile       = "+INBOX"
-set mbox            = "+archive"
-set postponed       = "+drafts"
-set trash           = "+Trash"
-unset record          #= "+sent"
-
-# Aliases
-#set alias_file          = ~/.mutt/muttalias     # Go there for aliases
-#set reverse_alias                               # If alias exists, use it
-
-# Various settings
-set to_chars            = " +TCF "
-set copy                = no             # Do not copy sent mail.  Gmail smtp already does this.
-set wait_key            = no
-set delete
-set delete_untag                         # Untag msgs when marking them for deletion
-unset confirmappend
-set quit
-set nomove                               # Stop asking to "move read messages to mbox"! -
-set noautoedit
-set allow_8bit
-set auto_tag                             # If something is tagged run commands on all tagged msgs
-unset mark_old                           # Don't mark messages as old when I pass over them with the cursor
-set editor              = "nano +9"
-unset beep
-unset beep_new
-set read_inc            = 100            # Read counter ticks every 100 msgs.
-set write_inc           = 100            # Write counter ticks every 100 msgs.
-set fcc_clear                            # Keep fcc's clear of signatues and encryption.
-set copy                                 # Keep copies of outgoing mail...
-set auto_tag                             # in the index menu which affect a message will be applied to all tagged messages
-set history             = 200            # controls the size (in number of strings remembered) of the string history buffer.
-set mailcap_sanitize
-
-# View Options ------------------------------------
-set tilde                               # pad bottom blank lines when in page view
-set pager_index_lines   = 10            # Show 2 messages on either side of the message I'm reading.
-set pager_context       = 5             # Paging down a message leaves 5 lines of overlap, so you don't get lost.
-set pager_stop                          # don't go to next message automatically
-set menu_scroll                         # scroll in menus
-set arrow_cursor                        # Changes the `bar' cursor to an arrow.  Default is the bar.
-set indent_str          = "> "
-unset markers                           # no ugly plus signs
-set quote_regexp        = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
-alternative_order       text/enriched text/plain text/html        #In which order to show the body parts (I leave HTML for last)
-set resolve
-
-# Compose View Options -------------------------
-set envelope_from                        # which from?
-set edit_headers    = yes                # show headers when composing
-set fast_reply                           # skip to compose when replying
-unset reply_self
-set reply_to                             # reply to Reply to: field
-set askcc                                # ask for CC:
-set fcc_attach                           # save attachments with the body
-set mime_forward    = ask-no             # ask to forward attachments as part of body
-set mime_forward_rest                    # forwarding multiple attachments of a MIME message from the recvattach menu
-set forward_format  = "Fwd: %s"          # format of subject when forwarding
-set forward_decode                       # decode when forwarding
-set attribution     = "On %d, %n wrote:" # format of quoting header
-set reverse_name                         # reply as whomever it was to
-unset include                            # include message in replies
-set forward_quote                        # include message in forwards
-set postpone        = ask-yes            # controls whether or not messages are saved in the 'postponed'
-unset sig_dashes                         # dashes before sig
-
-# Index View Options -----------------------------
-set date_format         = "%m/%d"
-set index_format        = "[%Z]  %D  %-20.20F  %s"
-set sort                = threads                           # As in GMail
-set strict_threads      = "yes"
-set sort_browser        = "date"
-set sort_aux            = "reverse-last-date-received"      # As in GMail
-unset collapse_unread
-set sort_re
+set date_format         = "%d-%m-%y"                                   # a simple date format
+set index_format        = "[%Z]  %D  %-20.20F  %s"                     # format of the index view, show all flags, date, the sender and finally the subject
+set sort                = threads                                      # like gmail
+set sort_aux            = reverse-last-date-received                   # like gmail
+set uncollapse_jump                                                    # don't collapse on an unread message
+set sort_re                                                            # thread based on regex
 set reply_regexp        = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
-set narrow_tree 
+set fast_reply                                                         # do not ask for to, subject, etc when replying
+set include                                                            # always include message when replying
+set forward_format      = "Fwd: %s"                                    # when forwarding email, simply add a Fwd to the subject
+set smart_wrap                                                         # dont wrap mid word
+set copy                = no                                           # dont store sent messages
 
-# Printing actions --------------------------------
-set print               = ask-yes                           # Ask if print
-set print_command       = "mutt-print %s"                   # Send your message to the line printer.
+auto_view text/html                                                    # autoview html
+alternative_order text/plain text/enriched text/html                   # save html for last 
 
-# Spell Checking ----------------------------------
-set ispell              = "aspell -e -c"
+# set sidebar_delim       = '  │'                                      # apparently, this does not work anymore
+set sidebar_visible     = no                                           # disable the sidebar, I never look at it anyways
+set sidebar_width       = 24
 
-# Dealing with attachments -------------------------
-set implicit_autoview
-
-# Goobook https://pypi.python.org/pypi/goobook/ -----
-set query_command       = "goobook query '%s'"
-
-## SIDEBAR ## -----------------------------------------
-set sidebar_width       = 25
-set sidebar_visible     = yes
-set sidebar_delim       = " |"
-set sidebar_sort        = no
 set status_chars        = " *%A"
-set status_format       = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?($
+set status_format       = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 
-# Headers Order ------------------------------------
-ignore *
-unignore From: Date: To: Cc: Reply-To: Subject:
-unhdr_order *
-hdr_order From: Date: To: Cc: Reply-To: Subject:
+# mailboxes /var/mail/vic ~/Mail/sent
+mailboxes ='INBOX' ='[Gmail]/All Mail' ='[Gmail]/Drafts' ='[Gmail]/Sent Mail' ='work' ='0inbox' ='expenses'
+
+set pager_index_lines   = 10                                           # number of index lines to show
+set pager_context       = 5                                            # When going to the next page, keep the bottom two lines of this page on top so that I have some context
+set pager_stop          = yes                                          # If I'm at the end of a message and I try to go to the next page, don't move me to the next message
+set menu_scroll                                                        # scroll in menus
+set tilde                                                              # show tildes like in vim
+unset markers                                                          # In the pager, don't display + at the beginning of wrapped lines; it's distracting
+
+
+# Custom keybindings
+bind index,pager ! noop                                                # unbind report-spam
+bind index,pager \# noop                                               # unbind delete-thread
+bind index,pager % noop                                                # unbind toggle-write                          
+bind index,pager & noop                                                # unbind link-threads 
+
+bind index,pager b noop                                                # Unbind bounce
+bind index,pager A create-alias                                        # bind alias-creation
+bind pager <up> previous-line                                          # scroll inside the message rather than the index
+bind pager <down> next-line                                            # scroll inside the message rather than the index
+
+
+# Gmail style keybindings
+bind  editor <space> noop
+bind  index,pager c  mail                                              # compose
+bind  generic     x  tag-entry		                               # Select Conversation
+bind  index       x  tag-thread		                               # Select Conversation
+bind  pager       x  tag-message	                               # Select Conversation
+bind  index,pager s  flag-message	                               # Star a message
+
+bind  index,pager a  group-reply	                               # Reply all
+#bind  index,pager \# delete-thread	                               # Delete
+bind  index,pager l  copy-message	                               # Label
+bind  index,pager m  save-message	                               # Move to
+
+
+# Gmail macros
+macro index,pager I  <set-flag>O	"Mark as read"
+macro index,pager U  <clear-flag>O	"Mark as unread"
+macro index,pager g0 <change-folder>=0inbox<enter>		"Go to 0inbox"
+macro index,pager ga "<change-folder>=[Gmail]/All Mail<enter>"	"Go to all mail"
+macro index,pager gs <change-folder>=[Gmail]/Starred<enter>	"Go to 'Starred'"
+macro index,pager gd <change-folder>=[Gmail]/Drafts<enter>	"Go to 'Drafts'"
+macro index,pager gl <change-folder>?				"Go to 'Label'"
+macro index,pager gi <change-folder>=INBOX<enter> 		"Go to inbox"
+macro index,pager gt "<change-folder>=[Gmail]/Sent Mail<enter>"	"Go to 'Sent Mail'"
+macro index,pager d "<save-message>=[Gmail]/Trash<enter>" "Trash"
+macro index,pager +  <save-message>=[Gmail]/Important<enter> "Mark as important"
+#macro index,pager !  <save-message>=[Gmail]/Spam<enter> "Report spam"
+#macro index,pager e  "<save-message>=[All]/Gmail Mail<enter><enter>" "Archive conversation"
+macro index,pager 0  "<save-message>=0inbox<enter>" "0inbox conversation"
+
+#folder-hook +INBOX 'macro index,pager y "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive conversation"'
+folder-hook +[Gmail]/Trash macro index,pager y <save-message>=INBOX<enter> "Move to inbox"
+folder-hook +0inbox 'macro index,pager y <save-message>=INBOX<enter> "Move to inbox"'
+folder-hook +[Gmail]/Starred bind  index,pager y flag-message #"Toggle star"
