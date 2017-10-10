@@ -1,3 +1,12 @@
+# ------------------------------------------------------------------
+# File:           $HOME/.neomutt/sidebar
+# Latest change:  Sat Jul 08 13:23:42 CEST 2017
+# Created:        Thu Aug 11 03:33:33 CEST 2016
+# Purpose:        Setup file for the mailer "neomutt"
+# Availability:   http://www.guckes.net/Setup/neomutt.sidebar
+# Author:         Sven Guckes setup-neomuttrc(at)guckes.net http://www.guckes.net/
+# ------------------------------------------------------------------
+
 # This is (hopefully) a complete list of sidebar-related configuration.
 
 # you can get a list of those options form the manual:
