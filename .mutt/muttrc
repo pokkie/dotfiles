@@ -1,21 +1,22 @@
 source "gpg -d ~/.mutt/passwords.gpg |"
 
-set editor		= "vim"
-set edit_headers	= yes
+set editor              = "vim"                                        # use vim as the default editor
+
+set from                = "Dagnachew Argaw <victorparmar@gmail.com>"
+set edit_headers        = yes
 
 # Gmail info
-set imap_server	    	= "dagnachewa@gmail.com"
+set imap_user           = "dagnachewa@gmail.com"
 set imap_keepalive      = 30
-unset imap_passive  	                        # allow mutt to open new imap connection
-set folder	        = "imaps://imap.gmail.com"
-set spoolfile	        = "+[Gmail]/All Mail"
-set postponed	        = "+[Gmail]/Drafts"
+unset imap_passive                                                     # allow mutt to open new imap connection automatically
+set folder              = "imaps://imap.gmail.com"
+set spoolfile           = "+INBOX"
+set postponed           = "+[Gmail]/Drafts"
 set header_cache        = ~/.mutt/dagnachewa/headers
-set message_cachedir	= ~/.mutt/dagnachewa/bodies
-set certificate file	= ~/.mutt/certificates
-set smtp_url	        = "smtp://dagnachewa@smtp.gmail.com:587/"
-set move	        = no
-
+set message_cachedir    = ~/.mutt/dagnachewa/bodies
+set certificate_file    = ~/.mutt/certificates
+set smtp_url            = "smtp://dagnachewa@smtp.gmail.com:587/"
+set move                = no 
 
 #set folder             = ~/Mail                                       # mailbox location
 #set tmpdir             = "/tmp"
@@ -81,6 +82,7 @@ bind index,pager % noop                                                # unbind 
 bind index,pager & noop                                                # unbind link-threads 
 
 bind index,pager b noop                                                # Unbind bounce
+bind index,pager g noop
 bind index,pager A create-alias                                        # bind alias-creation
 bind pager <up> previous-line                                          # scroll inside the message rather than the index
 bind pager <down> next-line                                            # scroll inside the message rather than the index
@@ -120,3 +122,11 @@ macro index,pager 0  "<save-message>=0inbox<enter>" "0inbox conversation"
 folder-hook +[Gmail]/Trash macro index,pager y <save-message>=INBOX<enter> "Move to inbox"
 folder-hook +0inbox 'macro index,pager y <save-message>=INBOX<enter> "Move to inbox"'
 folder-hook +[Gmail]/Starred bind  index,pager y flag-message #"Toggle star"
+
+
+# Contact aliases, could also use `goobook`.
+set alias_file		= ~/.mutt/aliases
+set sort_alias		= alias
+set reverse_alias	= yes
+set reverse_name	= yes
+source $alias_file
