@@ -38,14 +38,156 @@ Plug 'tpope/vim-endwise',
       \ { 'for': [ 'vim', 'c', 'cpp', 'lua', 'ruby', 'sh', 'zsh', 'snippets' ] }
 Plug 'justinmk/vim-gtfo'
 Plug 'dietsche/vim-lastplace'
+
 Plug 'justinmk/vim-dirvish'
+" Dirvish {{{
+  " disable netrw
+  let g:loaded_netrw = 1
+  let g:loaded_netrwPlugin = 1
+  " open current file's directory
+  nnoremap <silent> - :Dirvish %<CR>
+  " open current working directory
+  nnoremap <silent> + :Dirvish<CR>
+  augroup my_dirvish_events
+    au!
+    " " I use <CR> to enter cmdline mode,
+    " " so use o to open
+    " au FileType dirvish
+    "       \ nnoremap <buffer> <CR> :
+    "       \|xnoremap <buffer> <CR> :
+    "       \|nnoremap <buffer> o :call dirvish#open("edit", 0)<CR>
+    "       \|xnoremap <buffer> o :call dirvish#open("edit", 0)<CR>
+    "       \|nnoremap <buffer> h :call dirvish#open("split", 0)<CR>
+    "       \|xnoremap <buffer> h :call dirvish#open("split", 0)<CR>
+    "       \|nnoremap <buffer> l :call dirvish#open("vsplit", 0)<CR>
+    "       \|xnoremap <buffer> l :call dirvish#open("vsplit", 0)<CR>
+    " map gh to hide "hidden" files. (Unix only)
+    au FileType dirvish nnoremap <buffer> gh
+          \ :g@\v/\.[^\/]+/?$@d<CR>
+    au FileType dirvish set nobuflisted
+  augroup END
+  " }}}
+
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf'
+" Fzf Configuration{{{
+  " This is the default extra key bindings
+  let g:fzf_action = {
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+
+  " Default fzf layout
+  " - down / up / left / right
+  let g:fzf_layout = { 'down': '~40%' }
+
+  " In Neovim, you can set up fzf window using a Vim command
+  let g:fzf_layout = { 'window': 'enew' }
+  let g:fzf_layout = { 'window': '-tabnew' }
+
+  " Customize fzf colors to match your color scheme
+  let g:fzf_colors =
+    \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
+  " Enable per-command history.
+  " CTRL-N and CTRL-P will be automatically bound to next-history and
+  " previous-history instead of down and up. If you don't like the change,
+  " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+  let g:fzf_history_dir = '~/.local/share/fzf-history' 
+ "}}}
+
 Plug 'benmills/vimux'
+
 Plug 'ervandew/supertab'
+" Vim-Supertab Configuration{{{
+  let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+  "}}}
+
 Plug 'Konfekt/FastFold'
+
 Plug 'Shougo/neocomplete.vim'
+" neocomplete{{{
+  " Disable AutoComplPop.
+  let g:acp_enableAtStartup = 0
+  " Use neocomplete.
+  let g:neocomplete#enable_at_startup = 1
+  " Use smartcase.
+  let g:neocomplete#enable_smart_case = 1
+  " Set minimum syntax keyword length.
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+  " Define dictionary.
+  let g:neocomplete#sources#dictionary#dictionaries = {
+     \ 'default' : '',
+     \ 'vimshell' : $HOME.'/.vimshell_hist',
+     \ 'scheme' : $HOME.'/.gosh_completions'
+         \ }
+
+  " Define keyword.
+  if !exists('g:neocomplete#keyword_patterns')
+      let g:neocomplete#keyword_patterns = {}
+  endif
+  let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+  " Plugin key-mappings.
+  inoremap <expr><C-g>     neocomplete#undo_completion()
+  inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+  " Recommended key-mappings.
+  " <CR>: close popup and save indent.
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+  endfunction
+  " <TAB>: completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  " <C-h>, <BS>: close popup and delete backword char.
+  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+  " Close popup by <Space>.
+  "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+  " Enable omni completion.
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal              omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+  " Enable heavy omni completion.
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+  endif
+  "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+  "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+  "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+  " For perlomni.vim setting.
+  " https://github.com/c9s/perlomni.vim
+  let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+  "}}}
+
 Plug 'SirVer/UltiSnips'
+  " UltiSnips {{{
+  " disable ListSnippits in favor of Supertab's 'tab literal'
+  " it's <C-Tab> by default
+  let g:UltiSnipsExpandTrigger='<C-{>'
+  let g:UltiSnipsListSnippets='<C-}>'
+  " }}}
+
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-orgmode'
 Plug 'scrooloose/nerdtree'
@@ -54,7 +196,31 @@ Plug 'wesQ3/vim-windowswap'
       \ { 'for': [ 'vim', 'c', 'cpp', 'lua', 'python', 'ruby', 'go' ] }
 Plug 'junegunn/gv.vim',    { 'on': 'GV' }
 Plug 'szw/vim-g',          { 'on': 'Google' }
+
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
+" Sayonara {{{
+  " close buffer
+  nnoremap gs :Sayonara<CR>
+  " close buffer, don't close window
+  nnoremap gS :Sayonara!<CR>
+  " close buffer
+  nnoremap gs :Sayonara<CR>
+  " close buffer, don't close window
+  nnoremap gS :Sayonara!<CR>
+  " prompt to close vim when closing the last file
+  let g:sayonara_confirm_quit = 1
+  " see: 'q to quit help' under KEY MAPPINGS/NORMAL MAPS
+  function! s:helpquit()
+    if &buftype == 'help'
+      nnoremap <buffer> q :Sayonara<CR>
+    endif
+  endfunction
+  augroup q_for_quit
+    au!
+    au BufEnter *.txt call s:helpquit()
+  augroup END
+  " }}}
+
 Plug 'mhinz/vim-grepper'
 " Text Objects
 Plug 'kana/vim-textobj-user' |
@@ -90,6 +256,25 @@ Plug 'elzr/vim-json'
 Plug 'kablamo/vim-git-log'
 Plug 'gregsexton/gitv'
 Plug 'tpope/vim-fugitive'
+
+" Fugitive {{{
+  " TODO: Read docs on other Fugitive functions and use them
+  nnoremap <Leader>gs :Gstatus<CR>
+  nnoremap <Leader>gd :Gdiff<CR>
+  nnoremap <Leader>gD :Gdiff HEAD<CR>
+  nnoremap <Leader>gc :Gcommit<CR>
+  nnoremap <Leader>gl :Git log<CR>
+  nnoremap <Leader>gp :Git push<CR>
+  nnoremap <Leader>gw :Gwrite<CR>
+  nnoremap <Leader>gr :Gremove<CR>
+  nnoremap <Leader>gg :Ggrep<Space>
+  " hide fugitive buffers to reduce buffer list clutter
+  augroup vimrc_fugitive
+    au!
+    au BufReadPost fugitive://* set bufhidden=delete
+  augroup END
+  " }}}
+
 Plug 'airblade/vim-gitgutter'
 
 " Javascript
@@ -145,8 +330,51 @@ Plug 'jalvesaq/Nvim-R'
 " Appearance/UI
 Plug 'mhinz/vim-Startify'
 Plug 'ryanoasis/vim-devicons'
+
 Plug 'vim-airline/vim-airline'
+" airline {{{
+  let g:airline_theme = "nord"
+  let g:airline_powerline_fonts = 1
+  if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+  endif
+
+  " unicode symbols
+  let g:airline_left_sep = '»'
+  let g:airline_left_sep = '▶'
+  let g:airline_right_sep = '«'
+  let g:airline_right_sep = '◀'
+  let g:airline_symbols.crypt = '🔒'
+  let g:airline_symbols.linenr = '␊'
+  let g:airline_symbols.maxlinenr = '☰'
+  let g:airline_symbols.branch = '⎇'
+  let g:airline_symbols.paste = 'ρ'
+  let g:airline_symbols.spell = 'Ꞩ'
+  let g:airline_symbols.notexists = '∄'
+  let g:airline_symbols.whitespace = 'Ξ'
+
+  " powerline symbols
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
+
+  " let g:airline_section_warning = airline#section#create([ "syntastic" ])
+  let g:airline#extensions#branch#empty_message  =  "No SCM"
+  let g:airline#extensions#whitespace#enabled    =  0
+  let g:airline#extensions#syntastic#enabled     =  1
+  let g:airline#extensions#tabline#enabled       =  1
+  let g:airline#extensions#tabline#tab_nr_type   =  1 " tab number
+  let g:airline#extensions#tabline#fnamecollapse =  1 " /a/m/model.rb
+  let g:airline#extensions#hunks#non_zero_only   =  1 " git gutter
+  let g:airline#extension#tmuxline#enabled       =  1
+"}}}
+
 Plug 'vim-airline/vim-airline-themes'
+
 Plug 'kkoenig/wimproved.vim'
 Plug 'AssailantLF/vim-active-numbers'
 Plug 'gcavallanti/vim-noscrollbar'
@@ -154,7 +382,25 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'on': 'RainbowParentheses' }
 Plug 'junegunn/vim-easy-align',   { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'junegunn/goyo.vim',         { 'on': 'Goyo' }
 Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
+
 "Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
+" indentLine {{{
+  "nnoremap <Leader>i :IndentLinesToggle<CR>
+  " use custom filetype detection for better vim-plug compatibility
+  "let g:indentLine_enabled = 0
+  "let g:indentLine_fileType = ['']
+  "let g:indentLine_char = '|'
+  "augroup ft_indentLine
+  "  au!
+  "  au FileType c,cpp IndentLinesEnable
+  "augroup END
+  " }}}
+
+  " ipmotion {{{
+  " Skip over closed folds with { and }
+  let g:ip_skipfold = 1
+  "}}}
+
 "Plug 'nathanaelkane/vim-indent-guides'
 Plug 'flazz/vim-colorschemes'
 Plug 'joshdick/onedark.vim'
@@ -168,7 +414,30 @@ Plug 'arcticicestudio/nord-vim'
 
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree',    { 'on': 'UndotreeToggle' }
+
 Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlP', 'CtrlPMRU', 'CtrlPBuffer', 'CtrlPLine'] }
+" CtrlP {{{
+  " ignore .git folders to speed up searches
+  let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+  let g:ctrlp_max_depth = 15
+  " include hidden files
+  let g:ctrlp_show_hidden = 1
+  " open multiple files in ONE window
+  let g:ctrlp_open_multiple_files = '1vr'
+  " ctrl-o to open specifically
+  let g:ctrlp_arg_map = 1
+  " change default CtrlP mapping
+  let g:ctrlp_map = '<Leader>p'
+
+  " shortcuts
+  nnoremap <Leader>p :CtrlP<CR>
+  nnoremap <Leader>b :CtrlPBuffer<CR>
+  nnoremap <Leader>- :CtrlPCurFile<CR>
+  nnoremap <Leader>+ :CtrlPCurWD<CR>
+  nnoremap <Leader><C-R> :CtrlPMRU<CR>
+  nnoremap <Leader><C-L> :CtrlPLine<CR>
+  nnoremap <Leader><C-P> :CtrlP<Space>
+  " }}}
 
 "au! User indentLine doau indentLine Syntax | au BufRead * IndentLinesReset
 " ^ fix for lazy loading with indentLine ^
@@ -708,26 +977,6 @@ cabbrev ctw s/\s\+$//e
 " PLUGIN SETTINGS {{{
 " ===========================================================================
 
-" don't load these settings without plugins
-if isdirectory(expand(s:myvimdir . "/plugged"))
-
-  " Fugitive {{{
-  " TODO: Read docs on other Fugitive functions and use them
-  nnoremap <Leader>gs :Gstatus<CR>
-  nnoremap <Leader>gd :Gdiff<CR>
-  nnoremap <Leader>gD :Gdiff HEAD<CR>
-  nnoremap <Leader>gc :Gcommit<CR>
-  nnoremap <Leader>gl :Git log<CR>
-  nnoremap <Leader>gp :Git push<CR>
-  nnoremap <Leader>gw :Gwrite<CR>
-  nnoremap <Leader>gr :Gremove<CR>
-  nnoremap <Leader>gg :Ggrep<Space>
-  " hide fugitive buffers to reduce buffer list clutter
-  augroup vimrc_fugitive
-    au!
-    au BufReadPost fugitive://* set bufhidden=delete
-  augroup END
-  " }}}
 
   " Dispatch {{{
   nnoremap <Leader>m :Make<CR>
@@ -794,88 +1043,14 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
     \ }
 
 
-  " Fzf Configuration{{{
-  " This is the default extra key bindings
-  let g:fzf_action = {
-    \ 'ctrl-t': 'tab split',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit' }
-
-  " Default fzf layout
-  " - down / up / left / right
-  let g:fzf_layout = { 'down': '~40%' }
-
-  " In Neovim, you can set up fzf window using a Vim command
-  let g:fzf_layout = { 'window': 'enew' }
-  let g:fzf_layout = { 'window': '-tabnew' }
-
-  " Customize fzf colors to match your color scheme
-  let g:fzf_colors =
-    \ { 'fg':      ['fg', 'Normal'],
-    \ 'bg':      ['bg', 'Normal'],
-    \ 'hl':      ['fg', 'Comment'],
-    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-    \ 'hl+':     ['fg', 'Statement'],
-    \ 'info':    ['fg', 'PreProc'],
-    \ 'prompt':  ['fg', 'Conditional'],
-    \ 'pointer': ['fg', 'Exception'],
-    \ 'marker':  ['fg', 'Keyword'],
-    \ 'spinner': ['fg', 'Label'],
-    \ 'header':  ['fg', 'Comment'] }
-
-  " Enable per-command history.
-  " CTRL-N and CTRL-P will be automatically bound to next-history and
-  " previous-history instead of down and up. If you don't like the change,
-  " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-  let g:fzf_history_dir = '~/.local/share/fzf-history' 
- "}}}
+  
  
   " Syntastic 
   "set statusline+=%#warningmsg#
   "set statusline+=%{SyntasticStatuslineFlag()}
   "set statusline+=%*
 
-  " airline {{{
-  let g:airline_theme = "nord"
-  let g:airline_powerline_fonts = 1
-  if !exists('g:airline_symbols')
-      let g:airline_symbols = {}
-  endif
-
-  " unicode symbols
-  let g:airline_left_sep = '»'
-  let g:airline_left_sep = '▶'
-  let g:airline_right_sep = '«'
-  let g:airline_right_sep = '◀'
-  let g:airline_symbols.crypt = '🔒'
-  let g:airline_symbols.linenr = '␊'
-  let g:airline_symbols.maxlinenr = '☰'
-  let g:airline_symbols.branch = '⎇'
-  let g:airline_symbols.paste = 'ρ'
-  let g:airline_symbols.spell = 'Ꞩ'
-  let g:airline_symbols.notexists = '∄'
-  let g:airline_symbols.whitespace = 'Ξ'
-
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-
-  " let g:airline_section_warning = airline#section#create([ "syntastic" ])
-  let g:airline#extensions#branch#empty_message  =  "No SCM"
-  let g:airline#extensions#whitespace#enabled    =  0
-  let g:airline#extensions#syntastic#enabled     =  1
-  let g:airline#extensions#tabline#enabled       =  1
-  let g:airline#extensions#tabline#tab_nr_type   =  1 " tab number
-  let g:airline#extensions#tabline#fnamecollapse =  1 " /a/m/model.rb
-  let g:airline#extensions#hunks#non_zero_only   =  1 " git gutter
-  let g:airline#extension#tmuxline#enabled       =  1
-"}}}
+  
 
   " Vim-Test{{{
   let test#strategy = "vimux"
@@ -914,22 +1089,7 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   nnoremap <Leader>G :Goyo<CR>
   " }}}
 
-  " indentLine {{{
-  "nnoremap <Leader>i :IndentLinesToggle<CR>
-  " use custom filetype detection for better vim-plug compatibility
-  "let g:indentLine_enabled = 0
-  "let g:indentLine_fileType = ['']
-  "let g:indentLine_char = '|'
-  "augroup ft_indentLine
-  "  au!
-  "  au FileType c,cpp IndentLinesEnable
-  "augroup END
-  " }}}
-
-  " ipmotion {{{
-  " Skip over closed folds with { and }
-  let g:ip_skipfold = 1
-  "}}}
+  
 
   " vim-wordmotion {{{
   " I use this plugin to make Vim treat words
@@ -960,34 +1120,7 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   augroup END
   " }}}
 
-  " Dirvish {{{
-  " disable netrw
-  let g:loaded_netrw = 1
-  let g:loaded_netrwPlugin = 1
-  " open current file's directory
-  nnoremap <silent> - :Dirvish %<CR>
-  " open current working directory
-  nnoremap <silent> + :Dirvish<CR>
-  augroup my_dirvish_events
-    au!
-    " " I use <CR> to enter cmdline mode,
-    " " so use o to open
-    " au FileType dirvish
-    "       \ nnoremap <buffer> <CR> :
-    "       \|xnoremap <buffer> <CR> :
-    "       \|nnoremap <buffer> o :call dirvish#open("edit", 0)<CR>
-    "       \|xnoremap <buffer> o :call dirvish#open("edit", 0)<CR>
-    "       \|nnoremap <buffer> h :call dirvish#open("split", 0)<CR>
-    "       \|xnoremap <buffer> h :call dirvish#open("split", 0)<CR>
-    "       \|nnoremap <buffer> l :call dirvish#open("vsplit", 0)<CR>
-    "       \|xnoremap <buffer> l :call dirvish#open("vsplit", 0)<CR>
-    " map gh to hide "hidden" files. (Unix only)
-    au FileType dirvish nnoremap <buffer> gh
-          \ :g@\v/\.[^\/]+/?$@d<CR>
-    au FileType dirvish set nobuflisted
-  augroup END
-  " }}}
-
+  
   " gtfo.vim {{{
   let g:gtfo#terminals = { 'win' : 'C:\WINDOWS\system32\cmd.exe /k' }
   " }}}
@@ -1007,51 +1140,9 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   endfunc
   " }}}
 
-  " Sayonara {{{
-  " close buffer
-  nnoremap gs :Sayonara<CR>
-  " close buffer, don't close window
-  nnoremap gS :Sayonara!<CR>
-  " close buffer
-  nnoremap gs :Sayonara<CR>
-  " close buffer, don't close window
-  nnoremap gS :Sayonara!<CR>
-  " prompt to close vim when closing the last file
-  let g:sayonara_confirm_quit = 1
-  " see: 'q to quit help' under KEY MAPPINGS/NORMAL MAPS
-  function! s:helpquit()
-    if &buftype == 'help'
-      nnoremap <buffer> q :Sayonara<CR>
-    endif
-  endfunction
-  augroup q_for_quit
-    au!
-    au BufEnter *.txt call s:helpquit()
-  augroup END
-  " }}}
+  
 
-  " CtrlP {{{
-  " ignore .git folders to speed up searches
-  let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-  let g:ctrlp_max_depth = 15
-  " include hidden files
-  let g:ctrlp_show_hidden = 1
-  " open multiple files in ONE window
-  let g:ctrlp_open_multiple_files = '1vr'
-  " ctrl-o to open specifically
-  let g:ctrlp_arg_map = 1
-  " change default CtrlP mapping
-  let g:ctrlp_map = '<Leader>p'
-
-  " shortcuts
-  nnoremap <Leader>p :CtrlP<CR>
-  nnoremap <Leader>b :CtrlPBuffer<CR>
-  nnoremap <Leader>- :CtrlPCurFile<CR>
-  nnoremap <Leader>+ :CtrlPCurWD<CR>
-  nnoremap <Leader><C-R> :CtrlPMRU<CR>
-  nnoremap <Leader><C-L> :CtrlPLine<CR>
-  nnoremap <Leader><C-P> :CtrlP<Space>
-  " }}}
+  
  
   " Mappings configurationn{{{
 
@@ -1078,81 +1169,12 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 "}}}
 
-  " neocomplete{{{
-  " Disable AutoComplPop.
-  let g:acp_enableAtStartup = 0
-  " Use neocomplete.
-  let g:neocomplete#enable_at_startup = 1
-  " Use smartcase.
-  let g:neocomplete#enable_smart_case = 1
-  " Set minimum syntax keyword length.
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-  " Define dictionary.
-  let g:neocomplete#sources#dictionary#dictionaries = {
-     \ 'default' : '',
-     \ 'vimshell' : $HOME.'/.vimshell_hist',
-     \ 'scheme' : $HOME.'/.gosh_completions'
-         \ }
-
-  " Define keyword.
-  if !exists('g:neocomplete#keyword_patterns')
-      let g:neocomplete#keyword_patterns = {}
-  endif
-  let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-  " Plugin key-mappings.
-  inoremap <expr><C-g>     neocomplete#undo_completion()
-  inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-  " Recommended key-mappings.
-  " <CR>: close popup and save indent.
-  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-  function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
-  endfunction
-  " <TAB>: completion.
-  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-  " <C-h>, <BS>: close popup and delete backword char.
-  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-  " Close popup by <Space>.
-  "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-  " Enable omni completion.
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal              omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-  " Enable heavy omni completion.
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
-  "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-  "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-  "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-  " For perlomni.vim setting.
-  " https://github.com/c9s/perlomni.vim
-  let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-  "}}}
-
-  " Vim-Supertab Configuration{{{
-  let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-  "}}}
   
-  " UltiSnips {{{
-  " disable ListSnippits in favor of Supertab's 'tab literal'
-  " it's <C-Tab> by default
-  let g:UltiSnipsExpandTrigger='<C-{>'
-  let g:UltiSnipsListSnippets='<C-}>'
-  " }}}
 
-endif
+  
+  
+ 
+
 
 " }}}
 " ===========================================================================
