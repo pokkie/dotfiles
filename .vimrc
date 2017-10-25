@@ -185,6 +185,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'dylanaraps/wal'
 Plug 'dracula/vim'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'arcticicestudio/nord-vim'
 " Panels/Toggleable
 
 Plug 'majutsushi/tagbar'
@@ -340,7 +341,12 @@ syntax on
 set guifont=Fira\ Code\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 
 set background=dark
-colorscheme gruvbox
+"if filereadable(expand("~/.vimrc_background"))
+"  let base16colorspace=256
+"  source ~/.vimrc_background
+"endif
+let base16colorspace=256
+colorscheme base16-ocean
 "silent! colorscheme onedark
 " fallback default colorscheme
 "if !exists('g:colors_name')
@@ -930,7 +936,7 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   "set statusline+=%*
 
   " airline {{{
-  let g:airline_theme = "gruvbox"
+  let g:airline_theme = "nord"
   let g:airline_powerline_fonts = 1
   if !exists('g:airline_symbols')
       let g:airline_symbols = {}
