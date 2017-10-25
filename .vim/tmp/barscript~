@@ -1,205 +1,157 @@
-#!/bin/bash
-## information bar
+#!/bin/sh
 
-## colors and  fonts
-RED=#fb4934
-GRN=#98961a
-YLW=#fabd2f
-CYN=#8ec07c
-WHT=#ebdbb2
-#MAG=#d3869b
-#MAG=#f7d7da
-FG=#FECEA8
-#FG=#f3bbd6
-DCN=#689d6a
-BBLK=#83a598
-#BG=#272521
-BG=#2A363B
-MAG=#FF847C
-BLK=#282828
-DFLT=#E84A5F
+# ObliviousGmn, June 2015
+# https://github.com/ObliviousGmn
+# Panel for Lemonbar ..
+
+
+
+# Screen Width, For Panel ..
+SW=`xrandr | grep current | awk '{print $8}'`
+
+# Fonts
+FONT1="source code pro:bold:size=9"
+FONT2="-lucy-tewi-medium-r-normal--11-90-75-75-p-58-iso10646-1"
+
+# Icons ..
+ICON1="-misc-stlarch-medium-r-normal--10-100-75-75-c-80-iso10646-1"
+ICON2="-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1"
+
+# Bedtime
+ZZZ=12
+zzz=4
+
+# Panel
+PW=$(( $SW - 20 ))
+PH=26
+PO=10
+
+# Lemonpop
 notifybar_g="1920x24+0+0"
+LW=220
+LH=26
+LX=1690
+LY=45
 
-## glyphs
-glymem=""
-glycpu=""
-# glybat=""
-glypkg=""
-glyclock=""
-glycal=""
-glyint=""
-glyw0=""
-glyw1=""
-glyw2=""
-glyw3=""
-glyw4=""
-glyw5=""
-glyw=(I II III IV V VI)
+# Colors
+BG=#112233
+FG=#ddccaa
+BLACK=#282828
+BBLACK=#32302f
+RED=#dd6677
+BRED=#771144
+ORANGE=#d65d0e
+BORANGE=#ff6644
+GREEN=#98971a
+BGREEN=#557777
+YELLOW=#dd9999
+BYELLOW=#fabd2f
+BLUE=#88aaee
+BBLUE=#ccddff
+MAGENTA=#664477
+BMAGENTA=#bb99aa
+WHITE=#ddccaa
+BWHITE=#fbf1c7
 
-## extras
-SEP=" - "
-SEP=" "
-SEP2="  "
-SEP4="    "
-SEP6="       "
-SEP8="        "
-SEP24="                        "
-## information section
-status() {
-	  cpuld() {
-		    cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
-		    cpuload+="%"
-		    echo %{F$FG}$glycpu %{F$MAG}$cpuload%{F-}
-	  }
-    memory() {
-        mem=$(free -m | awk 'NR==2 {print $3}')
-        mem+="MB"
-#	  memory() {
-#		    mem=$(top -n1 | grep Mem | awk '{print $4}' | cut -d "/" -f 1)
-#		    mem+="%"
-		    echo %{F$FG}$glymem$SEP%{F$MAG}$mem%{F-}
-	  }
-#	  battery() {
-#			  bat=$(cat /sys/class/power_supply/BAT0/capacity)
-#			  batper="%"
-#			  rem=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "time\ to\ empty" | awk '{ print $4, $5}')
-#			  disc=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state" | awk '{ print $2}')
-#			  if [ $disc = "charging" ]; then
-#				    glybat=""
-#			  elif [ "$bat" -gt 75 ]; then
-#				    glybat=""
-#			  elif [ "$bat" -gt 50 ]; then
-#				    glybat=""
-#			  elif [ "$bat" -gt 25 ]; then
-#				    glybat=""
-#			  else
-#				    glybat=""
-#			  fi
-#			  echo %{F$FG}$glybat%{F$MAG}$SEP$bat$batper$SEP$rem$SEP%{F-t}
-#	  }
-	  #    pkman() {
-	  #        pkr=$(pacman -Qu | wc -l)
-	  #        echo %{F$WHT}$glypkg$pkr$SEP${F-}
-	  #    }
-#	  wireless() {
-#        con=$(iw wlp3s0 link)
-#        if [ $con = "Not connected." ]; then
-#            wl="Not connected"
-#        else
-#            wl=iw wlp3s0 link | grep 'SSID' | sed 's/SSID: //' | sed 's/\t//'
-#        fi
-#			  wl=$(ping -c 1 8.8.8.8 >/dev/null 2>&1 && 
-#			           echo ":)" || echo ":(")
-#			  echo %{F$FG}$glyint$SEP%{F$MAG}$wl$SEP${F-}
-#	  }
 
-	  network() {
-    			#read lo int1 int2 <<< `ip link | sed -n 's/^[0-9]: \(.*\):.*$/\1/p'`
-    			#if iwconfig $int1 >/dev/null 2>&1; then
-        		#	wifi=$int1
-        		#	eth0=$int2
-    			#else
-        		#	wifi=$int2
-        		#	eth0=$int1
-    			#fi
-    			#ip link show $eth0 | grep 'state UP' >/dev/null && int=$eth0 ||int=$wifi
-
-    			#int=eth0
-			ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
-			test -n "${ping}" && echo %{F$FG}$glyint$SEP%{F$MAG}$int$SEP${F-} || echo "%{F$RED}$glyint$SEP%{F-} No Connection"
-	}	
-	  vol() {
-			  mut=$(pactl list sinks | grep Mute | awk '{print $2}')
-			  if [ $mut = "yes" ]; then
-				    vlm="0%"
-				    glyvol=""
-			  else
-			      vlm=$(pactl list sinks | grep -m 1 Volume | awk '{print $5}')
-			      glyvol=""
-			  fi
-		    echo %{F$FG}$glyvol$SEP%{F$MAG}$vlm$SEP${F-}
-	  }
-	  
-	  workspaces() {
-	active=$(xprop -root _NET_CURRENT_DESKTOP | sed -e 's/_NET_CURRENT_DESKTOP(CARDINAL) = //')
-        c=0
-        tops=""
-	if [ "$active" -eq 0 ]; then
-		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
-	elif [ "$active" -eq 1 ]; then
-		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
-	elif [ "$active" -eq 2 ]; then
-		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
-	elif [ "$active" -eq 3 ]; then
-		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
-	elif [ "$active" -eq 4 ]; then
-		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
-	elif [ "$active" -eq 5 ]; then
-		tops=%{F$FG}$glyw0$SEP$glyw1$SEP$glyw2$SEP$glyw3$SEP$glyw4$SEP$glyw5${F-}
-	fi
-        echo ${tops}
-    }
-#	  workspaces() {
-#        all=($(bspc query --desktops))
-#        length=$(bspc query -D | wc -l)
-#        active=$(bspc query --desktops --desktop focused)
-#        c=0
-#        tops=""
-#        while [ $c -lt $length ]
-#        do
-#            if [ $active = ${all[c]} ]; then
-#                tops[c]=%{F$FG}${all[c]}${F-}
-#            else
-#                tops[c]=%{F$MAG}${all[c]}${F-}
-#            fi
-#            c=$[$c+1]
-#        done
-#        echo ${tops[@]}
-#}
-	  music() {
-		    check=$(ps aux | grep "mpc" | grep -v grep)
-		    stat=$(mpc -f %artist% | sed -n 2p | cut -d "[" -f2 | cut -d "]" -f1) 
-    		if [[ -z "$check" ]]; then
-			      mus="No Music Playing"
-			      glymus=""
-			      echo %{F$FG}$glymus$SEP%{F$MAG}$mus$SEP${F-}
-		    elif [ "$stat" = "" ]; then
-			      mus="No Music Playing"
-			      glymus=""
-			      echo %{F$FG}$glymus$SEP%{F$MAG}$mus${F-}
-	    elif [ ""$stat"" = "paused" ]; then
-			      glymus=""
-			      curr=$(mpc current)
-            curr+=" - "
-            time=$(mpc -f %artist% | grep 2 | sed 's/^.*(//;s/)$//')
-			      echo %{F$FG}$glymus$SEP%{F$MAG}$curr$time${F-}
-			      #echo $curr
-		    elif [ "$stat" = "playing" ]; then
-			      glymus=""
-			      curr=$(mpc current)
-            curr+=" - "
-            time=$(mpc -f %artist% | grep 2 | sed 's/^.*(//;s/)$//')
-			      echo %{F$FG}$glymus$SEP%{F$MAG}$curr$time${F-}
-			      #echo $curr
-		    fi
-	  }
-	  clockdate() {
-			  clockd=%{F$FG}$glycal%{F$MAG}$(date +%{F$MAG}' %d   %b')%{F-}
-		    clockt=%{F$FG}$glyclock$%{F$MAG}$(date +' %R')%{F-}
-		    echo $clockd
-	  }
-	  clocktime() {
-		    clockt=%{F$FG}$glyclock%{F$MAG}$(date +' %R')%{F-}
-		    echo $clockt
-	  }
-	  echo "%{l}$SEP2$(workspaces)$SEP%{c}$SEP2$(memory)$SEP2$(cpuld)$SEP2$(network)$SEP2$(music)$SEP2$(vol)$SEP2%{r}$(clockdate)$SEP2$(clocktime)$SEP2"
+ ws(){ # Current Workspace .. 
+  ws=`xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}'`
+	case ${ws} in
+		0) echo " ";;
+		1) echo " ";;
+		2) echo " ";;
+		3) echo " ";;
+		*) echo " ";;
+	esac
 }
 
-## populate and display
-#sleep 2 && popup "   :: dmtwm 1.0 ::   " 3 &
-#pamixer --get-volume # resolves no text at start bug
-while true
-do
-	  echo "$(status)"
-	  sleep 1
-done | lemonbar -g $notifybar_g -o 0 -a 10 -f 'source code pro:bold:size=9' -o -2 -f 'FontAwesome:regular:size=9' -B $BG -F $WHT -d | sh
+ menu(){ # Useless for now ..
+	echo "%{B$BBLUE}%{F$BG} GMN  %{B-}%{F-}"
+}
+
+ cpuload(){ # CPUs temp ..
+  cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
+  cpuload+="% CPU"
+	#echo "%{F$BYELLOW} %{F-} ${cpuload}"
+	echo "%{F$BMAGENTA}  ${cpuload}"
+}
+
+ temp(){ # CPUs temp ..
+  temp=`sensors | awk '/Core 0/ {print +$3}'`
+	echo "%{F$BBLUE}  %{F-} ${temp}°"
+}
+
+ memory(){
+  mem=$(free -m | awk 'NR==2 {print $3}')
+        mem+="MB"
+        #echo "%{F$BMAGENTA}  %{F-}${mem} RAM"
+	echo "%{F$BORANGE}  ${mem} RAM"
+	  }
+	
+ fan(){ # Fan speeds ..
+  fan=`sensors | awk '/fan1/ {print $2,$3}'`
+	echo "%{F$BBLUE}  %{F-} ${fan}"
+}
+
+ DATE(){ # Clock, obv ..
+  date=`date "+%b %d %Y "`
+	echo "%{F$BMAGENTA} %{F-}  ${date}"
+}
+
+ clock(){ # Clock, obv ..
+  clock=`date "+%H:%M"`
+	echo "%{F$BMAGENTA} %{F-}  ${clock}"
+}
+
+ vol(){ # Volume, Sets to Headset when switched ..
+  switch=`amixer -c 0 get Master | awk '/Mono:/ {print $6}'`
+  vol=`amixer -c 0 get Master | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+  hsvol=`amixer -c 0 get PCM | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+
+
+  if [ "$switch" = "[on]" ]; then
+	#echo "%{F$BBLUE}  %{F-} ${vol}"
+	echo "%{F$BLUE}   ${vol}"
+  elif [ "$switch" = "[off]" ]; then
+	#echo "%{F$BRED}  %{F-} MUTE"
+        echo "%{F$BRED}   MUTE"
+  else
+	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
+        echo "%{F$BLUE}   ${hsvol}"
+  fi
+}
+
+ mus(){ # Current song ..
+  mus=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
+
+  if [[ $mus ]]; then
+ 	echo "%{F$BORANGE}  %{F-} ${mus}"
+  fi
+}
+
+ last(){ # Weechat, Last highlight ..
+  last=`(tail -n1) <$HOME/Gmnbox/Panel/Weelog`
+
+  if [[ $last ]]; then
+  	echo "%{A:cat /dev/null > $HOME/Gmnbox/Panel/Weelog:}${last}%{A}"
+  fi
+}
+
+ net(){ # Connected or nah? ..
+  ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
+  test -n "${ping}" && echo "%{F$BGREEN}    " || echo "%{F$BRED}   %{F-} No Connection"
+}
+
+while :; do
+
+ # Run ping in intervals ..
+ [[ loops -eq 15 ]] && loops=0
+ [[ loops -eq 0 ]] && ping=$(net)
+ loops=$(( loops + 1 ))
+
+	echo "  $(ws)  %{c}$(mus) %{r}$(vol) $(cpuload) $(memory) $(net) $(DATE) $(clock)  "
+         sleep 0.5	
+		 
+ done | lemonbar -g $notifybar_g -f "source code pro:bold:size=9" -f "FontAwesome:regular:size=9" -B "$BG" -F "$BYELLOW" -d -p | \
+	while read line; do eval "$line"; done &
+

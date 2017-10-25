@@ -12,17 +12,31 @@ fi
 
 # Customize to your needs...
 
+export EDITOR="vim"
+export KEYTIMEOUT=1
 export TERM=xterm-256color
-[ -n "$TMUX "] && export TERM=screen-256color
+export BROWSER="chromium"
+
+BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-ocean.sh"
+#[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
+HISTFILE=~/.zsh_history
+SAVEHIST=50000
+HISTSIZE=50000
+
+setopt append_history # Allow multiple terminal sessions to all append to one zsh command history
+setopt extended_history # save timestamp of command and duration
+
+
+# tmux
+#[ -n "$TMUX " ] && export TERM=screen-256color
 
 . /etc/profile
 . ~/z.sh
 
-# Kill the lag
-export KEYTIMEOUT=1
-
 # Import color scheme from 'wal'
-export PATH=$PATH:/data/packages/wal
+#export PATH=$PATH:~/bin:/data/packages/wal
 #(wal -r &)
 
 # Git repo for dot management
@@ -34,7 +48,17 @@ alias vpn='sudo openvpn /etc/openvpn/CA_Montreal.conf & '
 # Network restart
 alias netrestart='sudo systemctl restart NetworkManager.service'
 
-alias tmux='tmux -2'
-# Virtual environement
-. /usr/bin/virtualenvwrapper.sh
+# Chromium cache
+alias chromium='chromium --disk-cache-dir=/tmp/chromium'
 
+# Firefox tmpfs
+alias firefox='~/bin/firefox &'
+
+# Virtual environement
+
+##  My Power Level 9K config
+##
+
+
+
+source ~/.zprezto/zsh-autoenv/autoenv.zsh

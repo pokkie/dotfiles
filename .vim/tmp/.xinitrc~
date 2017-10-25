@@ -36,11 +36,8 @@ wmname LG3D
 . /etc/profile.d/jre.sh
 
 export LANG=en_US.UTF-8
-#sxhkd &
 xsetroot -cursor_name left_ptr &
-export PANEL_FIFO=/tmp/panel-fifo
-#export BSPWM_STATE=/tmp/bspwm-state.json
-#exec ~/.config/bspwm/wm
+#export PANEL_FIFO=/tmp/panel-fifo
 
 #rm -f /tmp/.dwm.fifo
 #mkfifo /tmp/.dwm.fifo
@@ -51,5 +48,5 @@ export PANEL_FIFO=/tmp/panel-fifo
 # wallpaper 
 wal -i "$(< "${HOME}/.cache.wal/wal")"
 
-~/bin/barscript &
+~/bin/barscriptnew &
 exec 2bwm

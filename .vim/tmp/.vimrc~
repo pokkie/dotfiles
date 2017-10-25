@@ -18,7 +18,6 @@ elseif s:is_nvim
   let s:myvimdir ="~/.config/nvim"
 endif
 
-
 " enables filetype detection, ftplugins, and indent files
 filetype plugin indent on
 
@@ -71,13 +70,14 @@ Plug 'Shougo/neocomplete.vim'
 Plug 'SirVer/UltiSnips'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-orgmode'
-" Plug 'AndrewRadev/switch.vim'
-Plug 'AndrewRadev/splitjoin.vim',
+Plug 'scrooloose/nerdtree'
+Plug 'wesQ3/vim-windowswap'
+"Plug 'AndrewRadev/splitjoin.vim',
       \ { 'for': [ 'vim', 'c', 'cpp', 'lua', 'python', 'ruby', 'go' ] }
 Plug 'junegunn/gv.vim',    { 'on': 'GV' }
 Plug 'szw/vim-g',          { 'on': 'Google' }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
-
+Plug 'mhinz/vim-grepper'
 " Text Objects
 Plug 'kana/vim-textobj-user' |
       \ Plug 'kana/vim-textobj-entire'   |
@@ -85,6 +85,7 @@ Plug 'kana/vim-textobj-user' |
       \ Plug 'kana/vim-textobj-function' |
       \ Plug 'reedes/vim-textobj-sentence'
 Plug 'wellle/targets.vim'
+Plug 'coderifous/textobj-word-column.vim'
 
 " Operators
 Plug 'tpope/vim-surround'
@@ -97,14 +98,21 @@ Plug 'justinmk/vim-ipmotion'
 Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
 
 " Generic Programming Support
+Plug 'jakedouglas/exuberant-ctags'
+Plug 'honza/vim-snippets'
+Plug 'Townk/vim-autoclose'
+Plug 'tomtom/tcomment_vim'
 Plug 'tobyS/vmustache'
+Plug 'janko-m/vim-test'
+Plug 'sheerun/vim-polyglot'
+"Plug 'vim-syntastic/syntastic'
 Plug 'elzr/vim-json'
-
 
 " Git Support
 Plug 'kablamo/vim-git-log'
 Plug 'gregsexton/gitv'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Javascript
 Plug 'pangloss/vim-javascript'
@@ -117,7 +125,6 @@ Plug 'othree/html5.vim', {'on_ft':['html']}
 Plug 'ap/vim-css-color', {'on_ft':['css','scss','sass','less','styl']}
 Plug 'mattn/emmet-vim', {'on_ft':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache','handlebars']}
 Plug 'lepture/vim-jinja'
-
 
 " Markdown / Writting
 Plug 'reedes/vim-pencil'
@@ -144,7 +151,6 @@ Plug 'slashmili/alchemist.vim'
 Plug 'tpope/vim-endwise'
 Plug 'jadercorrea/elixir_generator.vim'
 
-
 " Elm Support
 Plug 'lambdatoast/elm.vim'
 
@@ -152,8 +158,15 @@ Plug 'lambdatoast/elm.vim'
 Plug 'derekwyatt/vim-scala'
 Plug 'megaannum/vimside'
 
+" Python
+Plug 'klen/python-mode'
+
+" R programming support
+Plug 'jalvesaq/Nvim-R'
+
 " Appearance/UI
 Plug 'mhinz/vim-Startify'
+Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'kkoenig/wimproved.vim'
@@ -163,16 +176,23 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'on': 'RainbowParentheses' }
 Plug 'junegunn/vim-easy-align',   { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'junegunn/goyo.vim',         { 'on': 'Goyo' }
 Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
-Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
+"Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
+"Plug 'nathanaelkane/vim-indent-guides'
 Plug 'flazz/vim-colorschemes'
-
+Plug 'joshdick/onedark.vim'
+Plug 'rakr/vim-one'
+Plug 'chriskempson/base16-vim'
+Plug 'dylanaraps/wal'
+Plug 'dracula/vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'arcticicestudio/nord-vim'
 " Panels/Toggleable
 
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree',    { 'on': 'UndotreeToggle' }
 Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlP', 'CtrlPMRU', 'CtrlPBuffer', 'CtrlPLine'] }
 
-au! User indentLine doau indentLine Syntax | au BufRead * IndentLinesReset
+"au! User indentLine doau indentLine Syntax | au BufRead * IndentLinesReset
 " ^ fix for lazy loading with indentLine ^
 
 call plug#end()
@@ -187,7 +207,7 @@ set incsearch
 set ignorecase
 set smartcase
 set autoread
-set lazyredraw
+set nolazyredraw 
 set gdefault
 set showcmd
 set vb t_vb=
@@ -211,7 +231,7 @@ endif
 silent! set mouse=a
 
 " system clipboard uses the unnamedplus register
-set clipboard=unnamedplus,unnamed
+set clipboard^=unnamedplus,unnamed
 
 " command-line completion settings
 set wildmenu
@@ -237,6 +257,10 @@ if has('persistent_undo')
   set undofile
   let &undodir=s:tempdir
 endif
+
+" change the color of SignColumn
+highlight clear SignColumn
+
 
 " autocmds
 augroup vimrc_general
@@ -288,10 +312,15 @@ set guioptions=
 set laststatus=2
 set linebreak
 set list
-set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:■
-set number
-set relativenumber
+set listchars=tab:▸\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
+set number relativenumber
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 
 set numberwidth=1
 set ruler
@@ -308,12 +337,21 @@ endif
 
 syntax on
 
+
+set guifont=Fira\ Code\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
+
 set background=dark
-silent! colorscheme gruvbox
+"if filereadable(expand("~/.vimrc_background"))
+"  let base16colorspace=256
+"  source ~/.vimrc_background
+"endif
+let base16colorspace=256
+colorscheme base16-ocean
+"silent! colorscheme onedark
 " fallback default colorscheme
-if !exists('g:colors_name')
-  colorscheme desert
-endif
+"if !exists('g:colors_name')
+"  colorscheme desert
+"endif
 
 " standard status line if lightline isn't enabled
 " (pretty much the same layout as default lightline)
@@ -325,12 +363,14 @@ else
 endif
 set statusline+=%8(%l,%v%)\ 
 
+" Enable Elite mode, no ARRRRRRRROWS !!!!
+let g:elite_mode = 1
 
 " Disable Background Color Erase (BCE) so that color schemes
 " render properly when inside 256-color tmux and GNU screen.
-if &term =~ '256color'
-  set t_ut=
-endif
+"if &term =~ '256color'
+"  set t_ut=
+"endif
 
 augroup vimrc_appearance_and_formatting
   au!
@@ -350,8 +390,6 @@ augroup vimrc_appearance_and_formatting
   au InsertLeave * :set listchars+=trail:■
 
 augroup END
-
-
 
 " }}}
 " ===========================================================================
@@ -640,7 +678,6 @@ nnoremap \y ggVG"+y
 
 " }}}
 " ---------------------------------------------------------------------------
-
 " }}}
 " ===========================================================================
 " FUNCTIONS, COMMANDS, MISC {{{
@@ -765,7 +802,6 @@ endfor
 " Clear Trailing White spaces
 cabbrev ctw s/\s\+$//e
 
-
 " }}}
 " ===========================================================================
 " PLUGIN SETTINGS {{{
@@ -857,8 +893,6 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
     \ }
 
 
-
-
   " Fzf Configuration{{{
   " This is the default extra key bindings
   let g:fzf_action = {
@@ -896,11 +930,14 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   let g:fzf_history_dir = '~/.local/share/fzf-history' 
  "}}}
  
+  " Syntastic 
+  "set statusline+=%#warningmsg#
+  "set statusline+=%{SyntasticStatuslineFlag()}
+  "set statusline+=%*
 
-  " airline"{{{
-  let g:airline_theme                            =  "gruvbox"
-  let g:airline_powerline_fonts                  =  1
-
+  " airline {{{
+  let g:airline_theme = "nord"
+  let g:airline_powerline_fonts = 1
   if !exists('g:airline_symbols')
       let g:airline_symbols = {}
   endif
@@ -937,12 +974,16 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   let g:airline#extensions#tabline#fnamecollapse =  1 " /a/m/model.rb
   let g:airline#extensions#hunks#non_zero_only   =  1 " git gutter
   let g:airline#extension#tmuxline#enabled       =  1
+"}}}
 
-
-
+  " Vim-Test{{{
+  let test#strategy = "vimux"
+"}}}
+  
+  " Vim-Alchemist{{{
+  let g:alchemist_tag_disable = 1
   "}}}
-
-
+  
   " wimproved.vim {{{
   " toggle fullscreen
   nnoremap <F11> :WToggleFullscreen<CR>
@@ -973,14 +1014,15 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   " }}}
 
   " indentLine {{{
-  nnoremap <Leader>i :IndentLinesToggle<CR>
+  "nnoremap <Leader>i :IndentLinesToggle<CR>
   " use custom filetype detection for better vim-plug compatibility
-  let g:indentLine_enabled = 0
-  let g:indentLine_fileType = ['']
-  augroup ft_indentLine
-    au!
-    au FileType c,cpp IndentLinesEnable
-  augroup END
+  "let g:indentLine_enabled = 0
+  "let g:indentLine_fileType = ['']
+  "let g:indentLine_char = '|'
+  "augroup ft_indentLine
+  "  au!
+  "  au FileType c,cpp IndentLinesEnable
+  "augroup END
   " }}}
 
   " ipmotion {{{
@@ -1109,18 +1151,12 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   nnoremap <Leader><C-L> :CtrlPLine<CR>
   nnoremap <Leader><C-P> :CtrlP<Space>
   " }}}
-
  
   " Mappings configurationn{{{
 
-
-
-
-
-
-
-
-
+  map <C-n> :NerdTreeToggle<CR>
+  map <C-m> :TagbarToggle<CR>
+  
   " Mapping selecting Mappings
   nmap <leader><tab> <plug>(fzf-maps-n)
   xmap <leader><tab> <plug>(fzf-maps-x)
@@ -1184,15 +1220,6 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   " Close popup by <Space>.
   "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
-  " AutoComplPop like behavior.
-  "let g:neocomplete#enable_auto_select = 1
-
-  " Shell like behavior(not recommended).
-  "set completeopt+=longest
-  "let g:neocomplete#enable_auto_select = 1
-  "let g:neocomplete#disable_auto_complete = 1
-  "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
   " Enable omni completion.
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,markdown setlocal              omnifunc=htmlcomplete#CompleteTags
@@ -1213,9 +1240,10 @@ if isdirectory(expand(s:myvimdir . "/plugged"))
   let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
   "}}}
 
-  " Vim-Supertab Configuration
+  " Vim-Supertab Configuration{{{
   let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-
+  "}}}
+  
   " UltiSnips {{{
   " disable ListSnippits in favor of Supertab's 'tab literal'
   " it's <C-Tab> by default
