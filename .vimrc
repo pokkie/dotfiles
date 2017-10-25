@@ -6,17 +6,9 @@
 " STARTUP {{{
 " ===========================================================================
 
-
-" let s:is_cygwin = has('win32unix') || has('win64unix')
-" let s:is_mac = has('gui_macvim') || has('mac')
-let s:is_windows = has('win32') || has('win64')
 let s:is_nvim = has('nvim')
 let s:myvimdir ="~/.vim"
-if s:is_windows
-  let s:myvimdir ="~/vimfiles"
-elseif s:is_nvim
-  let s:myvimdir ="~/.config/nvim"
-endif
+
 
 " enables filetype detection, ftplugins, and indent files
 filetype plugin indent on
@@ -26,20 +18,6 @@ filetype plugin indent on
 " VIM-PLUG {{{
 " ===========================================================================
 " (minimalist plugin manager)
-
-" First time startup prompt {{{
-
-if !isdirectory(expand(s:myvimdir . "/plugged"))
-  if !isdirectory(expand(s:myvimdir . "/autoload/vimrc_booted/"))
-    if s:is_windows
-      silent exec expand("!mkdir \\%userprofile\\%/vimfiles/autoload/vimrc_booted/")
-    else
-      exec expand("!mkdir " . s:myvimdir . "/autoload/vimrc_booted")
-    endif
-    echo "To install plugins (via vim-plug),"
-    echo "run :PlugInstall | qa"
-  endif
-endif
 
 " }}}
 
@@ -225,9 +203,6 @@ set sessionoptions-=options
 set sessionoptions-=folds
 set path+=**
 set modeline
-if s:is_windows
-  set makeprg=build.bat
-endif
 silent! set mouse=a
 
 " system clipboard uses the unnamedplus register
@@ -341,17 +316,9 @@ syntax on
 set guifont=Fira\ Code\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 
 set background=dark
-"if filereadable(expand("~/.vimrc_background"))
-"  let base16colorspace=256
-"  source ~/.vimrc_background
-"endif
 let base16colorspace=256
 colorscheme base16-ocean
-"silent! colorscheme onedark
-" fallback default colorscheme
-"if !exists('g:colors_name')
-"  colorscheme desert
-"endif
+
 
 " standard status line if lightline isn't enabled
 " (pretty much the same layout as default lightline)
@@ -368,9 +335,9 @@ let g:elite_mode = 1
 
 " Disable Background Color Erase (BCE) so that color schemes
 " render properly when inside 256-color tmux and GNU screen.
-"if &term =~ '256color'
-"  set t_ut=
-"endif
+if &term =~ '256color'
+  set t_ut=
+endif
 
 augroup vimrc_appearance_and_formatting
   au!
@@ -721,72 +688,6 @@ function! s:DoubleView()
 endfunction " }}}
 command! DoubleView call <SID>DoubleView()
 
-" Follow symlinks {{{
-" Sources:
-"  - https://github.com/tpope/vim-fugitive/issues/147#issuecomment-7572351
-"  - http://www.reddit.com/r/vim/comments/yhsn6/is_it_possible_to_work_around_the_symlink_bug/c5w91qw
-if s:is_windows
-  function! MyFollowSymlink(...)
-    let lit = a:0 ? a:1 : '%:p'
-    let recur = a:0 > 1 ? a:2 : 10
-    if !recur
-      return
-    endif
-    let fpath = expand(lit)
-    let ftail = expand(lit.':t')
-    let dirstr = system('dir ' . fpath . '*')
-
-    " check if current argument is a symlink
-    if (match(dirstr, '<SYMLINK..\s\+' . ftail . ' [') == -1)
-      " if not, check if parent dir is symlink, up to $recur directories
-      call MyFollowSymlink(lit . ':h', recur-1)
-    else
-      " extract symlink path
-      let substr = '.*<SYMLINK..\s\+' . ftail . ' \[\(.\{-}\)\].*'
-      let sympath = substitute(dirstr, substr, '\1', "")
-      " figure out current file's path
-      let resolvedfile = filereadable(sympath) ?  sympath :
-            \ findfile(expand('%:t'), sympath, '**')
-
-      " 'follow' the symlink
-      if bufexists(resolvedfile)
-        exec 'buffer ' . resolvedfile . ' | bw '.fpath
-      else
-        silent exec 'file ' . resolvedfile . ' | bw '.fpath
-        exec 'file ' . expand('%:p') . ' | w! | doau BufRead'
-      endif
-    endif
-  endfunction
-  " au BufReadPost * call MyFollowSymlink('<afile>:p')
-else
-  function! MyFollowSymlink(...)
-    let fname = a:0 ? a:1 : expand('%')
-    if fname =~ '^\w\+:/'
-      " Do not mess with 'fugitive://' etc.
-      return
-    endif
-    let fname = simplify(fname)
-    let resolvedfile = resolve(fname)
-    if resolvedfile == fname
-      return
-    endif
-    let resolvedfile = fnameescape(resolvedfile)
-    let sshm = &shm
-    set shortmess+=A  " silence ATTENTION message about swap file (would get displayed twice)
-    exec 'file ' . resolvedfile
-    let &shm=sshm
-
-    " Re-init fugitive.
-    call fugitive#detect(resolvedfile)
-    if &modifiable
-      " Only display a note when editing a file, especially not for `:help`.
-      redraw  " Redraw now, to avoid hit-enter prompt.
-      echomsg 'Resolved symlink: =>' resolvedfile
-    endif
-  endfunction
-  " au BufReadPost * call MyFollowSymlink('<afile>')
-endif
-" }}}
 command! FollowSymlink call MyFollowSymlink()
 
 " custom text objects
