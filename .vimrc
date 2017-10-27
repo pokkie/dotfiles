@@ -30,13 +30,18 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-rsi'
+
 Plug 'tpope/vim-dispatch'
+" Dispatch {{{
+  nnoremap <Leader>m :Make<CR>
+  " }}}
+
 Plug 'junegunn/vim-peekaboo'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-endwise',
       \ { 'for': [ 'vim', 'c', 'cpp', 'lua', 'ruby', 'sh', 'zsh', 'snippets' ] }
-Plug 'justinmk/vim-gtfo'
+
 Plug 'dietsche/vim-lastplace'
 
 Plug 'justinmk/vim-dirvish'
@@ -232,14 +237,32 @@ Plug 'wellle/targets.vim'
 Plug 'coderifous/textobj-word-column.vim'
 
 " Operators
+
 Plug 'tpope/vim-surround'
+" surround {{{
+  augroup unmap_surround
+    au!
+    au VimEnter * iunmap <C-G>s
+    au VimEnter * iunmap <C-G>S
+  augroup END
+  " }}}
+
 Plug 'tpope/vim-commentary'
 Plug 'tommcdo/vim-exchange'
 Plug 'chaoren/vim-wordmotion'
 
 " Motions/Movement
 Plug 'justinmk/vim-ipmotion'
+
 Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
+" vim-oblique {{{
+  augroup ObliqueVimrc
+    au!
+    au User Oblique       normal! zz
+    au User ObliqueStar   normal! zz
+    au User ObliqueRepeat normal! zz
+  augroup END
+  " }}}
 
 " Generic Programming Support
 Plug 'jakedouglas/exuberant-ctags'
@@ -310,7 +333,12 @@ Plug 'mmorearty/elixir-ctags'
 Plug 'mattreduce/vim-mix'
 Plug 'BjRo/vim-extest'
 Plug 'frost/vim-eh-docs'
+
 Plug 'slashmili/alchemist.vim'
+" Vim-Alchemist{{{
+  let g:alchemist_tag_disable = 1
+  "}}}
+
 Plug 'tpope/vim-endwise'
 Plug 'jadercorrea/elixir_generator.vim'
 
@@ -328,7 +356,20 @@ Plug 'klen/python-mode'
 Plug 'jalvesaq/Nvim-R'
 
 " Appearance/UI
+
 Plug 'mhinz/vim-Startify'
+" Startify {{{
+  augroup startify_maps
+    au!
+ 
+    au User Startified setlocal relativenumber number
+  augroup END
+  let g:ctrlp_reuse_window = 'startify'
+  let g:startify_files_number = 6
+  let g:startify_session_delete_buffers = 1
+  let g:startify_session_persistence = 1
+  " }}}
+
 Plug 'ryanoasis/vim-devicons'
 
 Plug 'vim-airline/vim-airline'
@@ -376,11 +417,42 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'kkoenig/wimproved.vim'
+" wimproved.vim {{{
+  " toggle fullscreen
+  nnoremap <F11> :WToggleFullscreen<CR>
+  augroup wimproved
+    au!
+    " make Windows less ugly
+    au GUIEnter * silent! WToggleClean
+  augroup END
+  " }}}
+
+  " Rainbow Parenthesis {{{
+  augroup rainbow_filetypes
+    au!
+    au FileType c,cpp,vim,sh,dosbatch,lisp RainbowParentheses
+  augroup END
+  " }}}
+
 Plug 'AssailantLF/vim-active-numbers'
 Plug 'gcavallanti/vim-noscrollbar'
 Plug 'junegunn/rainbow_parentheses.vim', { 'on': 'RainbowParentheses' }
+
 Plug 'junegunn/vim-easy-align',   { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+" vim-easy-align {{{
+  " Start interactive EasyAlign in visual mode (e.g. vipga)
+  vmap ga <Plug>(EasyAlign)
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
+  " }}}
+
+
 Plug 'junegunn/goyo.vim',         { 'on': 'Goyo' }
+" Goyo {{{
+  " toggle Goyo (distraction free editing)
+  nnoremap <Leader>G :Goyo<CR>
+  " }}}
+
 Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
 
 "Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
@@ -413,7 +485,14 @@ Plug 'arcticicestudio/nord-vim'
 " Panels/Toggleable
 
 Plug 'majutsushi/tagbar'
+
 Plug 'mbbill/undotree',    { 'on': 'UndotreeToggle' }
+" undotree {{{
+  nnoremap <Leader>u :UndotreeToggle<CR>
+  function! g:Undotree_CustomMap()
+    nunmap <buffer> <Tab>
+  endfunc
+  " }}}
 
 Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlP', 'CtrlPMRU', 'CtrlPBuffer', 'CtrlPLine'] }
 " CtrlP {{{
@@ -978,29 +1057,11 @@ cabbrev ctw s/\s\+$//e
 " ===========================================================================
 
 
-  " Dispatch {{{
-  nnoremap <Leader>m :Make<CR>
-  " }}}
+  
 
-  " Startify {{{
-  augroup startify_maps
-    au!
- 
-    au User Startified setlocal relativenumber number
-  augroup END
-  let g:ctrlp_reuse_window = 'startify'
-  let g:startify_files_number = 6
-  let g:startify_session_delete_buffers = 1
-  let g:startify_session_persistence = 1
-  " }}}
+  
 
-  " surround {{{
-  augroup unmap_surround
-    au!
-    au VimEnter * iunmap <C-G>s
-    au VimEnter * iunmap <C-G>S
-  augroup END
-  " }}}
+  
 
   " vim-exchange {{{
   " nnoremap gxx <Plug>(ExchangeLine)
@@ -1042,52 +1103,19 @@ cabbrev ctw s/\s\+$//e
     \ ]
     \ }
 
-
-  
- 
-  " Syntastic 
-  "set statusline+=%#warningmsg#
-  "set statusline+=%{SyntasticStatuslineFlag()}
-  "set statusline+=%*
-
   
 
   " Vim-Test{{{
   let test#strategy = "vimux"
 "}}}
   
-  " Vim-Alchemist{{{
-  let g:alchemist_tag_disable = 1
-  "}}}
   
-  " wimproved.vim {{{
-  " toggle fullscreen
-  nnoremap <F11> :WToggleFullscreen<CR>
-  augroup wimproved
-    au!
-    " make Windows less ugly
-    au GUIEnter * silent! WToggleClean
-  augroup END
-  " }}}
+  
+  
 
-  " Rainbow Parenthesis {{{
-  augroup rainbow_filetypes
-    au!
-    au FileType c,cpp,vim,sh,dosbatch,lisp RainbowParentheses
-  augroup END
-  " }}}
+  
 
-  " vim-easy-align {{{
-  " Start interactive EasyAlign in visual mode (e.g. vipga)
-  vmap ga <Plug>(EasyAlign)
-  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-  nmap ga <Plug>(EasyAlign)
-  " }}}
-
-  " Goyo {{{
-  " toggle Goyo (distraction free editing)
-  nnoremap <Leader>G :Goyo<CR>
-  " }}}
+  
 
   
 
@@ -1111,19 +1139,6 @@ cabbrev ctw s/\s\+$//e
   omap a` A`
   " }}}
 
-  " vim-oblique {{{
-  augroup ObliqueVimrc
-    au!
-    au User Oblique       normal! zz
-    au User ObliqueStar   normal! zz
-    au User ObliqueRepeat normal! zz
-  augroup END
-  " }}}
-
-  
-  " gtfo.vim {{{
-  let g:gtfo#terminals = { 'win' : 'C:\WINDOWS\system32\cmd.exe /k' }
-  " }}}
 
   " " switch.vim {{{
   " let g:switch_mapping = "<Leader>s"
@@ -1133,17 +1148,8 @@ cabbrev ctw s/\s\+$//e
   nnoremap <Leader>t :TagbarToggle<CR>
   " }}}
 
-  " undotree {{{
-  nnoremap <Leader>u :UndotreeToggle<CR>
-  function! g:Undotree_CustomMap()
-    nunmap <buffer> <Tab>
-  endfunc
-  " }}}
-
   
 
-  
- 
   " Mappings configurationn{{{
 
   map <C-n> :NerdTreeToggle<CR>
@@ -1168,12 +1174,6 @@ cabbrev ctw s/\s\+$//e
   " Advanced customization using autoload functions
   inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 "}}}
-
-  
-
-  
-  
- 
 
 
 " }}}
