@@ -265,6 +265,7 @@ Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
   " }}}
 
 " Generic Programming Support
+
 Plug 'jakedouglas/exuberant-ctags'
 Plug 'honza/vim-snippets'
 Plug 'Townk/vim-autoclose'
@@ -274,6 +275,14 @@ Plug 'janko-m/vim-test'
 Plug 'sheerun/vim-polyglot'
 "Plug 'vim-syntastic/syntastic'
 Plug 'elzr/vim-json'
+Plug 'KabbAmine/zeavim.vim', {'on': [
+			\	'Zeavim', 'Docset',
+			\	'<Plug>Zeavim',
+			\	'<Plug>ZVVisSelection',
+			\	'<Plug>ZVKeyDocset',
+			\	'<Plug>ZVMotion'
+			\ ]}
+
 
 " Git Support
 Plug 'kablamo/vim-git-log'
