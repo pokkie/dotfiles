@@ -113,7 +113,7 @@ Plug 'junegunn/fzf'
  "}}}
 
 Plug 'benmills/vimux'
-
+Plug 'bagrat/vim-workspace'
 Plug 'ervandew/supertab'
 " Vim-Supertab Configuration{{{
   let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
@@ -193,6 +193,11 @@ Plug 'SirVer/UltiSnips'
   let g:UltiSnipsListSnippets='<C-}>'
   " }}}
 
+Plug 'vim-ctrlspace/vim-ctrlspace'
+if has("gui_running")
+  let g:CtrlSpaceSymbols = { "File": "◯", "CTab": "▣", "Tabs": "▢"  }
+endif
+
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-orgmode'
 Plug 'scrooloose/nerdtree'
@@ -253,6 +258,10 @@ Plug 'chaoren/vim-wordmotion'
 
 " Motions/Movement
 Plug 'justinmk/vim-ipmotion'
+" ipmotion Settings {{{
+" Skip over closed folds with { and }
+ let g:ip_skipfold = 1
+ "}}}
 
 Plug 'junegunn/vim-pseudocl' | Plug 'junegunn/vim-oblique'
 " vim-oblique {{{
@@ -354,6 +363,11 @@ Plug 'jadercorrea/elixir_generator.vim'
 " Elm Support
 Plug 'lambdatoast/elm.vim'
 
+" Rust Support
+Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
+Plug 'timonv/vim-cargo'
+
 " Scala Support 
 Plug 'derekwyatt/vim-scala'
 Plug 'megaannum/vimside'
@@ -420,10 +434,12 @@ Plug 'vim-airline/vim-airline'
   let g:airline#extensions#tabline#tab_nr_type   =  1 " tab number
   let g:airline#extensions#tabline#fnamecollapse =  1 " /a/m/model.rb
   let g:airline#extensions#hunks#non_zero_only   =  1 " git gutter
-  let g:airline#extension#tmuxline#enabled       =  1
+  let g:airline#extension#tmuxline#enabled       =  0
 "}}}
 
 Plug 'vim-airline/vim-airline-themes'
+
+Plug 'edkolev/tmuxline.vim'
 
 Plug 'kkoenig/wimproved.vim'
 " wimproved.vim {{{
@@ -464,23 +480,18 @@ Plug 'junegunn/goyo.vim',         { 'on': 'Goyo' }
 
 Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
 
-"Plug 'Yggdroot/indentLine',       { 'on': 'IndentLinesEnable' }
-" indentLine {{{
-  "nnoremap <Leader>i :IndentLinesToggle<CR>
-  " use custom filetype detection for better vim-plug compatibility
-  "let g:indentLine_enabled = 0
-  "let g:indentLine_fileType = ['']
-  "let g:indentLine_char = '|'
-  "augroup ft_indentLine
-  "  au!
-  "  au FileType c,cpp IndentLinesEnable
-  "augroup END
+Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
+" indentLine Settings {{{
+  nnoremap <Leader>i :IndentLinesToggle<CR>
+" use custom filetype detection for better vim-plug compatibility
+  let g:indentLine_enabled = 0
+  let g:indentLine_fileType = ['']
+  augroup ft_indentLine
+  au!
+  au FileType c,cpp IndentLinesEnable
+  augroup END
   " }}}
 
-  " ipmotion {{{
-  " Skip over closed folds with { and }
-  let g:ip_skipfold = 1
-  "}}}
 
 "Plug 'nathanaelkane/vim-indent-guides'
 Plug 'flazz/vim-colorschemes'
