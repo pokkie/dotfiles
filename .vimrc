@@ -115,6 +115,7 @@ Plug 'junegunn/fzf'
 Plug 'benmills/vimux'
 Plug 'bagrat/vim-workspace'
 Plug 'ervandew/supertab'
+Plug 'jeetsukumaran/vim-buffergator'
 " Vim-Supertab Configuration{{{
   let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
   "}}}
@@ -335,7 +336,6 @@ Plug 'reedes/vim-pencil'
 Plug 'tpope/vim-markdown'
 Plug 'jtratner/vim-flavored-markdown'
 Plug 'LanguageTool'
-
 Plug 'w0rp/ale'
 
 " Erlang Support
@@ -351,12 +351,10 @@ Plug 'mmorearty/elixir-ctags'
 Plug 'mattreduce/vim-mix'
 Plug 'BjRo/vim-extest'
 Plug 'frost/vim-eh-docs'
-
 Plug 'slashmili/alchemist.vim'
 " Vim-Alchemist{{{
   let g:alchemist_tag_disable = 1
   "}}}
-
 Plug 'tpope/vim-endwise'
 Plug 'jadercorrea/elixir_generator.vim'
 
