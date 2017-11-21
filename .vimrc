@@ -395,7 +395,7 @@ Plug 'ryanoasis/vim-devicons'
 
 Plug 'vim-airline/vim-airline'
 " airline {{{
-  let g:airline_theme = "nord"
+  let g:airline_theme = "base16"
   let g:airline_powerline_fonts = 1
   if !exists('g:airline_symbols')
       let g:airline_symbols = {}
@@ -684,7 +684,6 @@ set guifont=Fira\ Code\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 set background=dark
 let base16colorspace=256
 colorscheme base16-ocean
-
 
 " standard status line if lightline isn't enabled
 " (pretty much the same layout as default lightline)
