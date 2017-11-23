@@ -10,16 +10,18 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+
 # Customize to your needs...
 
 export EDITOR="vim"
 export KEYTIMEOUT=1
 export TERM=xterm-256color
-export BROWSER="chromium"
+export BROWSER="firefox"
+export PATH="/data/anaconda3/bin":$PATH
 
-BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-ocean.sh"
-#[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
 
 HISTFILE=~/.zsh_history
 SAVEHIST=50000
@@ -51,14 +53,21 @@ alias netrestart='sudo systemctl restart NetworkManager.service'
 # Chromium cache
 alias chromium='chromium --disk-cache-dir=/tmp/chromium'
 
+# Clear chromium cache
+alias clearchromium='rm -rf ~/.cache/chromium/Default'
 # Firefox tmpfs
-alias firefox='~/bin/firefox &'
-
 # Virtual environement
+alias firefox='~/firefox/firefox'
 
 ##  My Power Level 9K config
 ##
 
+# Bookmarks
+hash -d downloads="/data/downloads"
+hash -d wallpapers="/data/wallpapers"
 
+# Rust
+source ~/.cargo/env
 
+source ~/.zprezto/modules/autosuggestions/external/zsh-autosuggestions.zsh
 source ~/.zprezto/zsh-autoenv/autoenv.zsh
