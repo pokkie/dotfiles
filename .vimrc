@@ -9,6 +9,9 @@
 let s:is_nvim = has('nvim')
 let s:myvimdir ="~/.vim"
 
+" mapleader 
+let mapleader = "\<Space>"
+let maplocalleader = ","
 
 " enables filetype detection, ftplugins, and indent files
 filetype plugin indent on
@@ -475,6 +478,12 @@ Plug 'junegunn/goyo.vim',         { 'on': 'Goyo' }
   " toggle Goyo (distraction free editing)
   nnoremap <Leader>G :Goyo<CR>
   " }}}
+
+Plug 'junegunn/limelight.vim'
+" limelight {{{
+  autocmd! User GoyoEnter Limelight
+  autocmd! User GoyoLeave Limelight!
+"}}}
 
 Plug 'justinmk/vim-syntax-extra', { 'for': ['c', 'cpp'] }
 
