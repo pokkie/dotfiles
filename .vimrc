@@ -341,6 +341,9 @@ Plug 'jtratner/vim-flavored-markdown'
 Plug 'LanguageTool'
 Plug 'w0rp/ale'
 
+" LaTex
+Plug 'lervag/vimtex'
+
 " Erlang Support
 Plug 'vim-erlang/vim-erlang-tags'
 Plug 'vim-erlang/vim-erlang-runtime'
