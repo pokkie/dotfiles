@@ -7,3 +7,6 @@
 [submodule ".tmux"]
 	path = .tmux
 	url = https://github.com/dagnachewa/.tmux
+[submodule "spacemacs"]
+	path = spacemacs
+	url = https://github.com/dagnachewa/spacemacs
