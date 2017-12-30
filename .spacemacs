@@ -42,13 +42,16 @@ values."
      better-defaults
      emacs-lisp
      git
-     markdown
+     (version-control :variables
+                      version-control-diff-tool 'git-gutter
+                      version-control-diff-side 'left)
      graphviz
      deft
      (ranger :variables
               ranger-show-preview t)
-     pdf-tools
+     (pdf-tools)
      spacemacs-layouts
+     markdown
      (markdown :variables markdown-live-preview-engine 'vmd)
      org
      (org :variables
@@ -59,14 +62,13 @@ values."
              shell-default-position 'bottom)
       spell-checking
       syntax-checking
-      version-control
       shell
 
       ;; languages
       c-c++
       (c-c++ :variables c-c++-enable-clang-support t)
       (shell :variables shell-default-shell 'ansi_term)
-      elfeed
+      (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org"))
       elixir
       elm
       erlang
@@ -360,8 +362,6 @@ you should place your code here."
 (setq deft-directory "~/Dropbox/notes")
 
 ;; elfeed
-(elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org"))
-
 
 
 (require 'dash)
@@ -832,12 +832,9 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-term-color-vector
-   [unspecified "#2b303b" "#bf616a" "#a3be8c" "#ebcb8b" "#8fa1b3" "#b48ead" "#8fa1b3" "#c0c5ce"])
- '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (elfeed-web elfeed-org elfeed-goodies ace-jump-mode elfeed nlinum ranger graphviz-dot-mode toml-mode racer pdf-tools tablist ox-reveal ox-gfm flycheck-rust seq cargo rust-mode xpm spaceline-all-the-icons prettify-utils all-the-icons-ivy ivy all-the-icons-dired all-the-icons memoize font-lock+ pretty-symbols pretty-mode gruvbox-theme vimrc-mode dactyl-mode deft base16-theme magithub vmd-mode yaml-mode xterm-color web-beautify unfill sql-indent smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir noflet mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero insert-shebang htmlize hlint-refactor hindent helm-hoogle helm-gitignore helm-company helm-c-yasnippet haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flycheck fish-mode evil-magit magit magit-popup git-commit ghub let-alist with-editor eshell-z eshell-prompt-extras esh-help erlang ensime sbt-mode scala-mode elm-mode disaster diff-hl company-tern dash-functional tern company-statistics company-shell company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex coffee-mode cmm-mode cmake-mode clang-format auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex alchemist company elixir-mode ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (xpm yaml-mode xterm-color ws-butler winum which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org sql-indent spaceline smeargle shell-pop restart-emacs ranger rainbow-delimiters racer persp-mode pdf-tools pcre2el paradox ox-reveal ox-gfm orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-elixir neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint json-mode js2-refactor js-doc intero insert-shebang info+ indent-guide ido-exit-target hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang ensime elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies dumb-jump disaster diminish diff-hl deft define-word dactyl-mode company-tern company-statistics company-shell company-go company-ghci company-ghc company-emacs-eclim company-cabal company-c-headers company-auctex column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo base16-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
