@@ -31,44 +31,30 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     vimscript
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
      auto-completion
      better-defaults
+     deft
      emacs-lisp
      git
      (version-control :variables
                       version-control-diff-tool 'git-gutter
                       version-control-diff-side 'left)
      graphviz
-     deft
+     helm
      (ranger :variables
               ranger-show-preview t)
      (pdf-tools)
-     spacemacs-layouts
-     markdown
-     (markdown :variables markdown-live-preview-engine 'vmd)
-     org
-     (org :variables
-          org-enable-github-support t
-          org-enable-reveal-js-support t)
-     (shell :variables
-             shell-default-height 30
-             shell-default-position 'bottom)
-      spell-checking
-      syntax-checking
-      shell
 
       ;; languages
       c-c++
       (c-c++ :variables c-c++-enable-clang-support t)
-      (shell :variables shell-default-shell 'ansi_term)
       (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org"))
+
       elixir
       elm
       erlang
@@ -76,15 +62,35 @@ values."
       haskell
       java
       javascript
+
       latex
       (latex :variables
              latex-enable-folding t
              latex-enable-auto-fill t)
+
+      markdown
+      (markdown :variables markdown-live-preview-engine 'vmd)
+
+      org
+      (org :variables
+           org-enable-github-support t
+           org-enable-reveal-js-support t)
+
       rust
       scala
+      shell
+      (shell :variables
+             shell-default-height 30
+             shell-default-position 'bottom
+             shell-default-shell 'ansi_term)
+
       scheme
       shell-scripts
+      spacemacs-layouts
+      spell-checking
+      syntax-checking
       sql
+      vimscript
       yaml
      )
    ;; List of additional packages that will be installed without being
@@ -176,6 +182,7 @@ values."
                                :size 17
                                :weight normal
                                :width normal
+                               :antialias 1
                                :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
@@ -834,7 +841,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (xpm yaml-mode xterm-color ws-butler winum which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org sql-indent spaceline smeargle shell-pop restart-emacs ranger rainbow-delimiters racer persp-mode pdf-tools pcre2el paradox ox-reveal ox-gfm orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-elixir neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint json-mode js2-refactor js-doc intero insert-shebang info+ indent-guide ido-exit-target hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang ensime elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies dumb-jump disaster diminish diff-hl deft define-word dactyl-mode company-tern company-statistics company-shell company-go company-ghci company-ghc company-emacs-eclim company-cabal company-c-headers company-auctex column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo base16-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (base16-ocean-dark-theme xpm yaml-mode xterm-color ws-butler winum which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org sql-indent spaceline smeargle shell-pop restart-emacs ranger rainbow-delimiters racer persp-mode pdf-tools pcre2el paradox ox-reveal ox-gfm orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-elixir neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint json-mode js2-refactor js-doc intero insert-shebang info+ indent-guide ido-exit-target hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang ensime elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies dumb-jump disaster diminish diff-hl deft define-word dactyl-mode company-tern company-statistics company-shell company-go company-ghci company-ghc company-emacs-eclim company-cabal company-c-headers company-auctex column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo base16-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
