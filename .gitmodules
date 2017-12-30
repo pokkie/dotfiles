@@ -12,4 +12,4 @@
 	url = https://github.com/dagnachewa/spacemacs
 [submodule ".emacs.d"]
 	path = .emacs.d
-	url = /home/dagnachew/.emacs.d
+	url = https://github.com/dagnachewa/spacemacs
