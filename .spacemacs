@@ -38,7 +38,9 @@ values."
      ;; ----------------------------------------------------------------
      auto-completion
      better-defaults
+     bibtex
      deft
+     (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org"))
      emacs-lisp
      (erc :variables
                     erc-server-list
@@ -67,7 +69,6 @@ values."
       ;; languages
       c-c++
       (c-c++ :variables c-c++-enable-clang-support t)
-      (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org"))
 
       elixir
       elm
@@ -76,6 +77,10 @@ values."
       haskell
       java
       javascript
+      python
+      rust
+      scala
+      scheme
 
       latex
       (latex :variables
@@ -90,16 +95,13 @@ values."
            org-enable-github-support t
            org-enable-reveal-js-support t)
 
-      python
-      rust
-      scala
+      prodigy
       shell
       (shell :variables
              shell-default-height 30
              shell-default-position 'bottom
              shell-default-shell 'ansi_term)
 
-      scheme
       shell-scripts
       spacemacs-layouts
       spell-checking
@@ -117,7 +119,7 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(exec-path-from-shell-copy-env)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -379,33 +381,237 @@ you should place your code here."
   
 )
 
-(require 'package)
+ (require 'package)
 
 
 ;; eyebrowse
-(setq-default dotspacemacs-configuration-layers
+ (setq-default dotspacemacs-configuration-layers
   '((eyebrowse :variables eyebrowse-display-help nil)))
 
 ;; package-archives setting
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+ (add-to-list 'package-archives
+              '("melpa" . "http://melpa.org/packages/") t)
+
 
 ;; deft setting
-(setq deft-extensions '("org" "md" "txt"))
-(setq deft-directory "~/Dropbox/notes")
+ (setq deft-extensions '("org" "md" "txt"))
+ (setq deft-directory "~/Dropbox/notes")
 
 ;; elfeed
 
 ;; Erc configuration
 
-(setq erc-prompt-for-nickserv-password nil)
+ (setq erc-prompt-for-nickserv-password nil)
                                      
 
 
 
-(require 'dash)
 
-(provide 'pretty-fonts)
+;; PDF tools
+ (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+  TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+  TeX-source-correlate-start-server t
+ )
+
+
+
+;; Org-Mode
+
+ (setq-default
+ org-return-follows-link t
+ org-image-actual-width '(400)
+ org-highlight-latex-and-related '(latex script entities))
+
+;; Very important if your config file is a .org document… Also, add native <tab> behavior in source blocks.
+
+ (setq
+ org-src-fontify-natively t
+ org-src-tab-acts-natively t)
+
+;; We also want this in LaTeX output!
+
+ (setq org-latex-listings 'minted)
+
+;; For HTML output, we want to be able to set a custom stylesheet.
+
+ (setq org-html-htmlize-output-type 'css)
+
+;; org-latex settings
+ (setq org-latex-pdf-process (list "latexmk -f -pdf %f"))
+
+
+;; Default Applications
+
+;; Org opens PDFs by default in gv… change that to evince. Also open HTML in Chrome.
+
+ (setq org-file-apps '((auto-mode . emacs)
+                      ("\\.x?html?\\'" . "firefox %s")
+                      ("\\.pdf\\'" . "zathura \"%s\"")
+                      ("\\.pdf::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
+                      ("\\.pdf.xoj" . "xournal %s")))
+
+;; org-babel
+ (org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (C .t)
+   (ditaa .t)
+   (emacs-lisp .t)
+   (haskell .t)
+   (js .t)
+   (python .t)
+   (latex .t)
+   ))
+  
+
+;; org-babel settings
+
+ (setq org-babel-matlab-with-emacs-link nil)
+ (setq org-confirm-babel-evaluate nil)
+ (setq org-export-babel-evaluate nil)
+ ;; can be bad for long simulations
+ ;;; display/update images in the buffer after I evaluate
+ (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+ 
+;; ditaa
+
+;; Ditaa is a small tool that takes ASCII art and renders it as neat diagrams. Combined with org, I can sketch out ideas directly in an org buffer using the emacs Artist mode.
+
+ ;;(setq org-ditaa-jar-path "~/.emacs.d/external-apps/ditaa0_9.jar")
+
+;; org-present
+
+;; Use with M-x org-present. We configure this by adding functionality to the hooks. For this, we first need a few helper functions. Some of them are similar to the ones in the "writing font" subsection.
+
+;; This snippet adds some code to replace the plain old "-" or "+" bullets with a nicer unicode symbol, although I do have a feeling that the teardown function is a little too dirty. It works for now. 
+ (setq my-org-present-prettify-bullets-keywords
+      '(;; the regular "- " bullet
+        ("^ *\\- " ;; match line start followed by 0 or more spaces followed by "-" followed by a space
+         (0 (progn (put-text-property
+                    (match-beginning 0) (match-end 0)
+                    'display (concat ;; add spaces if necessary
+                              (make-string (- (match-end 0) (match-beginning 0) 2) 32)
+                              (char-to-string #x25B8) " ") ;; triangle
+                    nil))))
+        ;; the "+" bullet. add more as needed.
+        ("^ *\\+ "
+         (0 (progn (put-text-property
+                    (match-beginning 0) (match-end 0)
+                    'display (concat
+                              (make-string (- (match-end 0) (match-beginning 0) 2) 32)
+                              (char-to-string #x2022) " ") ;; bullet
+                    nil))))))
+
+(defun my-org-present-prettify-bullets-setup ()
+  (font-lock-add-keywords nil
+                          my-org-present-prettify-bullets-keywords))
+(defun my-org-present-prettify-bullets-teardown ()
+  (font-lock-remove-keywords nil
+                             my-org-present-prettify-bullets-keywords)
+  (remove-text-properties (point-min) (point-max) '(display nil))
+  (revert-buffer t t))  
+
+
+
+;; Next, we mess with some faces. TODO: maybe change face in code blocks to monospace (as of right now, I do not see an easy way to do this, since all of the font-lock faces inherit from default. Maybe I can make the font-lock faces inherit from a different font, of course buffer locally)
+
+(defun my-org-present-faces-setup ()
+  (let ((heading-height 450)
+        (heading-fam "Fira Sans")
+        (text-fam "Fira Sans")
+        (spacing 0.4))
+    (make-local-variable 'org-present-face-cookie-list)
+    (setq org-present-face-cookie-list nil)
+    ;; remap the heading face
+    (add-to-list 'org-present-face-cookie-list
+                 (face-remap-add-relative 'org-level-1
+                                          :family heading-fam
+                                          :height heading-height
+                                          :weight 'bold))
+    ;; remap the default face
+    (add-to-list 'org-present-face-cookie-list
+                 (face-remap-add-relative 'default
+                                          :family text-fam))
+    ;; disable grey bars in code blocks
+    (add-to-list 'org-present-face-cookie-list
+                 (face-remap-add-relative 'org-block-begin-line
+                                          :background (face-attribute 'default :background)))
+    (add-to-list 'org-present-face-cookie-list
+                 (face-remap-add-relative 'org-block-end-line
+                                          :background (face-attribute 'default :background)))
+    ;; add some spacing between lines
+    (setq-local line-spacing spacing)))
+
+(defun my-org-present-faces-teardown ()
+  ;; restore the modified faces
+  (dolist (cookie org-present-face-cookie-list)
+    (face-remap-remove-relative cookie))
+  ;; restore the spacing
+  (setq-local line-spacing nil))
+
+
+;; The following snippet finally defines the setup and teardown hooks for org-present-mode. 
+
+(defun my-org-present-setup ()
+  ;; do not want cursor or hl-line
+  (make-variable-buffer-local 'post-command-hook)
+  (remove-hook 'post-command-hook 'dennis-set-cursor)
+  (setq global-hl-line-mode nil)
+  ;; make it work with wireless presenter
+  (buffer-local-set-key (kbd "<next>") 'org-present-next)
+  (buffer-local-set-key (kbd "<prior>") 'org-present-prev)
+  ;; change other things to make it look like a presentation
+  (org-display-inline-images)
+  (org-present-hide-cursor)
+  (org-indent-mode)
+  (my-org-present-faces-setup)
+  (hidden-mode-line-mode)
+  (org-present-big)
+  (fringe-mode '(0 . 0))
+  (my-org-present-prettify-bullets-setup)
+  (org-present-read-only))
+
+(defun my-org-present-teardown ()
+  (add-hook 'post-command-hook 'dennis-set-cursor)
+  (setq global-hl-line-mode t)
+  (buffer-local-set-key (kbd "<next>") nil)
+  (buffer-local-set-key (kbd "<prior>") nil)
+  (org-remove-inline-images)
+  (org-present-show-cursor)
+  (org-indent-mode -1)
+  (my-org-present-faces-teardown)
+  (hidden-mode-line-mode -1)
+  (org-present-small)
+  (fringe-mode '(4 . 4))
+  (org-present-read-write)
+  (my-org-present-prettify-bullets-teardown))
+
+(add-hook 'org-present-mode-hook 'my-org-present-setup)
+(add-hook 'org-present-mode-quit-hook 'my-org-present-teardown)
+
+
+
+;; Windmove and org-mode clashes
+
+;; Make windmove (and framemove) play nice with org.
+
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)
+
+;; YaSnippet and org
+
+;; backtab is already used in org-mode. Let's use C-<tab> instead.
+
+(define-key org-mode-map (kbd "C-<tab>") 'yas-expand)
+
+
+
+ (require 'dash)
+
+ (provide 'pretty-fonts)
 
 ;;; API
 
@@ -533,7 +739,7 @@ you should place your code here."
 ;;; Display Layer
 
 
-(setq display-packages
+ (setq display-packages
       '(
         ;; Owned Display Packages
         all-the-icons
@@ -871,10 +1077,9 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(neo-theme (quote icons))
  '(package-selected-packages
    (quote
-    (erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks memoize font-lock+ all-the-icons yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ess spaceline-all-the-icons flycheck-elixir flycheck-cstyle base16-ocean-dark-theme xpm yaml-mode xterm-color ws-butler winum which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org sql-indent spaceline smeargle shell-pop restart-emacs ranger rainbow-delimiters racer persp-mode pdf-tools pcre2el paradox ox-reveal ox-gfm orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-elixir neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint json-mode js2-refactor js-doc intero insert-shebang info+ indent-guide ido-exit-target hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang ensime elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies dumb-jump disaster diminish diff-hl deft define-word dactyl-mode company-tern company-statistics company-shell company-go company-ghci company-ghc company-emacs-eclim company-cabal company-c-headers company-auctex column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo base16-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (elfeed goto-chg avy markdown-mode helm helm-core magit org-plus-contrib f yapfify yaml-mode xterm-color ws-butler winum which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org sql-indent spaceline smeargle shell-pop restart-emacs ranger rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements persp-mode pcre2el paradox ox-reveal ox-gfm orgit org-ref org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-elixir neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc intero insert-shebang info+ indent-guide hy-mode hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies dumb-jump disaster diminish diff-hl deft define-word dactyl-mode cython-mode company-tern company-statistics company-shell company-go company-ghci company-ghc company-emacs-eclim company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo base16-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk all-the-icons alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
