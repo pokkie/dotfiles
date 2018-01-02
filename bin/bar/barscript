@@ -34,22 +34,22 @@ LX=1690
 LY=45
 
 # Colors
-BG=#112233
-FG=#ddccaa
+BG=#2E3440
+FG=#D8DEE9
 BLACK=#282828
 BBLACK=#32302f
 RED=#dd6677
-BRED=#771144
+BRED=#BF616A
 ORANGE=#d65d0e
 BORANGE=#ff6644
 GREEN=#98971a
-BGREEN=#557777
+BGREEN=#A3BE8C
 YELLOW=#dd9999
-BYELLOW=#fabd2f
+BYELLOW=#EBCB8B
 BLUE=#88aaee
-BBLUE=#ccddff
+BBLUE=#81A1C1
 MAGENTA=#664477
-BMAGENTA=#bb99aa
+BMAGENTA=#B48EAD
 WHITE=#ddccaa
 BWHITE=#fbf1c7
 
@@ -94,7 +94,7 @@ BWHITE=#fbf1c7
 }
 
  DATE(){ # Clock, obv ..
-  date=`date "+%b %d %Y "`
+  date=`date "+ %a %b %d %Y "`
 	echo "%{F$BMAGENTA} %{F-}  ${date}"
 }
 
@@ -152,6 +152,6 @@ while :; do
 	echo "  $(ws)  %{c}$(mus) %{r}$(vol) $(cpuload) $(memory) $(net) $(DATE) $(clock)  "
          sleep 0.5	
 		 
- done | lemonbar -g $notifybar_g -f "source code pro:bold:size=9" -f "FontAwesome:regular:size=9" -B "$BG" -F "$BYELLOW" -d -p | \
+ done | lemonbar -g $notifybar_g -f "source code pro:bold:size=10" -f "FontAwesome:regular:size=10" -B "$BG" -F "$FG" -d -p | \
 	while read line; do eval "$line"; done &
 
