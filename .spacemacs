@@ -44,7 +44,13 @@ values."
      better-defaults
      bibtex
      deft
-     (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org"))
+     (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org")
+	     :bind (:map elfeed-search-mode-map
+              ("q" . bjm/elfeed-save-db-and-bury)
+              ("Q" . bjm/elfeed-save-db-and-bury)
+              ("*" . bjm/elfeed-star)
+              ("M" . bjm/elfeed-unstar)
+              ))
      emacs-lisp
      (erc :variables
                     erc-server-list
@@ -428,6 +434,64 @@ you should place your code here."
  (setq deft-directory "~/Dropbox/notes")
 
 ;; elfeed
+
+ (defun elfeed-mark-all-as-read ()
+  (interactive)
+  (mark-whole-buffer)
+  (elfeed-search-untag-all-unread))
+
+;; code to add and remove a starred tag to elfeed article
+;; based on http://matt.hackinghistory.ca/2015/11/22/elfeed/
+
+;; add a star
+ (defun bjm/elfeed-star ()
+  "Apply starred to all selected entries."
+  (interactive )
+  (let* ((entries (elfeed-search-selected))
+         (tag (intern "starred")))
+
+    (cl-loop for entry in entries do (elfeed-tag entry tag))
+    (mapc #'elfeed-search-update-entry entries)
+    (unless (use-region-p) (forward-line))))
+
+;; remove a start
+ (defun bjm/elfeed-unstar ()
+  "Remove starred tag from all selected entries."
+  (interactive )
+  (let* ((entries (elfeed-search-selected))
+         (tag (intern "starred")))
+
+    (cl-loop for entry in entries do (elfeed-untag entry tag))
+    (mapc #'elfeed-search-update-entry entries)
+    (unless (use-region-p) (forward-line))))
+
+ ;; face for starred articles
+;; (defface elfeed-search-starred-title-face
+;;  '((t :foreground "#f77"))
+;;  "Marks a starred Elfeed entry.")
+
+ ;;(push '(starred elfeed-search-starred-title-face) elfeed-search-face-alist) 
+
+
+;;functions to support syncing .elfeed between machines
+;;makes sure elfeed reads index from disk before launching
+ (defun bjm/elfeed-load-db-and-open ()
+  "Wrapper to load the elfeed db from disk before opening"
+  (interactive)
+  (elfeed-db-load)
+  (elfeed)
+  (elfeed-search-update--force))
+
+;;write to disk when quiting
+ (defun bjm/elfeed-save-db-and-bury ()
+  "Wrapper to save the elfeed db to disk before burying buffer"
+  (interactive)
+  (elfeed-db-save)
+  (quit-window))
+
+  
+
+
 
 ;; erc configuration
 
@@ -1188,7 +1252,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (navi-mode outshine outorg ghost-blog ox-pandoc ox-epub ox-clip ox-twbs evil-nerd-commenter yapfify yaml-mode xterm-color ws-butler winum which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org sql-indent spaceline smeargle shell-pop restart-emacs ranger rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements persp-mode pcre2el paradox ox-reveal ox-gfm orgit org-ref org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-elixir neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc intero insert-shebang info+ indent-guide hy-mode hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies dumb-jump disaster diminish diff-hl deft define-word dactyl-mode cython-mode company-tern company-statistics company-shell company-go company-ghci company-ghc company-emacs-eclim company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo base16-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk all-the-icons alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (evil-nerd-commenter yapfify yaml-mode xterm-color ws-butler winum which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org sql-indent spaceline smeargle shell-pop restart-emacs ranger rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements persp-mode pcre2el paradox ox-reveal ox-gfm orgit org-ref org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-elixir neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc intero insert-shebang info+ indent-guide hy-mode hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies dumb-jump disaster diminish diff-hl deft define-word dactyl-mode cython-mode company-tern company-statistics company-shell company-go company-ghci company-ghc company-emacs-eclim company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo base16-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk all-the-icons alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 
 
 
