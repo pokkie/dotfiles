@@ -1,6 +1,3 @@
-[submodule "2bwm"]
-	path = 2bwm
-	url = https://github.com/dagnachewa/2bwm
 [submodule ".tmux"]
 	path = .tmux
 	url = https://github.com/dagnachewa/.tmux
