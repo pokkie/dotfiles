@@ -13,26 +13,44 @@
 pkill lemonbar
 
 #COLORS
-fg="#eff1f5"
-bg="#2E3440"
+fg="#ebdbb2"
+bg="#32302f"
 
-hint="#5E5E5C"
-nblk="#282828"
-bblk="#2b303b"
+hint="#282828"
+norng="#fe8019"
+nblk="#2b303b"
+bblk="#282828"
 nred="#dd6677"
-bred="#BF616A"
-ngrn="#98971a"
-bgrn="#A3BE8C"
-nylw="#dd9999"
-bylw="#EBCB8B"
+bred="#bf616a"
+ngrn="#8ec07c"
+bgrn="#8ec07c"
+nylw="#ebcb8b"
+bylw="#fabd2f"
 nblu="#88aaee"
-bblu="#81A1C1"
+bblu="#83a598"
 nmag="#664477"
-bmag="#B48EAD"
+bmag="#b48ead"
 ncyn="#636361"
 bcyn="#696966"
-nwht="#c0c5ce"
-bwht="#eff1f5"
+nwht="#fbf1c7"
+bwht="#ebdbb2"
+
+## glyphs
+glymem=""
+glycpu=""
+# glybat=""
+glypkg=""
+glyclock=""
+glycal=""
+glyint=""
+glywin=""
+glywac=""
+glyw2=""
+glyw3=""
+glyw4=""
+glyw5=""
+glyw6=""
+glyw7=""
 
 #VARS
 font="source code pro:bold:size=10"
@@ -61,72 +79,22 @@ if pgrep herbstluftwm; then
 	herbstclient pad $monitor $bh
 fi
 
-WRKL() {
-	wrkspce=$(xprop -root _NET_CURRENT_DESKTOP | sed -e 's/_NET_CURRENT_DESKTOP(CARDINAL) = //')
-	
-	if [ "${wrkspce}" = "0" ] ;
-	then 
-		echo "%{B$nblk} %{F$bg}000%{F-} %{B$nblk} 001 010 011 100 %{B-}"
-	elif [ "${wrkspce}" = "1" ] ;
-	then
-		echo "%{B$nblk} 000 %{B$hint} %{F$bg}001%{F-} %{B$nblk} 010 011 100 %{B-}"
-	elif [ "${wrkspce}" = "2" ] ;
-	then 
-		echo "%{B$nblk} 000 001 %{B$hint} %{F$bg}010%{F-} %{B$nblk} 011 100 %{B-}"
-	elif [ "${wrkspce}" = "3" ] ;
-	then 
-		echo "%{B$nblk} 000 001 010 %{B$hint} %{F$bg}011%{F-} %{B$nblk} 100 %{B-}"
-	elif [ "${wrkspce}" = "4" ] ;
-	then 
-		echo "%{B$nblk} 000 001 010 011 %{B$hint} %{F$bg}100%{F-} %{B-}"
-    else
-		echo "%{B$hint} %{F$bg}NONE%{F-} %{B-}"
-	fi
+WRK(){ # Current Workspace .. 
+  ws=`xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}'`
+	case ${ws} in
+		0) echo "  ";;
+		1) echo "  ";;
+		2) echo "  ";;
+		3) echo "  ";;
+		*) echo "  ";;
+	esac
 }
 
-WRK() {
-	wrkspce=$(xprop -root _NET_CURRENT_DESKTOP | sed -e 's/_NET_CURRENT_DESKTOP(CARDINAL) = //')
-	
-	if [ "${wrkspce}" = "0" ] ;
-	then 
-		echo "%{B$bred} %{F$bg}0:0%{F-} %{B-}"
-	elif [ "${wrkspce}" = "1" ] ;
-	then
-		echo "%{B$bred} %{F$bg}0:1%{F-} %{B-}"
-	elif [ "${wrkspce}" = "2" ] ;
-	then 
-		echo "%{B$bred} %{F$bg}0:2%{F-} %{B-}"
-	elif [ "${wrkspce}" = "3" ] ;
-	then 
-		echo "%{B$bred} %{F$bg}0:3%{F-} %{B-}"
-	elif [ "${wrkspce}" = "4" ] ;
-	then 
-		echo "%{B$bred} %{F$bg}0:4%{F-} %{B-}"
-    else
-		echo "%{B$bred} %{F$bg}NONE%{F-} %{B-}"
-	fi
-}
+
 
 WIN() {
     #echo -n "%{B$hint}%{F$bg}  %{F-}%{B-}"
-	echo -n "%{B$bblk}%{F$fg} $(wname $(pfw)) %{F-}%{B-}"
-}
-
-MUSIC() {
-	playing=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
-	
-		if [ "${playing}" = "[playing]" ]; then
-        		symbol="%{B$bred} %{F$fg}%{F-} %{B-}"
-			song="%{B$nblk} $playing %{B-}"
-		elif [ "${playing}" = "[paused]" ]; then
-			symbol="%{B$bred} %{F$fg}%{F-} %{B-}"
-			song="%{B$nblk} $playing %{B-}"
-		elif [ ! "${playing}" = "[playing]" ]; then
-			symbol="%{B$bred} %{F$fg}%{F-} %{B-}"
-			song="%{B$nblk} ··· %{B-}"
-		fi
-
-    echo -n "${symbol}${song}"
+	echo -n "%{B$bblk}%{F$bblk} $(wname $(pfw)) %{F-}%{B-}"
 }
 
 
@@ -134,7 +102,7 @@ MUSIC(){ # Current song ..
       mus=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
 
   		if [[ $mus ]]; then
- 			echo "%{F$bred}  %{F-} ${mus}"
+ 			echo "%{F$bblk}  %{F-} ${mus}"
   		fi
 }
 
@@ -147,12 +115,12 @@ MUSIC(){ # Current song ..
 
   if [ "$switch" = "[on]" ]; then
 	#echo "%{F$BBLUE}  %{F-} ${vol}"
-	echo "%{B$nmag}%{F$fg}  $vol %{F-}%{B-}"
+	echo "%{B$bblu}%{F$bblk}  $vol %{F-}%{B-}"
   elif [ "$switch" = "[off]" ]; then
-	echo "%{B$nred}%{F$fg}  MUTE %{F-}%{B-}"
+	echo "%{B$bblu}%{F$bblk}  MUTE %{F-}%{B-}"
   else
 	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
-        echo "%{B$nmag}%{F$fg}  $hsvol %{F-}%{B-}"
+        echo "%{B$bblu}%{F$bblk}  $hsvol %{F-}%{B-}"
   fi
 }
 
@@ -183,20 +151,19 @@ MUSIC(){ # Current song ..
 #}
 
 NET() {
-	symbol="%{B$bblk}  %{B-}"
 	ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
 
-	test -n "${ping}" && echo -n "%{B$bgrn}%{F$fg}  %{F-}%{B-}" || echo "%{F$BRED}   %{F-} No Connection"
+	test -n "${ping}" && echo -n "%{B$bgrn}%{F$bblk}  %{F-}%{B-}" || echo "%{F$bred}   %{F-} No Connection"
           
 	echo 
 }
 
 DATE() {
-    echo -n "%{B$bylw} %{F$fg}  $(date "+%a %b %d %y")%{F-} %{B-}"
+    echo -n "%{B$bylw} %{F$bblk}  $(date "+%a %b %d %y")%{F-} %{B-}"
 }
 
 CLOCK() {
-    echo -n "%{B$bred}%{F$fg}  $(date "+%H:%M") %{F-}%{B-}"
+    echo -n "%{B$norng}%{F$bblk}  $(date "+%H:%M") %{F-}%{B-}"
 }
 
 BAR() {
@@ -208,7 +175,7 @@ BAR() {
     done | lemonbar -f "FontAwesome:regular:size=10" \
         -f "$font" \
         -F "$fg" \
-        -B "$bblk" \
+        -B "$bg" \
         -d \
 	-p \
         -g $notifybar_g | sh &
