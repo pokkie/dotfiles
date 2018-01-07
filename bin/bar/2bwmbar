@@ -1,0 +1,218 @@
+#!/bin/bash
+#  ██                       
+# ░██                       
+# ░██       ██████   ██████ 
+# ░██████  ░░░░░░██ ░░██░░█ 
+# ░██░░░██  ███████  ░██ ░  
+# ░██  ░██ ██░░░░██  ░██    
+# ░██████ ░░████████░███    
+# ░░░░░    ░░░░░░░░ ░░░     
+# nxll <nxll@teknik.io>
+
+#RESTART
+pkill lemonbar
+
+#COLORS
+fg="#eff1f5"
+bg="#2E3440"
+
+hint="#5E5E5C"
+nblk="#282828"
+bblk="#2b303b"
+nred="#dd6677"
+bred="#BF616A"
+ngrn="#98971a"
+bgrn="#A3BE8C"
+nylw="#dd9999"
+bylw="#EBCB8B"
+nblu="#88aaee"
+bblu="#81A1C1"
+nmag="#664477"
+bmag="#B48EAD"
+ncyn="#636361"
+bcyn="#696966"
+nwht="#c0c5ce"
+bwht="#eff1f5"
+
+#VARS
+font="source code pro:bold:size=10"
+glyph="-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1"
+height=18
+border=8
+muslength=60
+interface=wls1
+#actchar="+"
+#selchar="+"
+#actchar=""
+#selchar=""
+
+
+# Lemonpop
+notifybar_g="1920x24+0+0"
+LW=220
+LH=26
+LX=1690
+LY=45
+
+
+if pgrep herbstluftwm; then
+	monitor=${1:-0}
+	bh=$(( $height + ($border * 2)))
+	herbstclient pad $monitor $bh
+fi
+
+WRKL() {
+	wrkspce=$(xprop -root _NET_CURRENT_DESKTOP | sed -e 's/_NET_CURRENT_DESKTOP(CARDINAL) = //')
+	
+	if [ "${wrkspce}" = "0" ] ;
+	then 
+		echo "%{B$nblk} %{F$bg}000%{F-} %{B$nblk} 001 010 011 100 %{B-}"
+	elif [ "${wrkspce}" = "1" ] ;
+	then
+		echo "%{B$nblk} 000 %{B$hint} %{F$bg}001%{F-} %{B$nblk} 010 011 100 %{B-}"
+	elif [ "${wrkspce}" = "2" ] ;
+	then 
+		echo "%{B$nblk} 000 001 %{B$hint} %{F$bg}010%{F-} %{B$nblk} 011 100 %{B-}"
+	elif [ "${wrkspce}" = "3" ] ;
+	then 
+		echo "%{B$nblk} 000 001 010 %{B$hint} %{F$bg}011%{F-} %{B$nblk} 100 %{B-}"
+	elif [ "${wrkspce}" = "4" ] ;
+	then 
+		echo "%{B$nblk} 000 001 010 011 %{B$hint} %{F$bg}100%{F-} %{B-}"
+    else
+		echo "%{B$hint} %{F$bg}NONE%{F-} %{B-}"
+	fi
+}
+
+WRK() {
+	wrkspce=$(xprop -root _NET_CURRENT_DESKTOP | sed -e 's/_NET_CURRENT_DESKTOP(CARDINAL) = //')
+	
+	if [ "${wrkspce}" = "0" ] ;
+	then 
+		echo "%{B$bred} %{F$bg}0:0%{F-} %{B-}"
+	elif [ "${wrkspce}" = "1" ] ;
+	then
+		echo "%{B$bred} %{F$bg}0:1%{F-} %{B-}"
+	elif [ "${wrkspce}" = "2" ] ;
+	then 
+		echo "%{B$bred} %{F$bg}0:2%{F-} %{B-}"
+	elif [ "${wrkspce}" = "3" ] ;
+	then 
+		echo "%{B$bred} %{F$bg}0:3%{F-} %{B-}"
+	elif [ "${wrkspce}" = "4" ] ;
+	then 
+		echo "%{B$bred} %{F$bg}0:4%{F-} %{B-}"
+    else
+		echo "%{B$bred} %{F$bg}NONE%{F-} %{B-}"
+	fi
+}
+
+WIN() {
+    #echo -n "%{B$hint}%{F$bg}  %{F-}%{B-}"
+	echo -n "%{B$bblk}%{F$fg} $(wname $(pfw)) %{F-}%{B-}"
+}
+
+MUSIC() {
+	playing=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
+	
+		if [ "${playing}" = "[playing]" ]; then
+        		symbol="%{B$bred} %{F$fg}%{F-} %{B-}"
+			song="%{B$nblk} $playing %{B-}"
+		elif [ "${playing}" = "[paused]" ]; then
+			symbol="%{B$bred} %{F$fg}%{F-} %{B-}"
+			song="%{B$nblk} $playing %{B-}"
+		elif [ ! "${playing}" = "[playing]" ]; then
+			symbol="%{B$bred} %{F$fg}%{F-} %{B-}"
+			song="%{B$nblk} ··· %{B-}"
+		fi
+
+    echo -n "${symbol}${song}"
+}
+
+
+MUSIC(){ # Current song ..
+      mus=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
+
+  		if [[ $mus ]]; then
+ 			echo "%{F$bred}  %{F-} ${mus}"
+  		fi
+}
+
+
+ VOL(){ # Volume, Sets to Headset when switched ..
+  switch=`amixer -c 0 get Master | awk '/Mono:/ {print $6}'`
+  vol=`amixer -c 0 get Master | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+  hsvol=`amixer -c 0 get PCM | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+
+
+  if [ "$switch" = "[on]" ]; then
+	#echo "%{F$BBLUE}  %{F-} ${vol}"
+	echo "%{B$nmag}%{F$fg}  $vol %{F-}%{B-}"
+  elif [ "$switch" = "[off]" ]; then
+	echo "%{B$nred}%{F$fg}  MUTE %{F-}%{B-}"
+  else
+	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
+        echo "%{B$nmag}%{F$fg}  $hsvol %{F-}%{B-}"
+  fi
+}
+
+#BAT() {
+#    percent=$(cat /sys/class/power_supply/BAT0/capacity)
+#    status=$(cat /sys/class/power_supply/BAT0/status)
+
+#    if test $status = "Charging"; then
+#        symbol=""
+#        echo -n "%{B$bblk} ${symbol} %{B-}"
+#    elif test $status = "Full"; then
+#        symbol=""
+#        echo -n "%{B$bblk} ${symbol} %{B-}"
+#    else
+#        if test $percent -gt 66; then
+#            symbol=""
+#            echo -n "%{B$bblk} ${symbol} %{B-}"
+#        elif test $percent -gt 34; then
+#            symbol=""
+#            echo -n "%{B$bblk} ${symbol} %{B-}"
+#        else
+#		symbol=""
+#            echo -n "%{B$bblk} ${symbol} %{B-}"
+#        fi
+#    fi
+
+#	echo -e "%{B$nblk} $percent% %{B-}"
+#}
+
+NET() {
+	symbol="%{B$bblk}  %{B-}"
+	ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
+
+	test -n "${ping}" && echo -n "%{B$bgrn}%{F$fg}  %{F-}%{B-}" || echo "%{F$BRED}   %{F-} No Connection"
+          
+	echo 
+}
+
+DATE() {
+    echo -n "%{B$bylw} %{F$fg}  $(date "+%a %b %d %y")%{F-} %{B-}"
+}
+
+CLOCK() {
+    echo -n "%{B$bred}%{F$fg}  $(date "+%H:%M") %{F-}%{B-}"
+}
+
+BAR() {
+    #ADD ALL THE THINGS
+    while true; do
+		buf=" $(WRK) %{c}$(MUSIC) %{r}$(VOL) $(NET) $(DATE) $(CLOCK)" 
+		echo "$buf"	
+        sleep 0.1
+    done | lemonbar -f "FontAwesome:regular:size=10" \
+        -f "$font" \
+        -F "$fg" \
+        -B "$bblk" \
+        -d \
+	-p \
+        -g $notifybar_g | sh &
+}
+
+BAR > /dev/null
+

@@ -1,0 +1,239 @@
+#!/bin/sh
+
+# ObliviousGmn, June 2015
+# https://github.com/ObliviousGmn
+# Panel for Lemonbar ..
+
+
+
+# Screen Width, For Panel ..
+SW=`xrandr | grep current | awk '{print $8}'`
+
+# Fonts
+FONT1="source code pro:bold:size=9"
+FONT2="-lucy-tewi-medium-r-normal--11-90-75-75-p-58-iso10646-1"
+
+# Icons ..
+ICON1="-misc-stlarch-medium-r-normal--10-100-75-75-c-80-iso10646-1"
+ICON2="-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1"
+
+# Bedtime
+ZZZ=12
+zzz=4
+
+# Panel
+PW=$(( $SW - 20 ))
+PH=26
+PO=10
+
+# Lemonpop
+notifybar_g="1920x24+0+0"
+LW=220
+LH=26
+LX=1690
+LY=45
+
+# Colors
+BG=#2E3440
+FG=#D8DEE9
+BLACK=#282828
+BBLACK=#32302f
+RED=#dd6677
+BRED=#BF616A
+ORANGE=#d65d0e
+BORANGE=#ff6644
+GREEN=#98971a
+BGREEN=#A3BE8C
+YELLOW=#dd9999
+BYELLOW=#EBCB8B
+BLUE=#88aaee
+BBLUE=#81A1C1
+MAGENTA=#664477
+BMAGENTA=#B48EAD
+CYAN=#EFF1F5
+WHITE=#ddccaa
+BWHITE=#fbf1c7
+
+
+## glyphs
+glymem=""
+glyvol=""
+glymute=""
+glynote=""
+glylistn=""
+glypause=""
+glyplay=""
+glystop=""
+glychrg=""
+glybatt=""
+glybattlower=""
+glybattlow=""
+glybattmid=""
+glybatt34=""
+glybattclose=""
+glybattfull=""
+glybattalert=""
+glybattpanic=""
+glyclock=""
+glycal=""
+glywifi=""
+glywifi2=""
+glywifi3=""
+gnc=""
+glycrnt=""
+glyinfo=""
+glytemp=""
+
+
+## extras
+SEP=" "
+SE2P=" "
+a="#FF"
+
+
+## colors
+bg=$BG
+fg=$FG
+blk=$BLACK
+bblk=$BBLACK
+red=$RED
+grn=$GREEN
+ylw=$YELLOW
+blu=$BLUE
+mag=$MAGENTA
+cyn=$CYAN
+wht=$WHITE
+
+## set RAG values for color output based on state
+PANIC="%{B$a$mag}%{F$a$wht}$SEP"
+ALERT="%{B$a$red}%{f$a$wht}$SEP"
+WARN="%{B$a$ylw}%{F$a$blk}$SEP"
+GOOD="%{B$a$grn}%{F$a$blk}$SEP"
+HOT="%{B$a$red}%{F$a$wht}$SEP"
+WARM="%{B$a$blu}%{F$a$wht}$SEP"
+NORM="%{B$a$cyn}%{F$a$blk}$SEP"
+PLAIN="%{B$a$wht}%{F$a$bblk}$SEP"
+GEN="%{B$a$bblk}%{F$a$wht}$SEP"
+BLACK="%{B$a$blk}%{F$a$wht}$SEP"
+CLR="$SEP%{F-}%{B-}"
+
+
+
+
+ ws(){ # Current Workspace .. 
+  ws=`xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}'`
+	case ${ws} in
+		0) echo " ";;
+		1) echo " ";;
+		2) echo " ";;
+		3) echo " ";;
+		*) echo " ";;
+	esac
+}
+
+ menu(){ # Useless for now ..
+	echo "%{B$BBLUE}%{F$BG} GMN  %{B-}%{F-}"
+}
+
+ cpuload(){ # CPUs temp ..
+  cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
+  cpuload+="% CPU"
+	#echo "%{F$BYELLOW} %{F-} ${cpuload}"
+	echo "$BLACK$CLR$PLAIN$cpuload$CLR"
+        
+        
+}
+
+ temp(){ # CPUs temp ..
+  temp=`sensors | awk '/Core 0/ {print +$3}'`
+	echo "%{F$BBLUE}  %{F-} ${temp}°"
+}
+
+   memory() {
+        mem=$(free -m | awk 'NR==2 {print $3}')
+            if [[ $mem -ge "500" ]]; then
+                m="$ALERT"$SEP"$mem"
+            elif [[ $mem -gt "300" ]] && [[ $mem -lt "500" ]]; then
+                m="$WARN"$SEP"$mem"
+            else
+                m="$GOOD"$SEP"$mem"
+            fi
+        echo "$PLAIN$glymem$CLR$m$CLR"
+    }
+	
+ fan(){ # Fan speeds ..
+  fan=`sensors | awk '/fan1/ {print $2,$3}'`
+	echo "%{F$BBLUE}  %{F-} ${fan}"
+}
+
+ clockdate() {
+	      clockd=$(date +'%d %b ')
+        cd="${clockd^^}"    # force output to all caps
+        echo $BLACK$glycal"$SE2P"$cd$CLR
+	  }
+
+ clocktime() {
+        clockt=$(date +'%R')
+        echo "$BLACK$glyclock$CLR$PLAIN$clockt$CLR"
+    }
+
+ vol(){ # Volume, Sets to Headset when switched ..
+  switch=`amixer -c 0 get Master | awk '/Mono:/ {print $6}'`
+  vol=`amixer -c 0 get Master | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+  hsvol=`amixer -c 0 get PCM | awk '/Mono:/ {print $4}' | tr -d '[]%,'`
+
+
+  if [ "$switch" = "[on]" ]; then
+	#echo "%{F$BBLUE}  %{F-} ${vol}"
+	echo "$PLAIN$glyvol$CLR$NORM$SE2P$vol"
+  elif [ "$switch" = "[off]" ]; then
+	#echo "%{F$BRED}  %{F-} MUTE"
+        echo "$PLAIN$glymute$CLR$ALERT$SE2P'M'"
+  else
+	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
+        echo "$PLAIN$glyvol$CLR$NORM$SE2P$hvol"
+  fi
+}
+
+ mus(){ # Current song ..
+  mus=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
+
+  if [[ $mus ]]; then
+ 	#echo "%{F$BORANGE}  %{F-} ${mus}"
+        echo "$BLACK$glynote$CLR$PLAIN$mus$CLR"
+  fi
+}
+
+# last(){ # Weechat, Last highlight ..
+#  last=`(tail -n1) <$HOME/Gmnbox/Panel/Weelog`
+
+#  if [[ $last ]]; then
+#  	echo "%{A:cat /dev/null > $HOME/Gmnbox/Panel/Weelog:}${last}%{A}"
+#  fi
+#}
+
+ net(){ # Connected or nah? ..
+        ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
+  	    #test -n "${ping}" && echo "%{F$BGREEN}    " || echo "%{F$BRED}   %{F-} No Connection"
+            if [ $? -eq 0 ]
+		then
+  		  strength="$PLAIN$glywifi$CLR"
+	    else
+  		  echo "No Connection" >&2
+	    fi
+       echo $strength$CLR 
+    }
+
+while :; do
+
+ # Run ping in intervals ..
+ [[ loops -eq 15 ]] && loops=0
+ [[ loops -eq 0 ]] && ping=$(net)
+ loops=$(( loops + 1 ))
+
+	echo "  $(ws)  %{c}$(mus) %{r}$(vol)$(cpuload)$(memory)$(net)$(clockdate)$(clocktime)"
+         sleep 0.5	
+		 
+ done | lemonbar -g $notifybar_g -f "source code pro:bold:size=10" -f "FontAwesome:regular:size=10" -B "$BG" -F "$FG" -d -p | \
+	while read line; do eval "$line"; done &
+
