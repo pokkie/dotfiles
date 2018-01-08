@@ -9,11 +9,11 @@ allow_bold = false
 dynamic_title = true
 urgent_on_bell = true
 clickable_url = true
-font = Iosevka Term 13
-#font = Anonymice Pro  Powerline 12
+font = Iosevka Term 14
+#font = Fira Code 13
 scrollback_lines = 1000
 search_wrap = true
-geometry = 560x400
+geometry = 880x520
 #icon_name = terminal
 
 # 0.0 =  opaque, 1.0 =  transparent
@@ -27,68 +27,45 @@ cursor_blink = off
 cursor_shape = block
 
 # $BROWSER is used by default
-browser = chromium
+browser = firefox
 
 # word characters used for word selection
 # (default if unset =  all graphic non-punctuation/space characters)
 word_chars = -A-Za-z,./?%&# = _=+@~
 
-
-# Color-scheme  = gruvbox
-
 [colors]
-# hard contrast: background = #1d2021
+# Base16 Ocean
+# Scheme: Chris Kempson (http://chriskempson.com)
 
-background = #282828  gruvbox
-#background = #282c34   two-firewatch
+foreground      = #c0c5ce
+foreground_bold = #c0c5ce
+cursor          = #c0c5ce
+background      = #2b303b
 
-# soft contrast: background = #32302f
-foreground = #ebdbb2
-foreground_bold = #ebdbb2
+# 16 color space
+color0  = #2b303b
+color1  = #bf616a
+color2  = #a3be8c
+color3  = #ebcb8b
+color4  = #8fa1b3
+color5  = #b48ead
+color6  = #96b5b4
+color7  = #c0c5ce
+color8  = #65737e
+color9  = #bf616a
+color10 = #a3be8c
+color11 = #ebcb8b
+color12 = #8fa1b3
+color13 = #b48ead
+color14 = #96b5b4
+color15 = #eff1f5
 
-# dark0 + gray
-color0 = #282828
-color8 = #928374
-
-# neurtral_red + bright_red
-color1 = #cc241d
-color9 = #fb4934
-
-# neutral_green + bright_green
-color2  = #98971a
-color10 = #b8bb26
-
-# neutral_yellow + bright_yellow
-color3  = #d79921
-color11 = #fabd2f
-
-# neutral_blue + bright_blue
-color4  = #458588
-color12 = #83a598
-
-# neutral_purple + bright_purple
-color5  = #b16286
-color13 = #d3869b
-
-# neutral_aqua + faded_aqua
-color6  = #689d6a
-color14 = #8ec07c
-
-# light4 + light1
-color7  = #a89984
-color15 = #ebdbb2
+# 256 color space
+color16 = #d08770
+color17 = #ab7967
+color18 = #343d46
+color19 = #4f5b66
+color20 = #a7adba
+color21 = #dfe1e8
 
 
-
-
-
-[hints]
-font = Iosevka Term 12
-#foreground = #dcdccc
-#background = #3f3f3f
-#padding = 2
-#border = #3f3f3f
-#border_width = 0.5
-#roundness = 2.0
-
-# vim =  ft=dosini
