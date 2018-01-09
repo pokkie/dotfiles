@@ -13,10 +13,10 @@
 pkill lemonbar
 
 #COLORS
-fg="#ebcb8b"
-bg="#2b303b"
+fg="#ddeeff"
+bg="#334466"
 
-hint="#c0c5ce"
+hint="#66bbdd"
 norng="#fe8019"
 nblk="#2b303b"
 bblk="#282828"
@@ -72,6 +72,14 @@ LH=26
 LX=1690
 LY=45
 
+SEP1=" "
+SEP2="  "
+# Char glyps for powerline fonts
+sep_left=""                        # Powerline separator left
+sep_right=""                       # Powerline separator right
+sep_l_left=""                      # Powerline light separator left
+sep_l_right=""                     # Powerline light sepatator right
+
 
 if pgrep herbstluftwm; then
 	monitor=${1:-0}
@@ -97,13 +105,39 @@ WIN() {
 	echo -n "%{B$hint}%{F$bg} $(wname $(pfw)) %{F-}%{B-}"
 }
 
+CPU(){ # CPUs temp ..
+  cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
+  cpuload+="% CPU"
+	echo -n "%{B$hint}%{F$bg} $cpuload %{F-}%{B-}"
+	
+}
 
-MUSIC(){ # Current song ..
+MEMORY(){
+  mem=$(free -m | awk 'NR==2 {print $3}')
+        mem+="MB"
+        #echo "%{F$BMAGENTA}  %{F-}${mem} RAM"
+	echo -n "%{B$hint}%{F$bg}   $mem RAM %{F-}%{B-}"
+}
+
+
+MUSIC(){ 
       mus=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
 
   		if [[ $mus ]]; then
  			echo "%{F$bg}  %{F-} ${mus}"
   		fi
+}
+
+ROOT(){
+	hdroot="$(df -h / | tail -n 1 | awk '{print $4}')"
+	echo -n "%{B$hint}%{F$bg}  /  $hdroot free %{F-}%{B-}"
+
+}
+
+DATA(){
+	hddata="$(df -h /data | tail -n 1 | awk '{print $4}')"
+	echo -n "%{B$hint}%{F$bg}  data  $hddata free %{F-}%{B-}"
+
 }
 
 
@@ -169,7 +203,7 @@ CLOCK() {
 BAR() {
     #ADD ALL THE THINGS
     while true; do
-		buf=" $(WRK) %{c}$(MUSIC) %{r}$(VOL) $(NET) $(DATE) $(CLOCK)" 
+		buf=" $(WRK) %{c}$(MUSIC) %{r}$(ROOT)$SEP2$(DATA)$SEP2$(MEMORY)$SEP2$(CPU)$SEP2$(VOL)$SEP2$(NET)$SEP2$(DATE)$SEP2$(CLOCK)" 
 		echo "$buf"	
         sleep 0.1
     done | lemonbar -f "FontAwesome:regular:size=10" \
