@@ -13,27 +13,27 @@
 pkill lemonbar
 
 #COLORS
-fg="#fe8019"
-bg="#282828"
+fg="#ebcb8b"
+bg="#2b303b"
 
 hint="#66bbdd"
 norng="#fe8019"
 borgn="d65d0e"
-nblk="#282828"
+nblk="#2b303b"
 bblk="#1d2021"
-nred="#fb4934"
+nred="#bf616a"
 bred="#cc241d"
-ngrn="#b8bb26"
+ngrn="#a3be8c"
 bgrn="#98971a"
-nylw="#fabd2f"
+nylw="#ebcb8b"
 bylw="#d79921"
-nblu="#83a598"
+nblu="#8fa1b3"
 bblu="#458588"
-nmag="#d3869b"
+nmag="#b48ead"
 bmag="#b16286"
-ncyn="#8ec07c"
+ncyn="#96b5b4"
 bcyn="#689d6a"
-nwht="#ebdbb2"
+nwht="#eff1f5"
 bwht="#fbf1c7"
 
 ## glyphs
@@ -150,12 +150,12 @@ DATA(){
 
   if [ "$switch" = "[on]" ]; then
 	#echo "%{F$BBLUE}  %{F-} ${vol}"
-	echo "%{B$bblu}%{F$bg}  $vol %{F-}%{B-}"
+	echo "%{B$nblu}%{F$bg}  $vol %{F-}%{B-}"
   elif [ "$switch" = "[off]" ]; then
-	echo "%{B$bblu}%{F$bblk}  MUTE %{F-}%{B-}"
+	echo "%{B$nblu}%{F$nblk}  MUTE %{F-}%{B-}"
   else
 	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
-        echo "%{B$bblu}%{F$bg}  $hsvol %{F-}%{B-}"
+        echo "%{B$nblu}%{F$bg}  $hsvol %{F-}%{B-}"
   fi
 }
 
