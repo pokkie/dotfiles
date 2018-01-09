@@ -117,7 +117,7 @@ MEMORY(){
   mem=$(free -m | awk 'NR==2 {print $3}')
         mem+="MB"
         #echo "%{F$BMAGENTA}  %{F-}${mem} RAM"
-	echo -n "%{B$nblu}%{F$bg}   $mem RAM %{F-}%{B-}"
+	echo -n "%{B$ncyn}%{F$bg}   $mem RAM %{F-}%{B-}"
 }
 
 
