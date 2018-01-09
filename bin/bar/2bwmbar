@@ -13,27 +13,28 @@
 pkill lemonbar
 
 #COLORS
-fg="#ddeeff"
-bg="#334466"
+fg="#fe8019"
+bg="#282828"
 
 hint="#66bbdd"
 norng="#fe8019"
-nblk="#2b303b"
-bblk="#282828"
-nred="#dd6677"
-bred="#bf616a"
-ngrn="#8ec07c"
-bgrn="#8ec07c"
-nylw="#ebcb8b"
-bylw="#fabd2f"
-nblu="#88aaee"
-bblu="#83a598"
-nmag="#664477"
-bmag="#b48ead"
-ncyn="#636361"
-bcyn="#696966"
-nwht="#fbf1c7"
-bwht="#ebdbb2"
+borgn="d65d0e"
+nblk="#282828"
+bblk="#1d2021"
+nred="#fb4934"
+bred="#cc241d"
+ngrn="#b8bb26"
+bgrn="#98971a"
+nylw="#fabd2f"
+bylw="#d79921"
+nblu="#83a598"
+bblu="#458588"
+nmag="#d3869b"
+bmag="#b16286"
+ncyn="#8ec07c"
+bcyn="#689d6a"
+nwht="#ebdbb2"
+bwht="#fbf1c7"
 
 ## glyphs
 glymem=""
@@ -108,7 +109,7 @@ WIN() {
 CPU(){ # CPUs temp ..
   cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
   cpuload+="% CPU"
-	echo -n "%{B$hint}%{F$bg} $cpuload %{F-}%{B-}"
+	echo -n "%{B$nylw}%{F$bg} $cpuload %{F-}%{B-}"
 	
 }
 
@@ -116,7 +117,7 @@ MEMORY(){
   mem=$(free -m | awk 'NR==2 {print $3}')
         mem+="MB"
         #echo "%{F$BMAGENTA}  %{F-}${mem} RAM"
-	echo -n "%{B$hint}%{F$bg}   $mem RAM %{F-}%{B-}"
+	echo -n "%{B$nblu}%{F$bg}   $mem RAM %{F-}%{B-}"
 }
 
 
@@ -130,13 +131,13 @@ MUSIC(){
 
 ROOT(){
 	hdroot="$(df -h / | tail -n 1 | awk '{print $4}')"
-	echo -n "%{B$hint}%{F$bg}  /  $hdroot free %{F-}%{B-}"
+	echo -n "%{B$nwht}%{F$bg}  /  $hdroot free %{F-}%{B-}"
 
 }
 
 DATA(){
 	hddata="$(df -h /data | tail -n 1 | awk '{print $4}')"
-	echo -n "%{B$hint}%{F$bg}  data  $hddata free %{F-}%{B-}"
+	echo -n "%{B$nred}%{F$bg}  data  $hddata free %{F-}%{B-}"
 
 }
 
@@ -149,12 +150,12 @@ DATA(){
 
   if [ "$switch" = "[on]" ]; then
 	#echo "%{F$BBLUE}  %{F-} ${vol}"
-	echo "%{B$hint}%{F$bg}  $vol %{F-}%{B-}"
+	echo "%{B$bblu}%{F$bg}  $vol %{F-}%{B-}"
   elif [ "$switch" = "[off]" ]; then
-	echo "%{B$hint}%{F$bblk}  MUTE %{F-}%{B-}"
+	echo "%{B$bblu}%{F$bblk}  MUTE %{F-}%{B-}"
   else
 	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
-        echo "%{B$hint}%{F$bg}  $hsvol %{F-}%{B-}"
+        echo "%{B$bblu}%{F$bg}  $hsvol %{F-}%{B-}"
   fi
 }
 
@@ -187,23 +188,23 @@ DATA(){
 NET() {
 	ping=`ping 8.8.8.8 -c 1 | awk '/rtt/ {printf("%d\n",$4 + 0.5)}'`
 
-	test -n "${ping}" && echo -n "%{B$bgrn}%{F$bg}  %{F-}%{B-}" || echo "%{F$bred}   %{F-} No Connection"
+	test -n "${ping}" && echo -n "%{B$ngrn}%{F$bg}  %{F-}%{B-}" || echo "%{F$bred}   %{F-} No Connection"
           
 	echo 
 }
 
 DATE() {
-    echo -n "%{B$hint} %{F$bg}  $(date "+%a %b %d %y")%{F-} %{B-}"
+    echo -n "%{B$nmag} %{F$bg}  $(date "+%a %b %d %y")%{F-} %{B-}"
 }
 
 CLOCK() {
-    echo -n "%{B$hint}%{F$bg}  $(date "+%H:%M") %{F-}%{B-}"
+    echo -n "%{B$norng}%{F$bg}  $(date "+%H:%M") %{F-}%{B-}"
 }
 
 BAR() {
     #ADD ALL THE THINGS
     while true; do
-		buf=" $(WRK) %{c}$(MUSIC) %{r}$(ROOT)$SEP2$(DATA)$SEP2$(MEMORY)$SEP2$(CPU)$SEP2$(VOL)$SEP2$(NET)$SEP2$(DATE)$SEP2$(CLOCK)" 
+		buf=" $(WRK) %{c}$(MUSIC) %{r}$(ROOT)$SEP2$(DATA)$SEP2$(NET)$SEP2$(MEMORY)$SEP2$(CPU)$SEP2$(VOL)$SEP2$(DATE)$SEP2$(CLOCK)" 
 		echo "$buf"	
         sleep 0.1
     done | lemonbar -f "FontAwesome:regular:size=10" \
