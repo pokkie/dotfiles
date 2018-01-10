@@ -13,17 +13,17 @@
 pkill lemonbar
 
 #COLORS
-fg="#ebcb8b"
-bg="#2b303b"
+fg="#ebdbb2"
+bg="#282828"
 
-hint="#66bbdd"
+hint="#ebdbb2"
 norng="#fe8019"
 borgn="d65d0e"
 nblk="#2b303b"
 bblk="#1d2021"
 nred="#bf616a"
 bred="#cc241d"
-ngrn="#a3be8c"
+ngrn="#b8bb26"
 bgrn="#98971a"
 nylw="#ebcb8b"
 bylw="#d79921"
@@ -109,7 +109,7 @@ WIN() {
 CPU(){ # CPUs temp ..
   cpuload=$(echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')])
   cpuload+="% CPU"
-	echo -n "%{B$nylw}%{F$bg} $cpuload %{F-}%{B-}"
+	echo -n "%{B$hint}%{F$bg} $cpuload %{F-}%{B-}"
 	
 }
 
@@ -117,7 +117,7 @@ MEMORY(){
   mem=$(free -m | awk 'NR==2 {print $3}')
         mem+="MB"
         #echo "%{F$BMAGENTA}  %{F-}${mem} RAM"
-	echo -n "%{B$ncyn}%{F$bg}   $mem RAM %{F-}%{B-}"
+	echo -n "%{B$hint}%{F$bg}   $mem RAM %{F-}%{B-}"
 }
 
 
@@ -131,13 +131,13 @@ MUSIC(){
 
 ROOT(){
 	hdroot="$(df -h / | tail -n 1 | awk '{print $4}')"
-	echo -n "%{B$nwht}%{F$bg}  /  $hdroot free %{F-}%{B-}"
+	echo -n "%{B$hint}%{F$bg}  /  $hdroot free %{F-}%{B-}"
 
 }
 
 DATA(){
 	hddata="$(df -h /data | tail -n 1 | awk '{print $4}')"
-	echo -n "%{B$nred}%{F$bg}  data  $hddata free %{F-}%{B-}"
+	echo -n "%{B$hint}%{F$bg}  data  $hddata free %{F-}%{B-}"
 
 }
 
@@ -150,12 +150,12 @@ DATA(){
 
   if [ "$switch" = "[on]" ]; then
 	#echo "%{F$BBLUE}  %{F-} ${vol}"
-	echo "%{B$nblu}%{F$bg}  $vol %{F-}%{B-}"
+	echo "%{B$hint}%{F$bg}  $vol %{F-}%{B-}"
   elif [ "$switch" = "[off]" ]; then
-	echo "%{B$nblu}%{F$nblk}  MUTE %{F-}%{B-}"
+	echo "%{B$hint}%{F$nblk}  MUTE %{F-}%{B-}"
   else
 	#echo "%{F$BBLUE}  %{F-} ${hsvol}"
-        echo "%{B$nblu}%{F$bg}  $hsvol %{F-}%{B-}"
+        echo "%{B$hint}%{F$bg}  $hsvol %{F-}%{B-}"
   fi
 }
 
@@ -194,11 +194,11 @@ NET() {
 }
 
 DATE() {
-    echo -n "%{B$nmag} %{F$bg}  $(date "+%a %b %d %y")%{F-} %{B-}"
+    echo -n "%{B$hint} %{F$bg}  $(date "+%a %b %d %y")%{F-} %{B-}"
 }
 
 CLOCK() {
-    echo -n "%{B$norng}%{F$bg}  $(date "+%H:%M") %{F-}%{B-}"
+    echo -n "%{B$hint}%{F$bg}  $(date "+%H:%M") %{F-}%{B-}"
 }
 
 BAR() {
