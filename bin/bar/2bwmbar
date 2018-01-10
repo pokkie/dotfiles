@@ -13,17 +13,17 @@
 pkill lemonbar
 
 #COLORS
-fg="#ebdbb2"
-bg="#282828"
+fg="#ebcb8b"
+bg="#2b303b"
 
-hint="#ebdbb2"
+hint="#ebcb8b"
 norng="#fe8019"
 borgn="d65d0e"
 nblk="#2b303b"
 bblk="#1d2021"
 nred="#bf616a"
 bred="#cc241d"
-ngrn="#b8bb26"
+ngrn="#a3be8c"
 bgrn="#98971a"
 nylw="#ebcb8b"
 bylw="#d79921"
