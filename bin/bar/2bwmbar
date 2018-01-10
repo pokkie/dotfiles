@@ -16,7 +16,7 @@ pkill lemonbar
 fg="#ebcb8b"
 bg="#2b303b"
 
-hint="#ebcb8b"
+hint="#65737e"
 norng="#fe8019"
 borgn="d65d0e"
 nblk="#2b303b"
