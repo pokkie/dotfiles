@@ -4,9 +4,9 @@
 [submodule "spacemacs"]
 	path = spacemacs
 	url = https://github.com/dagnachewa/spacemacs
-[submodule ".emacs.d"]
-	path = .emacs.d
-	url = https://github.com/dagnachewa/spacemacs
 [submodule "2bwm"]
 	path = 2bwm
 	url = https://github.com/dagnachewa/2bwm
+[submodule ".emacs.d"]
+	path = .emacs.d
+	url = https://github.com/dagnachewa/spacemacs

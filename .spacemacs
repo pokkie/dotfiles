@@ -2,10 +2,6 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-
-
-
-
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
@@ -40,22 +36,21 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-    asciidoc
-    auto-completion
-    better-defaults
-    bibtex
-    csv
-    deft
-
-    (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org")
-	    :bind (:map elfeed-search-mode-map
-             ("q" . bjm/elfeed-save-db-and-bury)
-             ("Q" . bjm/elfeed-save-db-and-bury)
-             ("*" . bjm/elfeed-star)
-             ("M" . bjm/elfeed-unstar)
-             ))
-    emacs-lisp
-    (erc :variables
+     asciidoc
+     auto-completion
+     better-defaults
+     bibtex
+     csv
+     deft
+     (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org")
+	           :bind (:map elfeed-search-mode-map
+              ("q" . bjm/elfeed-save-db-and-bury)
+              ("Q" . bjm/elfeed-save-db-and-bury)
+              ("*" . bjm/elfeed-star)
+              ("M" . bjm/elfeed-unstar)
+              ))
+     emacs-lisp
+     (erc :variables
                    erc-server-list
                    '(("irc.freenode.net"
                       :port "6697"
@@ -68,62 +63,54 @@ values."
                    erc-prompt-for-nickserv-password nil
                    erc-auto-join-channels-alist '(("freenode.net" "#archlinux" "#archlinux-fr" "#freebsd" "##linux" "##c" "##c++" "#postgresql" "#R" "#scala" "#haskell" "#erlang" "##javascript" "#python" "#go-nuts" "##networking" "#zsh" "#git" "#Node.js" "#emacs"))
                                                   ("oftc.net" "#debian-quebec" "#kernelnewbies" "#suckless")))
+     emacs-lisp
+     ess
+     evil-commentary
+     finance
+     git
+     graphviz
+     helm
 
-    ess
-    evil-commentary
-    finance
-    git
-    (version-control :variables
-                     version-control-diff-tool 'git-gutter
-                     version-control-diff-side 'left)
-    graphviz
-    helm
-    (ranger :variables
-             ranger-show-preview t)
-    (pdf-tools)
+     ;; languages
+     (c-c++ :variables c-c++-enable-clang-support t)
 
-    ;; languages
-    (c-c++ :variables c-c++-enable-clang-support t)
+     elixir
+     elm
+     erlang
+     go
+     haskell
+     java
+     javascript
+     python
+     rust
+     scala
+     scheme
 
-    elixir
-    elm
-    erlang
-    go
-    haskell
-    java
-    javascript
-    python
-    rust
-    scala
-    scheme
-
-    (latex :variables
-           latex-enable-folding t
-           latex-enable-auto-fill t)
-    (markdown :variables markdown-live-preview-engine 'vmd)
-
-    (org :variables
+     (latex :variables
+            latex-enable-folding t
+            latex-enable-auto-fill t) 
+     (markdown :variables markdown-live-preview-engine 'vmd)
+     (org :variables
           org-enable-github-support t
           org-enable-reveal-js-support t)
-    pandoc 
-    prodigy
-    shell
-    (shell :variables
-            shell-default-shell 'multi-term
-            shell-default-height 30
-            shell-default-term-shell "/usr/bin/zsh"
-            shell-default-position 'bottom)
-
-    shell-scripts
-    spacemacs-layouts
-    spell-checking
-    syntax-checking
-    sql
-    (themes-megapack :packages
-                     gruvbox-theme)
-    vimscript
-    yaml
-    )
+     pandoc
+     prodigy
+     (shell :variables
+             shell-default-shell 'multi-term
+             shell-default-height 30
+             shell-default-term-shell "/usr/bin/zsh"
+             shell-default-position 'bottom)
+     spell-checking
+     sql
+     syntax-checking
+     themes-megapack
+     (version-control :variables
+                      version-control-diff-tool 'git-gutter
+                      version-control-diff-side 'left)
+     vimscript
+     yaml
+     )
+     
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -134,12 +121,16 @@ values."
                                       multiple-cursors
                                       outshine
                                       autothemer)
-
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(exec-path-from-shell-copy-env
-                                    ess-R-object-popup)
+                                    ess-R-object-popup
+                                    firebelly-theme
+                                    tronesque-theme
+                                    niflheim-theme
+                                    pastels-on-dark-theme
+                                    zonokai-theme)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -207,8 +198,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(
-                         base16-ocean
+   dotspacemacs-themes '(base16-ocean
                          spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -395,11 +385,13 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   (server-start)
-  (setq powerline-default-separator 'wave)
-  (setq all-the-icons-color-icons t)
-  (setq all-th-icons-for-buffer t)
-  
- 
+
+  (require 'package)
+
+  ;; package-archives setting
+  (add-to-list 'package-archives
+              '("melpa" . "http://melpa.org/packages/") t)
+
 
 
 ;; A secure Emacs environment
@@ -426,826 +418,41 @@ you should place your code here."
   (setq gnutls-trustfiles (list trustfile))) 
 
 
-  (require 'package)
-
-
- 
-
-;; package-archives setting
-  (add-to-list 'package-archives
-              '("melpa" . "http://melpa.org/packages/") t)
-
-
-;; deft setting
-  (setq deft-extensions '("org" "md" "txt"))
-  (setq deft-directory "~/Dropbox/notes")
-
-;; elfeed
-
-  (defun elfeed-mark-all-as-read ()
-   (interactive)
-   (mark-whole-buffer)
-   (elfeed-search-untag-all-unread))
-
-;; code to add and remove a starred tag to elfeed article
-;; based on http://matt.hackinghistory.ca/2015/11/22/elfeed/
-
-;; add a star
-  (defun bjm/elfeed-star ()
-   "Apply starred to all selected entries."
-   (interactive )
-   (let* ((entries (elfeed-search-selected))
-          (tag (intern "starred")))
-
-    (cl-loop for entry in entries do (elfeed-tag entry tag))
-    (mapc #'elfeed-search-update-entry entries)
-    (unless (use-region-p) (forward-line))))
-
-;; remove a start
-  (defun bjm/elfeed-unstar ()
-   "Remove starred tag from all selected entries."
-   (interactive )
-   (let* ((entries (elfeed-search-selected))
-          (tag (intern "starred")))
-
-    (cl-loop for entry in entries do (elfeed-untag entry tag))
-    (mapc #'elfeed-search-update-entry entries)
-    (unless (use-region-p) (forward-line))))
-
-;; face for starred articles
-;; (defface elfeed-search-starred-title-face
-;;  '((t :foreground "#f77"))
-;;  "Marks a starred Elfeed entry.")
-
-;;(push '(starred elfeed-search-starred-title-face) elfeed-search-face-alist) 
-
-
-;;functions to support syncing .elfeed between machines
-;;makes sure elfeed reads index from disk before launching
-  (defun bjm/elfeed-load-db-and-open ()
-   "Wrapper to load the elfeed db from disk before opening"
-   (interactive)
-   (elfeed-db-load)
-   (elfeed)
-   (elfeed-search-update--force))
-
-;;write to disk when quiting
-  (defun bjm/elfeed-save-db-and-bury ()
-   "Wrapper to save the elfeed db to disk before burying buffer"
-   (interactive)
-   (elfeed-db-save)
-   (quit-window))
-
+  (spaceline-emacs-theme)
   
 
 
-
 ;; erc configuration
-
   (setq erc-prompt-for-nickserv-password nil)
-                                     
 
-
-
-
-
-;; PDF tools
+;; pdf tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
    TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
    TeX-source-correlate-start-server t)
 
 
-) ;; **** user-config() end ****
 
-;; Writing
 
-;; Publishing
 
-;; Org-Mode
 
-; (add-to-list 'load-path (expand-file-name (concat init-dir "ox-ghost")))
-  (load-file "~/.emacs.d/external-apps/ox-leanpub.el") 
 
 
 
-;; Setting up the to-do workflow
 
-  (setq org-todo-keywords
-       '((sequence "TODO(t)" "SUBTREE(s)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
-	(sequence "CRASH(c)" "BUG(b)" "REQUEST(r)" "TEST(e)" "|" "FIXED(f)")))
 
-  (setq org-todo-keyword-faces
-       '(("WAIT" . "white")
-	 ("CRASH" . "red")
-	 ("BUG" . "red")
-	 ("SUBTREE" . "grey")
-	 ("TEST" . "turquoise1")
-	 )) 
 
-;; Making piority displayed with different color 
 
-  (setq org-priority-faces
-       '((?A . (:foreground "red1" :weight 'bold))
-	 (?B . (:foreground "VioletRed1"))
-	 (?C . (:foreground "DeepSkyBlue3"))
-	 (?D . (:foreground "DeepSkyBlue4"))
-	 (?E . (:foreground "gray40"))))
 
-  (setq org-highest-priority 65)
-  (setq org-default-priority 67)
-  (setq org-lowest-priority 69) 
 
-  (setq-default
-  org-return-follows-link t
-  org-image-actual-width '(400)
-  org-highlight-latex-and-related '(latex script entities))
 
 
-;; Agenda view customization
 
-  (setq org-agenda-time-grid
-       '((daily today today)
-	 #("----------------" 0 16 (org-heading t))
-	 (800 1000 1200 1400 1600 1800 2000 2200 2359))) ;; show default time lines
-  (setq org-agenda-prefix-format '((agenda  . "%-10:T% s%?-2t") ; (agenda . " %s %-12t ")
-				 (timeline . "%-9:T%?-2t% s")
-				 (todo . "%i%-8:T")
-				 (tags . "%i%-8:T")
-				 (search . "%i%-8:T")))
-  (setq org-agenda-remove-tags t) 
- 
-;; Setup agenda files
-  (setq org-agenda-files (list "/data/org-mode/org")) 
 
-;; Tag completion though out all agenda files
-  (setq org-complete-tags-always-offer-all-agenda-tags t) 
 
-;; Very important if your config file is a .org document… Also, add native <tab> behavior in source blocks.
 
-  (setq
-  org-src-fontify-natively t
-  org-src-tab-acts-natively t)
 
-;; We also want this in LaTeX output!
 
-  (setq org-latex-listings 'minted)
-
-;; For HTML output, we want to be able to set a custom stylesheet.
-
-  (setq org-html-htmlize-output-type 'css)
-
-
-
-
-;; Default Applications
-
-;; Org opens PDFs by default in gv… change that to evince. Also open HTML in Chrome.
-
-  (setq org-file-apps '((auto-mode . emacs)
-                      ("\\.x?html?\\'" . "firefox %s")
-                      ("\\.pdf\\'" . "zathura \"%s\"")
-                      ("\\.pdf::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
-                      ("\\.pdf.xoj" . "xournal %s")))
-
-;; org-babel
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '(
-    (C .t)
-    (ditaa .t)
-    (emacs-lisp .t)
-    (haskell .t)
-    (js .t)
-    (python .t)
-    (latex .t)
-    (lisp .t)
-    (R .t)
-    (sql .t)
-    ))
-  
-
-;; org-babel settings
-
-  (setq org-babel-matlab-with-emacs-link nil)
-  (setq org-confirm-babel-evaluate nil)
-  (setq org-export-babel-evaluate nil)
-  ;; can be bad for long simulations
-  ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-
- 
-;; ditaa
-
-;; Ditaa is a small tool that takes ASCII art and renders it as neat diagrams. Combined with org, I can sketch out ideas directly in an org buffer using the emacs Artist mode.
-
-  (setq org-ditaa-jar-path "~/.emacs.d/external-apps/ditaa0_9.jar")
-  (setq org-ditaa-eps-ijar-path "~/.emacs.d/external-apps/ditaa0_9.jar")
-
-  (setq ditaa-cmd "java -jar ~/.emacs.d/external-apps/ditaa0_9.jar")
-  (defun djcb-ditaa-generate ()
-    (interactive)
-    (shell-command
-     (concat ditaa-cmd " " buffer-file-name)))
- 
-
-
-;; org-present
-
-;; Use with M-x org-present. We configure this by adding functionality to the hooks. For this, we first need a few helper functions. Some of them are similar to the ones in the "writing font" subsection.
-
-;; This snippet adds some code to replace the plain old "-" or "+" bullets with a nicer unicode symbol, although I do have a feeling that the teardown function is a little too dirty. It works for now. 
-  (setq my-org-present-prettify-bullets-keywords
-       '(;; the regular "- " bullet
-         ("^ *\\- " ;; match line start followed by 0 or more spaces followed by "-" followed by a space
-          (0 (progn (put-text-property
-                     (match-beginning 0) (match-end 0)
-                      'display (concat ;; add spaces if necessary
-                               (make-string (- (match-end 0) (match-beginning 0) 2) 32)
-                               (char-to-string #x25B8) " ") ;; triangle
-                    nil))))
-        ;; the "+" bullet. add more as needed.
-         ("^ *\\+ "
-          (0 (progn (put-text-property
-                     (match-beginning 0) (match-end 0)
-                     'display (concat
-                               (make-string (- (match-end 0) (match-beginning 0) 2) 32)
-                               (char-to-string #x2022) " ") ;; bullet
-                     nil))))))
-
-  (defun my-org-present-prettify-bullets-setup ()
-   (font-lock-add-keywords nil
-                          my-org-present-prettify-bullets-keywords))
-  (defun my-org-present-prettify-bullets-teardown ()
-   (font-lock-remove-keywords nil
-                             my-org-present-prettify-bullets-keywords)
-   (remove-text-properties (point-min) (point-max) '(display nil))
-   (revert-buffer t t))  
-
-
-
-;; Next, we mess with some faces. TODO: maybe change face in code blocks to monospace (as of right now, I do not see an easy way to do this, since all of the font-lock faces inherit from default. Maybe I can make the font-lock faces inherit from a different font, of course buffer locally)
-
-  (defun my-org-present-faces-setup ()
-   (let ((heading-height 450)
-         (heading-fam "Fira Sans")
-         (text-fam "Fira Sans")
-         (spacing 0.4))
-     (make-local-variable 'org-present-face-cookie-list)
-     (setq org-present-face-cookie-list nil)
-     ;; remap the heading face
-     (add-to-list 'org-present-face-cookie-list
-                  (face-remap-add-relative 'org-level-1
-                                           :family heading-fam
-                                           :height heading-height
-                                           :weight 'bold))
-     ;; remap the default face
-     (add-to-list 'org-present-face-cookie-list
-                  (face-remap-add-relative 'default
-                                           :family text-fam))
-     ;; disable grey bars in code blocks
-     (add-to-list 'org-present-face-cookie-list
-                  (face-remap-add-relative 'org-block-begin-line
-                                           :background (face-attribute 'default :background)))
-     (add-to-list 'org-present-face-cookie-list
-                  (face-remap-add-relative 'org-block-end-line
-                                           :background (face-attribute 'default :background)))
-     ;; add some spacing between lines
-     (setq-local line-spacing spacing)))
-
-  (defun my-org-present-faces-teardown ()
-   ;; restore the modified faces
-   (dolist (cookie org-present-face-cookie-list)
-     (face-remap-remove-relative cookie))
-   ;; restore the spacing
-   (setq-local line-spacing nil))
-
-
-;; The following snippet finally defines the setup and teardown hooks for org-present-mode. 
-
-  (defun my-org-present-setup ()
-   ;; do not want cursor or hl-line
-   (make-variable-buffer-local 'post-command-hook)
-   (remove-hook 'post-command-hook 'dennis-set-cursor)
-   (setq global-hl-line-mode nil)
-   ;; make it work with wireless presenter
-   (buffer-local-set-key (kbd "<next>") 'org-present-next)
-   (buffer-local-set-key (kbd "<prior>") 'org-present-prev)
-   ;; change other things to make it look like a presentation
-   (org-display-inline-images)
-   (org-present-hide-cursor)
-   (org-indent-mode)
-   (my-org-present-faces-setup)
-   (hidden-mode-line-mode)
-   (org-present-big)
-   (fringe-mode '(0 . 0))
-   (my-org-present-prettify-bullets-setup)
-   (org-present-read-only))
-
-  (defun my-org-present-teardown ()
-   (add-hook 'post-command-hook 'dennis-set-cursor)
-   (setq global-hl-line-mode t)
-   (buffer-local-set-key (kbd "<next>") nil)
-   (buffer-local-set-key (kbd "<prior>") nil)
-   (org-remove-inline-images)
-   (org-present-show-cursor)
-   (org-indent-mode -1)
-   (my-org-present-faces-teardown)
-   (hidden-mode-line-mode -1)
-   (org-present-small)
-   (fringe-mode '(4 . 4))
-   (org-present-read-write)
-   (my-org-present-prettify-bullets-teardown))
-
-  (add-hook 'org-present-mode-hook 'my-org-present-setup)
-  (add-hook 'org-present-mode-quit-hook 'my-org-present-teardown)
-
-
-
-;; Windmove and org-mode clashes
-
-;; Make windmove (and framemove) play nice with org.
-
-  (add-hook 'org-shiftup-final-hook 'windmove-up)
-  (add-hook 'org-shiftleft-final-hook 'windmove-left)
-  (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right)
- 
-
-
-
-;; YaSnippet and org
-
-;; backtab is already used in org-mode. Let's use C-<tab> instead.
-
-  (define-key org-mode-map (kbd "C-<tab>") 'yas-expand)
-
-
-
-  (require 'dash)
-
-
-  (provide 'pretty-fonts)
-
-
-
-;;; API
-
-;;;###autoload
-  (defun pretty-fonts-set-fontsets (CODE-FONT-ALIST)
-   "Utility to associate many unicode points with specified fonts."
-   (--each CODE-FONT-ALIST
-     (-let (((font . codes) it))
-       (--each codes
-         (set-fontset-font t `(,it . ,it) font)))))
-
-;;;###autoload
-  (defun pretty-fonts--add-kwds (FONT-LOCK-ALIST)
-   "Exploits `font-lock-add-keywords' to apply regex-unicode replacements."
-   (font-lock-add-keywords
-    nil (--map (-let (((rgx uni-point) it))
-                `(,rgx (0 (progn
-                            (compose-region
-                             (match-beginning 1) (match-end 1)
-                             ,(concat "\t" (list uni-point)))
-                            nil))))
-              FONT-LOCK-ALIST)))
-
-;;;###autoload
-  (defmacro pretty-fonts-set-kwds (FONT-LOCK-HOOKS-ALIST)
-   "Set regex-unicode replacements to many modes."
-   `(--each ,FONT-LOCK-HOOKS-ALIST
-      (-let (((font-locks . mode-hooks) it))
-        (--each mode-hooks
-          (add-hook it (-partial 'pretty-fonts--add-kwds
-                                 (symbol-value font-locks)))))))
-
-;;;Fira Font
-
-  (defconst pretty-fonts-fira-font
-   '(;; OPERATORS
-     ;; Pipes
-     ("\\(<|\\)" #Xe14d) ("\\(<>\\)" #Xe15b) ("\\(<|>\\)" #Xe14e) ("\\(|>\\)" #Xe135)
-
-     ;; Brackets
-     ("\\(<\\*\\)" #Xe14b) ("\\(<\\*>\\)" #Xe14c) ("\\(\\*>\\)" #Xe104)
-     ("\\(<\\$\\)" #Xe14f) ("\\(<\\$>\\)" #Xe150) ("\\(\\$>\\)" #Xe137)
-     ("\\(<\\+\\)" #Xe155) ("\\(<\\+>\\)" #Xe156) ("\\(\\+>\\)" #Xe13a)
-
-     ;; Equality
-     ("\\(!=\\)" #Xe10e) ("\\(!==\\)"         #Xe10f) ("\\(=/=\\)" #Xe143)
-     ("\\(/=\\)" #Xe12c) ("\\(/==\\)"         #Xe12d)
-     ("\\(===\\)"#Xe13d) ("[^!/]\\(==\\)[^>]" #Xe13c)
- 
-     ;; Equality Special
-     ("\\(||=\\)"  #Xe133) ("[^|]\\(|=\\)" #Xe134)
-     ("\\(~=\\)"   #Xe166)
-     ("\\(\\^=\\)" #Xe136)
-     ("\\(=:=\\)"  #Xe13b)
-
-     ;; Comparisons
-     ("\\(<=\\)" #Xe141) ("\\(>=\\)" #Xe145)
-     ("\\(</\\)" #Xe162) ("\\(</>\\)" #Xe163)
-
-     ;; Shifts
-     ("[^-=]\\(>>\\)" #Xe147) ("\\(>>>\\)" #Xe14a)
-     ("[^-=]\\(<<\\)" #Xe15c) ("\\(<<<\\)" #Xe15f)
-
-     ;; Dots
-     ("\\(\\.-\\)"    #Xe122) ("\\(\\.=\\)" #Xe123)
-     ("\\(\\.\\.<\\)" #Xe125)
-
-     ;; Hashes
-     ("\\(#{\\)"  #Xe119) ("\\(#(\\)"   #Xe11e) ("\\(#_\\)"   #Xe120)
-     ("\\(#_(\\)" #Xe121) ("\\(#\\?\\)" #Xe11f) ("\\(#\\[\\)" #Xe11a)
-
-     ;; REPEATED CHARACTERS
-     ;; 2-Repeats
-     ("\\(||\\)" #Xe132)
-     ("\\(!!\\)" #Xe10d)
-     ("\\(%%\\)" #Xe16a)
-     ("\\(&&\\)" #Xe131)
-
-     ;; 2+3-Repeats
-     ("\\(##\\)"       #Xe11b) ("\\(###\\)"         #Xe11c) ("\\(####\\)" #Xe11d)
-     ("\\(--\\)"       #Xe111) ("\\(---\\)"         #Xe112)
-     ("\\({-\\)"       #Xe108) ("\\(-}\\)"          #Xe110)
-     ("\\(\\\\\\\\\\)" #Xe106) ("\\(\\\\\\\\\\\\\\)" #Xe107)
-     ("\\(\\.\\.\\)"   #Xe124) ("\\(\\.\\.\\.\\)"   #Xe126)
-     ("\\(\\+\\+\\)"   #Xe138) ("\\(\\+\\+\\+\\)"   #Xe139)
-     ("\\(//\\)"       #Xe12f) ("\\(///\\)"         #Xe130)
-     ("\\(::\\)"       #Xe10a) ("\\(:::\\)"         #Xe10b)
-
-     ;; ARROWS
-     ;; Direct
-     ("[^-]\\(->\\)" #Xe114) ("[^=]\\(=>\\)" #Xe13f)
-     ("\\(<-\\)"     #Xe152)
-     ("\\(-->\\)"    #Xe113) ("\\(->>\\)"    #Xe115)
-     ("\\(==>\\)"    #Xe13e) ("\\(=>>\\)"    #Xe140)
-     ("\\(<--\\)"    #Xe153) ("\\(<<-\\)"    #Xe15d)
-     ("\\(<==\\)"    #Xe158) ("\\(<<=\\)"    #Xe15e)
-     ("\\(<->\\)"    #Xe154) ("\\(<=>\\)"    #Xe159)
-
-     ;; Branches
-     ("\\(-<\\)"  #Xe116) ("\\(-<<\\)" #Xe117)
-     ("\\(>-\\)"  #Xe144) ("\\(>>-\\)" #Xe148)
-     ("\\(=<<\\)" #Xe142) ("\\(>>=\\)" #Xe149)
-     ("\\(>=>\\)" #Xe146) ("\\(<=<\\)" #Xe15a)
-
-     ;; Squiggly
-     ("\\(<~\\)" #Xe160) ("\\(<~~\\)" #Xe161)
-     ("\\(~>\\)" #Xe167) ("\\(~~>\\)" #Xe169)
-     ("\\(-~\\)" #Xe118) ("\\(~-\\)"  #Xe165)
-
-     ;; MISC
-     ("\\(www\\)"                   #Xe100)
-     ("\\(<!--\\)"                  #Xe151)
-     ("\\(~@\\)"                    #Xe164)
-     ("[^<]\\(~~\\)"                #Xe168)
-     ("\\(\\?=\\)"                  #Xe127)
-     ("[^=]\\(:=\\)"                #Xe10c)
-     ("\\(/>\\)"                    #Xe12e)
-     ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
-     ("[^:=]\\(:\\)[^:=]"           #Xe16c)
-     ("\\(<=\\)"                    #Xe157))
-   "Fira font ligatures and their regexes")
-
-  (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
-
-;;; Display Layer
-  (setq neo-theme 'icons)
-
-  (setq display-packages
-       '(
-         ;; Owned Display Packages
-         all-the-icons
-         all-the-icons-ivy
-         all-the-icons-dired
-         spaceline-all-the-icons
-         (prettify-utils :location (recipe :fetcher github
-                                           :repo "Ilazki/prettify-utils.el"))
-
-         ;; Owned Local Display Packages
-         (pretty-code :location local)
-         (pretty-eshell :location local)
-         (pretty-fonts :location local)
-         (pretty-magit :location local)
-         (pretty-outlines :location local)
-         (windows-frame-size-fix :location local)
-         ))
-
-;;; Locals
-;;;; Pretty-code
-
-  (defun display/init-pretty-code ()
-   (use-package pretty-code
-     :after prettify-utils macros
-     :config
-      (progn
-       (global-prettify-symbols-mode 1)
-
-       (setq hy-pretty-pairs
-             (pretty-code-get-pairs
-              '(;; Functional
-                :lambda
-                "fn"
-                :def "defn" :composition "comp"
-
-                ;; Types
-                :null "None"
-                :true "True" :false "False"
-
-                ;; Flow
-                :not "not"
-                :in "in" :not-in "not-in"
-                :and "and" :or "or"
-                :some "some"
-
-                ;; Other
-                :tuple "#t"  ; Tag macro for tuple casting
-                )))
-
-       (setq python-pretty-pairs
-             (pretty-code-get-pairs
-              '(;; Functional
-                :lambda
-                "lambda"
-                :def "def"
-
-                ;; Types
-                :null "None"
-                :true "True" :false "False"
-                :int "int" :float "float"
-                :str "str" :bool "bool"
-
-                ;; Flow
-                :not "not"
-                :in "in" :not-in "not in"
-                :and "and" :or "or"
-                :for "for"
-                :return "return" :yield "yield"
-
-                ;; Other
-                :tuple "Tuple" :pipe "tz-pipe"
-                )))
-
-       (pretty-code-set-pairs `((hy-mode-hook     ,hy-pretty-pairs)
-                                (python-mode-hook ,python-pretty-pairs))))))
-
-;;;; Pretty-eshell
-
-  (defun display/init-pretty-eshell ()
-   (use-package pretty-eshell
-     :after macros
-     :config
-     (progn
-       ;; Directory
-       (pretty-eshell-section
-        esh-dir
-        "\xf07c"  ; 
-        (abbreviate-file-name (eshell/pwd))
-        '(:foreground "gold" :bold ultra-bold :underline t))
-
-       ;; Git Branch
-       (pretty-eshell-section
-        esh-git
-       "\xe907"  ; 
-        (magit-get-current-branch)
-        '(:foreground "pink"))
-
-       ;; Python Virtual Environment
-       (pretty-eshell-section
-        esh-python
-        "\xe928"  ; 
-        pyvenv-virtual-env-name)
-
-       ;; Time
-       (pretty-eshell-section
-        esh-clock
-        "\xf017"  ; 
-        (format-time-string "%H:%M" (current-time))
-        '(:foreground "forest green"))
-
-       ;; Prompy Number
-       (pretty-eshell-section
-        esh-num
-        "\xf0c9"  ; 
-        (number-to-string pretty-eshell-prompt-num)
-        '(:foreground "brown"))
-
-       (setq pretty-eshell-funcs
-             (list esh-dir esh-git esh-python esh-clock esh-num)))))
-
-;;;; Pretty-fonts
-
-  (defun display/init-pretty-fonts ()
-   (use-package pretty-fonts
-     :init
-     (defconst pretty-fonts-hy-mode
-       '(("\\(self\\)"   ?⊙)))
-
-     :config
-     (progn
-       (pretty-fonts-set-kwds
-        '(;; Fira Code Ligatures
-          (pretty-fonts-fira-font prog-mode-hook org-mode-hook)
-          ;; Custom replacements not possible with `pretty-code' package
-          (pretty-fonts-hy-mode hy-mode-hook)))
-
-       (pretty-fonts-set-fontsets
-        '(("fontawesome"
-           ;;                         
-           #xf07c #xf0c9 #xf0c4 #xf0cb #xf017 #xf101)
-
-          ("all-the-icons"
-           ;;    
-           #xe907 #xe928)
-
-          ("github-octicons"
-           ;;                          
-           #xf091 #xf059 #xf076 #xf075 #xe192  #xf016)
-
-          ("material icons"
-           ;;        
-           #xe871 #xe918 #xe3e7
-           ;;
-           #xe3d0 #xe3d1 #xe3d2 #xe3d4)
-
-          ("Symbola"
-           ;; 𝕊    ⨂      ∅      ⟻    ⟼     ⊙      𝕋       𝔽
-           #x1d54a #x2a02 #x2205 #x27fb #x27fc #x2299 #x1d54b #x1d53d
-           ;; 𝔹    𝔇       𝔗
-           #x1d539 #x1d507 #x1d517))))))
-
-;;;; Pretty-magit
-
-  (defun display/init-pretty-magit ()
-   (use-package pretty-magit
-     :after ivy magit macros
-     :config
-     (progn
-       (pretty-magit-add-leader
-        "Feature"
-        ?
-        (:foreground "slate gray" :height 1.2))
-
-       (pretty-magit-add-leader
-        "Add"
-        ?
-        (:foreground "#375E97" :height 1.2))
-
-       (pretty-magit-add-leader
-        "Fix"
-        ?
-        (:foreground "#FB6542" :height 1.2))
-
-       (pretty-magit-add-leader
-        "Clean"
-        ?
-        (:foreground "#FFBB00" :height 1.2))
-
-       (pretty-magit-add-leader
-        "Docs"
-        ?
-        (:foreground "#3F681C" :height 1.2))
-
-       (pretty-magit-add-leader
-        "master"
-        ?
-        (:box t :height 1.2)
-        'no-prompt)
-
-       (pretty-magit-add-leader
-        "origin"
-        ?
-        (:box t :height 1.2)
-        'no-prompt))))
-
-;;;; Pretty-outlines
-
-  (defun display/init-pretty-outlines ()
-   (use-package pretty-outlines
-     :after outshine macros
-     :config
-     (progn
-       (setq pretty-outlines-bullets-bullet-list
-             '("" "" "" ""))
-       (setq pretty-outlines-ellipsis
-             "")
-
-       (spacemacs/add-to-hooks 'pretty-outlines-set-display-table
-                               '(outline-mode-hook
-                                 outline-minor-mode-hook))
-
-       (spacemacs/add-to-hooks 'pretty-outlines-add-bullets
-                               '(emacs-lisp-mode-hook
-                                 hy-mode-hook
-                                 python-mode-hook)))))
-
-;;;; Windows-frame-size-fix
-
-  (defun display/init-windows-frame-size-fix ()
-   (use-package windows-frame-size-fix
-     :if (not linux?)))
-
-;;; Core Packages
-;;;; All-the-icons
-
-  (defun display/init-all-the-icons ()
-   (use-package all-the-icons
-     :config
-     (progn
-       (defconst all-the-icons-icon-hy
-         '("\\.hy$"
-           all-the-icons-fileicon "lisp" :face all-the-icons-orange))
-       (defconst all-the-icons-mode-icon-hy
-         '(hy-mode
-           all-the-icons-fileicon "lisp" :face all-the-icons-orange))
-
-       (defconst all-the-icons-icon-graphviz
-         '("\\.dot$"
-           all-the-icons-fileicon "graphviz" :face all-the-icons-pink))
-       (defconst all-the-icons-mode-icon-graphviz
-         '(graphviz-dot-mode
-           all-the-icons-fileicon "graphviz" :face all-the-icons-pink))
-
-       (add-to-list 'all-the-icons-icon-alist
-                    all-the-icons-icon-hy)
-       (add-to-list 'all-the-icons-icon-alist
-                    all-the-icons-icon-graphviz)
-       (add-to-list 'all-the-icons-mode-icon-alist
-                    all-the-icons-mode-icon-hy)
-       (add-to-list 'all-the-icons-mode-icon-alist
-                   all-the-icons-mode-icon-graphviz))))
-
-;;;; All-the-icons-ivy
-
-  (defun display/init-all-the-icons-ivy ()
-   (use-package all-the-icons-ivy
-     :after all-the-icons
-     :config
-     (progn
-       (all-the-icons-ivy-setup)
-       (advice-add 'all-the-icons-ivy-file-transformer :override
-                   'ivy-file-transformer-fixed-for-files))))
-
-;;;; All-the-icons-dired
-
-  (defun display/init-all-the-icons-dired ()
-   (use-package all-the-icons-dired
-     :config
-     (add-hook 'dired-mode-hook
-               'all-the-icons-dired-mode)))
-
-;;;; Prettify-utils
-
-  (defun display/init-prettify-utils ()
-   (use-package prettify-utils))
-
-
-
-;;;; Spaceline-all-the-icons
-
-
-  (defun display/init-spaceline-all-the-icons ()
-   (use-package spaceline-all-the-icons
-     :after spaceline
-     :config
-     (progn
-       (spaceline-all-the-icons-theme)
-
-       (setq
-        spaceline-highlight-face-func
-        'spaceline-highlight-face-default
-
-        spaceline-all-the-icons-icon-set-modified
-        'chain
-
-        spaceline-all-the-icons-icon-set-window-numbering
-        'square
-
-        spaceline-all-the-icons-separator-type
-        'none
-
-        spaceline-all-the-icons-primary-separator
-        "")
-
-       ;; Buffer Segments
-       (spaceline-toggle-all-the-icons-buffer-size-off)
-       (spaceline-toggle-all-the-icons-buffer-position-off)
-
-       ;; Git Segments
-       (spaceline-toggle-all-the-icons-git-status-off)
-       (spaceline-toggle-all-the-icons-vc-icon-off)
-       (spaceline-toggle-all-the-icons-vc-status-off)
-
-       ;; Misc Segments
-       (spaceline-toggle-all-the-icons-eyebrowse-workspace-off)
-       (spaceline-toggle-all-the-icons-flycheck-status-off)
-       (spaceline-toggle-all-the-icons-time-ioff))))
-
-
-
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -1256,15 +463,10 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (spaceline-all-the-icons evil-nerd-commenter yapfify yaml-mode xterm-color ws-butler winum which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org sql-indent spaceline smeargle shell-pop restart-emacs ranger rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements persp-mode pcre2el paradox pandoc-mode ox-reveal ox-pandoc ox-gfm outshine orgit org-ref org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-elixir neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint ledger-mode json-mode js2-refactor js-doc intero insert-shebang info+ indent-guide hy-mode hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets gruvbox-theme graphviz-dot-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu ess-smart-equals ess-R-data-view eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies dumb-jump disaster diminish diff-hl deft define-word dactyl-mode cython-mode csv-mode company-tern company-statistics company-shell company-go company-ghci company-ghc company-emacs-eclim company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo base16-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk all-the-icons alchemist aggressive-indent adoc-mode adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
-
-
-
-
+    (zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-dropbox org-evil yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
