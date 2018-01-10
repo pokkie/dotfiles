@@ -13,10 +13,10 @@
 pkill lemonbar
 
 #COLORS
-fg="#ebcb8b"
+fg="#eff1f5"
 bg="#2b303b"
 
-hint="#65737e"
+hint="#eff1f5"
 norng="#fe8019"
 borgn="d65d0e"
 nblk="#2b303b"
@@ -125,7 +125,7 @@ MUSIC(){
       mus=$(basename "$(mpc current)" | sed "s/^\(.*\)\..*$/\1/" | cut -c1-30 )
 
   		if [[ $mus ]]; then
- 			echo "%{F$bg}  %{F-} ${mus}"
+			echo -n "%{F$bg} %{F-} $SEP2$mus"
   		fi
 }
 
