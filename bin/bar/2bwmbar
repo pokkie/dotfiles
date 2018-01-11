@@ -194,7 +194,7 @@ NET() {
 }
 
 DATE() {
-    echo -n "%{B$bg} %{F$fg}   $(date "+%a %b %d %y")%{F-} %{B-}"
+    echo -n "%{B$bg} %{F$fg}   $(date "+%a  %b  %d")%{F-} %{B-}"
 }
 
 CLOCK() {
