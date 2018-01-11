@@ -82,7 +82,8 @@ values."
      haskell
      java
      javascript
-     python
+     (python :variables python-test-runner 'pytest
+             python-enable-yapf-format-on-save t)
      rust
      scala
      scheme
@@ -91,6 +92,7 @@ values."
             latex-enable-folding t
             latex-enable-auto-fill t) 
      (markdown :variables markdown-live-preview-engine 'vmd)
+     mu4e
      (org :variables
           org-enable-github-support t
           org-enable-reveal-js-support t)
@@ -105,6 +107,7 @@ values."
      sql
      syntax-checking
      themes-megapack
+     theming
      (version-control :variables
                       version-control-diff-tool 'git-gutter
                       version-control-diff-side 'left)
@@ -390,8 +393,20 @@ you should place your code here."
   (require 'package)
 
   ;; package-archives setting
-  (add-to-list 'package-archives
-              '("melpa" . "http://melpa.org/packages/") t)
+  (require 'package)
+
+  (setq package-archives
+      '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa/")
+        ("org"   . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/org/")
+        ("gnu"   . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")))
+
+
+
+
+
+
+
+
 
 
 
@@ -419,12 +434,104 @@ you should place your code here."
   (setq gnutls-trustfiles (list trustfile))) 
 
 
+
+
+
+
+
   (spaceline-emacs-theme)
   
 
 
+
+;; Disk space is cheap. Save lots.
+
+  (setq delete-old-versions -1)
+  (setq version-control t)
+  (setq vc-make-backup-files t)
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
+
+
 ;; erc configuration
   (setq erc-prompt-for-nickserv-password nil)
+
+
+
+
+
+;; History
+
+;;From http://www.wisdomandwonder.com/wp-content/uploads/2014/03/C3F.html:
+
+  (setq savehist-file "~/.emacs.d/savehist")
+  (savehist-mode 1)
+  (setq history-length t)
+  (setq history-delete-duplicates t)
+  (setq savehist-save-minibuffer-history 1)
+  (setq savehist-additional-variables
+        '(kill-ring
+          search-ring
+          regexp-search-ring))
+
+  ;; mu4e
+(setq mu4e-maildir "~/.Mail")
+(setq mu4e-drafts-folder "/[Gmail].Drafts")
+(setq mu4e-sent-folder   "/[Gmail].Sent Mail")
+;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+(setq mu4e-sent-messages-behavior 'delete)
+;; allow for updating mail using 'U' in the main view:
+(setq mu4e-get-mail-command "offlineimap")
+
+;; shortcuts
+(setq mu4e-maildir-shortcuts
+    '( ("/INBOX"               . ?i)
+       ("/[Gmail].Sent Mail"   . ?s)))
+
+;; something about ourselves
+(setq
+   user-mail-address "dagnachewa@gmail.com"
+   user-full-name  "Dagnachew Argaw"
+   mu4e-compose-signature
+    (concat
+      "Dagnachew Argaw,\n"
+      "Linux enthusiast\n"
+      "514-567-8603"))
+
+;; show images
+(setq mu4e-show-images t)
+
+;; use imagemagick, if available
+(when (fboundp 'imagemagick-register-types)
+  (imagemagick-register-types))
+
+;; convert html emails properly
+;; Possible options:
+;;   - html2text -utf8 -width 72
+;;   - textutil -stdin -format html -convert txt -stdout
+;;   - html2markdown | grep -v '&nbsp_place_holder;' (Requires html2text pypi)
+;;   - w3m -dump -cols 80 -T text/html
+;;   - view in browser (provided below)
+(setq mu4e-html2text-command "textutil -stdin -format html -convert txt -stdout")
+
+;; spell check
+(add-hook 'mu4e-compose-mode-hook
+        (defun my-do-compose-stuff ()
+           "My settings for message composition."
+           (set-fill-column 72)
+           (flyspell-mode)))
+
+;; add option to view html message in a browser
+;; `aV` in view to activate
+;;(add-to-list 'mu4e-view-actions
+;;  '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+;; fetch mail every 10 mins
+(setq mu4e-update-interval 600)
+
+;; neotree
+  (setq neo-theme 'icons)
+
 
 ;; pdf tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -432,364 +539,22 @@ you should place your code here."
    TeX-source-correlate-start-server t)
 
 
+;; python
 
 
 
-;;; Display Layer
 
-(setq display-packages
-      '(
-        ;; Owned Display Packages
-        all-the-icons
-        all-the-icons-ivy
-        all-the-icons-dired
-        pretty-mode
-        spaceline-all-the-icons
-        (prettify-utils :location (recipe :fetcher github
-                                          :repo "Ilazki/prettify-utils.el"))
 
-        ;; Owned Local Display Packages
-        (pretty-code :location local)
-        (pretty-eshell :location local)
-        (pretty-fonts :location local)
-        (pretty-magit :location local)
-        (pretty-outlines :location local)
-        (windows-frame-size-fix :location local)
-        ))
 
-;;; Locals
-;;;; Pretty-code
 
-(defun display/init-pretty-code ()
-  (use-package pretty-code
-    :after prettify-utils macros
-    :config
-    (progn
-      (global-prettify-symbols-mode 1)
 
-      (setq hy-pretty-pairs
-            (pretty-code-get-pairs
-             '(;; Functional
-               :lambda
-               "fn"
-               :def "defn" :composition "comp"
 
-               ;; Types
-               :null "None"
-               :true "True" :false "False"
 
-               ;; Flow
-               :not "not"
-               :in "in" :not-in "not-in"
-               :and "and" :or "or"
-               :some "some"
 
-               ;; Other
-               :tuple "#t"  ; Tag macro for tuple casting
-               )))
 
-      (setq python-pretty-pairs
-            (pretty-code-get-pairs
-             '(;; Functional
-               :lambda
-               "lambda"
-               :def "def"
 
-               ;; Types
-               :null "None"
-               :true "True" :false "False"
-               :int "int" :float "float"
-               :str "str" :bool "bool"
 
-               ;; Flow
-               :not "not"
-               :in "in" :not-in "not in"
-               :and "and" :or "or"
-               :for "for"
-               :return "return" :yield "yield"
-
-               ;; Other
-               :tuple "Tuple" :pipe "tz-pipe"
-               )))
-
-      (pretty-code-set-pairs `((hy-mode-hook     ,hy-pretty-pairs)
-                               (python-mode-hook ,python-pretty-pairs))))))
-
-;;;; Pretty-eshell
-
-(defun display/init-pretty-eshell ()
-  (use-package pretty-eshell
-    :after macros
-    :config
-    (progn
-      ;; Directory
-      (pretty-eshell-section
-       esh-dir
-       "\xf07c"  ; 
-       (abbreviate-file-name (eshell/pwd))
-       '(:foreground "gold" :bold ultra-bold :underline t))
-
-      ;; Git Branch
-      (pretty-eshell-section
-       esh-git
-       "\xe907"  ; 
-       (magit-get-current-branch)
-       '(:foreground "pink"))
-
-      ;; Python Virtual Environment
-      (pretty-eshell-section
-       esh-python
-       "\xe928"  ; 
-       pyvenv-virtual-env-name)
-
-      ;; Time
-      (pretty-eshell-section
-       esh-clock
-       "\xf017"  ; 
-       (format-time-string "%H:%M" (current-time))
-       '(:foreground "forest green"))
-
-      ;; Prompy Number
-      (pretty-eshell-section
-       esh-num
-       "\xf0c9"  ; 
-       (number-to-string pretty-eshell-prompt-num)
-       '(:foreground "brown"))
-
-      (setq pretty-eshell-funcs
-            (list esh-dir esh-git esh-python esh-clock esh-num)))))
-
-;;;; Pretty-fonts
-
-(defun display/init-pretty-fonts ()
-  (use-package pretty-fonts
-    :init
-    (defconst pretty-fonts-hy-mode
-      '(("\\(self\\)"   ?⊙)))
-
-    :config
-    (progn
-      (pretty-fonts-set-kwds
-       '(;; Fira Code Ligatures
-         (pretty-fonts-fira-font prog-mode-hook org-mode-hook)
-         ;; Custom replacements not possible with `pretty-code' package
-         (pretty-fonts-hy-mode hy-mode-hook)))
-
-      (pretty-fonts-set-fontsets
-       '(("fontawesome"
-          ;;                         
-          #xf07c #xf0c9 #xf0c4 #xf0cb #xf017 #xf101)
-
-         ("all-the-icons"
-          ;;    
-          #xe907 #xe928)
-
-         ("github-octicons"
-          ;;                          
-          #xf091 #xf059 #xf076 #xf075 #xe192  #xf016)
-
-         ("material icons"
-          ;;        
-          #xe871 #xe918 #xe3e7
-          ;;
-          #xe3d0 #xe3d1 #xe3d2 #xe3d4)
-
-         ("Symbola"
-          ;; 𝕊    ⨂      ∅      ⟻    ⟼     ⊙      𝕋       𝔽
-          #x1d54a #x2a02 #x2205 #x27fb #x27fc #x2299 #x1d54b #x1d53d
-          ;; 𝔹    𝔇       𝔗
-          #x1d539 #x1d507 #x1d517))))))
-
-;;;; Pretty-magit
-
-(defun display/init-pretty-magit ()
-  (use-package pretty-magit
-    :after ivy magit macros
-    :config
-    (progn
-      (pretty-magit-add-leader
-       "Feature"
-       ?
-       (:foreground "slate gray" :height 1.2))
-
-      (pretty-magit-add-leader
-       "Add"
-       ?
-       (:foreground "#375E97" :height 1.2))
-
-      (pretty-magit-add-leader
-       "Fix"
-       ?
-       (:foreground "#FB6542" :height 1.2))
-
-      (pretty-magit-add-leader
-       "Clean"
-       ?
-       (:foreground "#FFBB00" :height 1.2))
-
-      (pretty-magit-add-leader
-       "Docs"
-       ?
-       (:foreground "#3F681C" :height 1.2))
-
-      (pretty-magit-add-leader
-       "master"
-       ?
-       (:box t :height 1.2)
-       'no-prompt)
-
-      (pretty-magit-add-leader
-       "origin"
-       ?
-       (:box t :height 1.2)
-       'no-prompt))))
-
-;;;; Pretty-outlines
-
-(defun display/init-pretty-outlines ()
-  (use-package pretty-outlines
-    :after outshine macros
-    :config
-    (progn
-      (setq pretty-outlines-bullets-bullet-list
-            '("" "" "" ""))
-      (setq pretty-outlines-ellipsis
-            "")
-
-      (spacemacs/add-to-hooks 'pretty-outlines-set-display-table
-                              '(outline-mode-hook
-                                outline-minor-mode-hook))
-
-      (spacemacs/add-to-hooks 'pretty-outlines-add-bullets
-                              '(emacs-lisp-mode-hook
-                                hy-mode-hook
-                                python-mode-hook)))))
-
-;;;; Windows-frame-size-fix
-
-(defun display/init-windows-frame-size-fix ()
-  (use-package windows-frame-size-fix
-    :if (not linux?)))
-
-;;; Core Packages
-;;;; All-the-icons
-
-(defun display/init-all-the-icons ()
-  (use-package all-the-icons
-    :config
-    (progn
-      (defconst all-the-icons-icon-hy
-        '("\\.hy$"
-          all-the-icons-fileicon "lisp" :face all-the-icons-orange))
-      (defconst all-the-icons-mode-icon-hy
-        '(hy-mode
-          all-the-icons-fileicon "lisp" :face all-the-icons-orange))
-
-      (defconst all-the-icons-icon-graphviz
-        '("\\.dot$"
-          all-the-icons-fileicon "graphviz" :face all-the-icons-pink))
-      (defconst all-the-icons-mode-icon-graphviz
-        '(graphviz-dot-mode
-          all-the-icons-fileicon "graphviz" :face all-the-icons-pink))
-
-      (add-to-list 'all-the-icons-icon-alist
-                   all-the-icons-icon-hy)
-      (add-to-list 'all-the-icons-icon-alist
-                   all-the-icons-icon-graphviz)
-      (add-to-list 'all-the-icons-mode-icon-alist
-                   all-the-icons-mode-icon-hy)
-      (add-to-list 'all-the-icons-mode-icon-alist
-                   all-the-icons-mode-icon-graphviz))))
-
-;;;; All-the-icons-ivy
-
-(defun display/init-all-the-icons-ivy ()
-  (use-package all-the-icons-ivy
-    :after all-the-icons
-    :config
-    (progn
-      (all-the-icons-ivy-setup)
-      (advice-add 'all-the-icons-ivy-file-transformer :override
-                  'ivy-file-transformer-fixed-for-files))))
-
-;;;; All-the-icons-dired
-
-(defun display/init-all-the-icons-dired ()
-  (use-package all-the-icons-dired
-    :config
-    (add-hook 'dired-mode-hook
-              'all-the-icons-dired-mode)))
-
-;;;; Pretty-mode
-
-(defun display/init-pretty-mode ()
-  (use-package pretty-mode
-    :config
-    (progn
-      (global-pretty-mode t)
-
-      (pretty-deactivate-groups
-       '(:equality :ordering :ordering-double :ordering-triple
-                   :arrows :arrows-twoheaded :punctuation
-                   :logic :sets))
-      (pretty-activate-groups
-       '(:greek :arithmetic-nary)))))
-
-;;;; Prettify-utils
-
-(defun display/init-prettify-utils ()
-  (use-package prettify-utils))
-
-;;;; Spaceline-all-the-icons
-
-(defun display/init-spaceline-all-the-icons ()
-  (use-package spaceline-all-the-icons
-    :after spaceline
-    :config
-    (progn
-      (spaceline-all-the-icons-theme)
-
-      (setq
-       spaceline-highlight-face-func
-       'spaceline-highlight-face-default
-
-       spaceline-all-the-icons-icon-set-modified
-       'chain
-
-       spaceline-all-the-icons-icon-set-window-numbering
-       'square
-
-       spaceline-all-the-icons-separator-type
-       'none
-
-       spaceline-all-the-icons-primary-separator
-       "")
-
-      ;; Buffer Segments
-      (spaceline-toggle-all-the-icons-buffer-size-off)
-      (spaceline-toggle-all-the-icons-buffer-position-off)
-
-      ;; Git Segments
-      (spaceline-toggle-all-the-icons-git-status-off)
-      (spaceline-toggle-all-the-icons-vc-icon-off)
-      (spaceline-toggle-all-the-icons-vc-status-off)
-
-      ;; Misc Segments
-      (spaceline-toggle-all-the-icons-eyebrowse-workspace-off)
-      (spaceline-toggle-all-the-icons-flycheck-status-off)
-      (spaceline-toggle-all-the-icons-time-off))))
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
 
@@ -807,10 +572,30 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-dropbox org-evil yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (mu4e-maildirs-extension mu4e-alert zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-drill org-dropbox org-evil yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (ein elpy white-sand-theme symon string-inflection rebecca-theme realgud test-simple loc-changes load-relative password-generator overseer org-brain nameless mvn meghanada maven-test-mode helm-purpose window-purpose imenu-list groovy-mode groovy-imports pcache gradle-mode google-c-style godoctor go-tag go-rename exotica-theme evil-org evil-lion editorconfig dante cmake-ide levenshtein browse-at-remote mu4e-maildirs-extension mu4e-alert zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-drill org-dropbox org-evil yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
