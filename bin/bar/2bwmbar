@@ -204,7 +204,7 @@ CLOCK() {
 BAR() {
     #ADD ALL THE THINGS
     while true; do
-		buf=" $(WRK) %{c}$(MUSIC) %{r}$(ROOT)$SEP2$(DATA)$SEP2$(NET)$SEP2$(MEMORY)$SEP2$(CPU)$SEP1$(VOL)$SEP2$(DATE)$SEP2$(CLOCK)" 
+		buf=" $(WRK) %{c}$(MUSIC) %{r}$(ROOT)$SEP2$(DATA)$SEP2$(NET)$SEP2$(MEMORY)$SEP2$(CPU)$SEP2$(VOL)$SEP2$(DATE)$SEP1$(CLOCK)" 
 		echo "$buf"	
         sleep 0.1
     done | lemonbar -f "FontAwesome:regular:size=10" \
