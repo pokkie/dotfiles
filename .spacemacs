@@ -620,10 +620,24 @@ you should place your code here."
 
 
 
+  ;; Org Mode
+  (require 'ox-reveal)
+
+
+  (with-eval-after-load 'org
+    (load-file ".emacs.d/private/local/init-org.el")
+    (setq org-reveal-root "file:///home/dagnachew/.emacs.d/private/local/reveal.js")
+    (add-to-list 'load-path (expand-file-name "periodic-commit-minor-mode" user-emacs-directory))
+    )
+  
+
+
+
+
+
 
 
   ;; History
-
   ;;From http://www.wisdomandwonder.com/wp-content/uploads/2014/03/C3F.html:
 
   (setq savehist-file "~/.emacs.d/savehist")
@@ -657,9 +671,8 @@ you should place your code here."
      mu4e-compose-signature
       (concat
         "Dagnachew Argaw,\n"
-        "Linux enthusiast\n"
-        "514-567-8603"))
-
+        ))
+  
   ;; show images
   (setq mu4e-show-images t)
 
@@ -807,9 +820,12 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(git-gutter:always-show-separator t)
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-id org-info org-irc org-mhe org-mouse org-rmail org-w3m org-depend org-drill org-secretary)))
  '(package-selected-packages
    (quote
-    (smart-mode-line-powerline-theme ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org symon string-inflection spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el password-generator paradox spinner overseer org-plus-contrib org-bullets open-junk-file neotree nameless move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-lion evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav editorconfig dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+    (smart-mode-line-powerline-theme ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org symon string-inflection spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el password-generator paradox spinner overseer org-plus-contrib org-bullets org-drill open-junk-file neotree nameless move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-lion evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav editorconfig dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(powerline-default-separator (quote bar))
  '(spaceline-all-the-icons-clock-always-visible t)
  '(spaceline-all-the-icons-primary-separator "")
