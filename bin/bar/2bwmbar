@@ -194,17 +194,17 @@ NET() {
 }
 
 DATE() {
-    echo -n "%{B$bg} %{F$fg}   $(date "+%a  %b  %d")%{F-} %{B-}"
+    echo -n "%{B$bg} %{F$fg}    $(date "+%a %d.%m")%{F-} %{B-}"
 }
 
 CLOCK() {
-    echo -n "%{B$bg}%{F$fg}   $(date "+%H:%M") %{F-}%{B-}"
+    echo -n "%{B$bg}%{F$fg} $(date "+%H:%M") %{F-}%{B-}"
 }
 
 BAR() {
     #ADD ALL THE THINGS
     while true; do
-		buf=" $(WRK) %{c}$(MUSIC) %{r}$(ROOT)$SEP2$(DATA)$SEP2$(NET)$SEP2$(MEMORY)$SEP2$(CPU)$SEP2$(VOL)$SEP2$(DATE)$SEP2$(CLOCK)" 
+		buf=" $(WRK) %{c}$(MUSIC) %{r}$(ROOT)$SEP2$(DATA)$SEP2$(NET)$SEP2$(MEMORY)$SEP2$(CPU)$SEP1$(VOL)$SEP2$(DATE)$SEP2$(CLOCK)" 
 		echo "$buf"	
         sleep 0.1
     done | lemonbar -f "FontAwesome:regular:size=10" \
