@@ -10,3 +10,9 @@
 [submodule ".emacs.d"]
 	path = .emacs.d
 	url = https://github.com/dagnachewa/spacemacs
+[submodule "SpaceVim"]
+	path = SpaceVim
+	url = https://github.com/dagnachewa/SpaceVim
+[submodule ".SpaceVim"]
+	path = .SpaceVim
+	url = https://github.com/dagnachewa/SpaceVim
