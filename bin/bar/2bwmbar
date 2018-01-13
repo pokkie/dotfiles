@@ -131,7 +131,7 @@ MUSIC(){
 
 ROOT(){
 	hdroot="$(df -h / | tail -n 1 | awk '{print $4}')"
-	echo -n "%{B$bg}%{F$fg}  /   $hdroot free %{F-}%{B-}"
+	echo -n "%{B$bg}%{F$fg}  root    $hdroot free %{F-}%{B-}"
 
 }
 
