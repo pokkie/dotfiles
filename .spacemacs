@@ -415,7 +415,6 @@ you should place your code here."
   (setq package-archives
       '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa/")
         ("org"   . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/org/")
-        ("marmalade" . "http://marmalade-repo.org/packages/") 
         ("gnu" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")))
 
 
@@ -618,6 +617,7 @@ you should place your code here."
   (setq erc-prompt-for-nickserv-password nil)
 
 
+  ;; python
 
   ;; Org Mode
   (require 'ox-reveal)
@@ -722,7 +722,7 @@ you should place your code here."
 
 
   ;; paradox
-  (setq paradox-github-token "dad91ea4a2cbc0e3e080e2c07ccdc7cd8d94b4ae")
+  (setq paradox-github-token " feb8dbd4944f3244ac8cfdc5b1596376a60f2d13")
 
 
   ;; ranger customizing
