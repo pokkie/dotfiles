@@ -107,13 +107,14 @@ values."
      pandoc
      pass
      pdf-tools
+     polymode
      prodigy
      restclient
      (shell :variables
              shell-default-shell 'multi-term
              shell-default-height 30
              shell-default-term-shell "/usr/bin/zsh"
-             shell-default-position 'bottom)
+             shell-default-position 'bottom)	
      spacemacs-layouts
      spell-checking
      sql
@@ -335,6 +336,7 @@ values."
    ;; If non nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
+   dotspacemacs-mode-line-theme 'all-the-icons
    dotspacemacs-mode-line-unicode-symbols t
    ;; file format
    dotspacemacs-frame-title-format "%t"
@@ -439,14 +441,15 @@ you should place your code here."
   (setq gnutls-verify-error t)
   (setq gnutls-trustfiles (list trustfile))) 
 
+  
 
+  
 
-  ;; lang setting
-
+  ;; lang settings
   (set-language-environment "UTF-8")
   (set-default-coding-systems 'utf-8)
 
-  ;;; Fira code
+  ;; Fira code
   ;; This works when using emacs --daemon + emacsclient
   (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
   ;; This works when using emacs without server/client
@@ -580,25 +583,6 @@ you should place your code here."
   (add-hook 'prog-mode-hook
           #'add-fira-code-symbol-keywords)
 
-  ;; spaceline
-  (spaceline-emacs-theme)
-
-  (use-package spaceline-all-the-icons
-    :after spaceline
-    :config
-    (spaceline-all-the-icons-theme)
-    (spaceline-all-the-icons--setup-anzu)
-    (spaceline-all-the-icons--setup-package-updates)
-    (spaceline-all-the-icons--setup-paradox)
-    (spaceline-all-the-icons--setup-neotree)
-           )
-
-  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-segments.el")
-  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-separators.el")
-  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons.el")
-
-
-
 
 
   ;; Disk space is cheap. Save lots.
@@ -637,10 +621,8 @@ you should place your code here."
 
   ;; ditaa
      (setq org-ditaa-jar-path "~/.emacs.d/private/local/ditaa0_9.jar")
-
-
-
      )
+
 
 
   ;; History
@@ -656,6 +638,7 @@ you should place your code here."
           search-ring
           regexp-search-ring))
 
+
   ;; mu4e
   (setq mu4e-maildir "~/.Mail")
   (setq mu4e-drafts-folder "/[Gmail].Drafts")
@@ -664,12 +647,10 @@ you should place your code here."
   (setq mu4e-sent-messages-behavior 'delete)
   ;; allow for updating mail using 'U' in the main view:
   (setq mu4e-get-mail-command "offlineimap")
-
   ;; shortcuts
   (setq mu4e-maildir-shortcuts
       '( ("/INBOX"               . ?i)
          ("/[Gmail].Sent Mail"   . ?s)))
-
   ;; something about ourselves
   (setq
      user-mail-address "dagnachewa@gmail.com"
@@ -678,7 +659,6 @@ you should place your code here."
       (concat
         "Dagnachew Argaw,\n"
         ))
-  
   ;; show images
   (setq mu4e-show-images t)
 
@@ -710,6 +690,7 @@ you should place your code here."
   ;; fetch mail every 10 mins
   (setq mu4e-update-interval 600)
 
+
   ;; neotree
   (setq neo-theme 'icons)
 
@@ -720,68 +701,40 @@ you should place your code here."
    TeX-source-correlate-start-server t)
 
 
+
   ;; paradox
-  (setq paradox-github-token " feb8dbd4944f3244ac8cfdc5b1596376a60f2d13")
+  (setq paradox-github-token "ac425e4028d848b7c525b7621ed50f47b9440603")
 
 
-  ;; ranger customizing
-
+  ;; ranger customization
   ;;You toggle the use of - to enter ranger with `ranger-enter-with-minus`.
-
   (setq ranger-enter-with-minus t)
-
   ;;When disabling the mode you can choose to kill the buffers that were opened while browsing the directories.
-
   (setq ranger-cleanup-on-disable t)
-
   ;;Or you can choose to kill the buffer just after you move to another entry in the dired buffer.
-
   (setq ranger-cleanup-eagerly t)
-
   ;;You can choose to show dotfiles at ranger startup, toggled by zh
-
   (setq ranger-show-hidden t)
-
   ;;Define custom function used to output header of primary ranger window. Must return a string that is placed in the header-line.
-
   (setq ranger-header-func 'ranger-header-line)
-
   ;;Define custom function used to output header of parent and preview windows. Must return a string that is placed in the header-line.
-
   (setq ranger-parent-header-func 'ranger-parent-header-line)
-
   ;;Parent options
-
   ;;You can set the number of folders to nest to the left, adjusted by z- and z+
-
   (setq ranger-parent-depth 2)
-
   ;;You can set the size of the parent windows as a fraction of the frame size
-
   (setq ranger-width-parents 0.12)
-
   ;;When increasing number of nested parent folders, set max width as fraction of frame size to prevent filling up entire frame with parents.
-
   (setq ranger-max-parent-width 0.12)
-
   ;;Preview options
-
   ;;You can choose to show previews literally, or through find-file, toggled by zi
-
   (setq ranger-show-literal t)
-
   ;;You can set the size of the preview windows as a fraction of the frame size
-
   (setq ranger-width-preview 0.55)
-
   ;;You probably don’t want to open certain files like videos when using preview. To ignore certain files when moving over them you can customize the following to your liking:
-
   (setq ranger-ignored-extensions '("mkv" "iso" "mp4"))
-
   ;;To set the max files size (in MB), set the following parameter:
-
   (setq ranger-max-preview-size 10)
-
 
 
 
@@ -792,7 +745,7 @@ you should place your code here."
 
 
 
-  )
+  ) ;; end of dotspacemacs-user-config ()
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -820,6 +773,8 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(display-time-day-and-date nil)
+ '(display-time-mode t)
  '(git-gutter:ask-p nil)
  '(git-gutter:diff-option "-w")
  '(git-gutter:hide-gutter t)
@@ -830,7 +785,7 @@ This function is called at the very end of Spacemacs initialization."
  '(magit-revision-show-gravatars (quote ("^Author:     " . "^Commit:     ")))
  '(package-selected-packages
    (quote
-    (ob-ipython ein request-deferred websocket deferred mu4e-maildirs-extension mu4e-alert zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-drill org-dropbox org-evil yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+    (fancy-narrow evil-vimish-fold polymode realgud mu4e-maildirs-extension mu4e-alert zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-drill org-dropbox org-evil yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(spaceline-all-the-icons-separator-type (quote cup)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
