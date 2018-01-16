@@ -624,7 +624,6 @@ you should place your code here."
      )
 
 
-
   ;; History
   ;;From http://www.wisdomandwonder.com/wp-content/uploads/2014/03/C3F.html:
 
@@ -694,6 +693,22 @@ you should place your code here."
   ;; neotree
   (setq neo-theme 'icons)
 
+  ;; spaceline
+  (spaceline-emacs-theme)
+
+  (use-package spaceline-all-the-icons
+   :after spaceline
+   :config
+   (spaceline-all-the-icons-theme)
+   (spaceline-all-the-icons--setup-anzu)
+   (spaceline-all-the-icons--setup-package-updates)
+   (spaceline-all-the-icons--setup-paradox)
+   (spaceline-all-the-icons--setup-neotree)
+  )
+
+  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-segments.el")
+  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-separators.el")
+  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons.el")  
 
   ;; pdf tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -773,7 +788,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(display-time-day-and-date nil)
+ '(display-time-24hr-format t)
+ '(display-time-day-and-date t)
+ '(display-time-format "%m/%d %T")
  '(display-time-mode t)
  '(git-gutter:ask-p nil)
  '(git-gutter:diff-option "-w")
