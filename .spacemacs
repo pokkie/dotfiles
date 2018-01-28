@@ -718,8 +718,6 @@ you should place your code here."
 
 
 
-  ;; paradox
-  (setq paradox-github-token "ac425e4028d848b7c525b7621ed50f47b9440603")
 
 
   ;; ranger customization
@@ -799,5 +797,6 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  )
 )
+
 
 
