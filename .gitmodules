@@ -16,3 +16,6 @@
 [submodule "/home/dagnachew/.zprezto"]
 	path = /home/dagnachew/.zprezto
 	url = https://github.com/dagnachewa/prezto
+[submodule ".zprezto"]
+	path = .zprezto
+	url = https://github.com/dagnachewa/prezto
