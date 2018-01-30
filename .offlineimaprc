@@ -1,0 +1,37 @@
+# Sample minimal config file.  Copy this to ~/.offlineimaprc and edit to
+# get started fast.
+
+[general]
+accounts = Gmail
+
+maxsynaccounts = 1
+quick = 10
+keepalive = 60
+holdconnectionopen = yes
+
+ssl = on 
+ui = Basic
+
+[Account Gmail]
+
+localrepository = GmailLocal
+remoterepository = GmailRemote
+autorefresh = 1
+maxage = 360
+
+
+
+[Repository GmailLocal]
+
+type = Maildir
+localfolders = ~/.mail/gmail
+nametrans = nt_local
+
+[Repository GmailRemote]
+
+type = Gmail 
+remoteuser = dagnachewa@gmail.com
+sslcacertificate = /etc/ssl/certs/ca-certificates.crt 
+realdelete = no 
+remotepasseval = get_pass("Gmail")
+nametrans = nt_remote
