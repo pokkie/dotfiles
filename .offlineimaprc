@@ -33,5 +33,6 @@ type = Gmail
 remoteuser = dagnachewa@gmail.com
 sslcacertificate = /etc/ssl/certs/ca-certificates.crt 
 realdelete = no 
+folderfilter = lambda foldername: foldername in ['[Gmail]/All Mail']
 remotepasseval = get_pass("Gmail")
 nametrans = nt_remote
