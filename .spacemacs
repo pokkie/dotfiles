@@ -43,7 +43,7 @@ values."
      dash
      deft
      display 
-     (elfeed :variables rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org")
+     (elfeed 
 	           :bind (:map elfeed-search-mode-map
               ("q" . bjm/elfeed-save-db-and-bury)
               ("Q" . bjm/elfeed-save-db-and-bury)
@@ -86,8 +86,8 @@ values."
      ipython-notebook
      java
      javascript
-     (python :variables python-test-runner 'pytest
-             python-enable-yapf-format-on-save t)
+     ;;(python :variables python-test-runner 'pytest
+     ;;        python-enable-yapf-format-on-save t)
      elpy
      rust
      scala
@@ -224,8 +224,8 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          doom-one
-                         base16-ocean
                          spacemacs-dark
+                         base16-ocean
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -236,7 +236,7 @@ values."
                                :weight normal
                                :width normal
                                :antialias 1
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.5)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -616,8 +616,229 @@ you should place your code here."
 
   ;; python
 
+
   ;; Org Mode
+
+  (provide 'emacs-orgmode-config)
   (require 'ox-reveal)
+  (require 'ox)
+
+  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+
+  (define-key global-map "\C-cl" 'org-store-link)
+  (define-key global-map "\C-ca" 'org-agenda)
+
+  (setq org-log-done t)
+  (setq org-fast-tag-selection-single-key t)
+  (setq org-use-fast-todo-selection t)
+  (setq org-startup-truncated nil)
+
+  (setq org-directory (expand-file-name "/data/org-mode/org"))
+  (setq org-default-notes-file (concat org-directory "/mygtd.org"))
+  (setq org-agenda-files '("/data/org-mode/org" "/data/www" ))
+  
+  (setq org-todo-keywords
+      '(
+        (sequence "IDEA(i)" "TODO(t)" "STARTED(s)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)")
+        (sequence "|" "CANCELED(c)" "DELEGATED(l)" "SOMEDAY(f)")
+        ))
+
+  (setq org-todo-keyword-faces
+      '(("IDEA" . (:foreground "GoldenRod" :weight bold))
+        ("NEXT" . (:foreground "IndianRed1" :weight bold))   
+        ("STARTED" . (:foreground "OrangeRed" :weight bold))
+        ("WAITING" . (:foreground "coral" :weight bold)) 
+        ("CANCELED" . (:foreground "LimeGreen" :weight bold))
+        ("DELEGATED" . (:foreground "LimeGreen" :weight bold))
+        ("SOMEDAY" . (:foreground "LimeGreen" :weight bold))
+        ))
+
+  (setq org-tag-persistent-alist 
+      '((:startgroup . nil)
+        ("HOME" . ?h) 
+        ("RESEARCH" . ?r)
+        ("TEACHING" . ?t)
+        (:endgroup . nil)
+        (:startgroup . nil)
+        ("OS" . ?o) 
+        ("DEV" . ?d)
+        ("WWW" . ?w)
+        (:endgroup . nil)
+        (:startgroup . nil)
+        ("EASY" . ?e)
+        ("MEDIUM" . ?m)
+        ("HARD" . ?a)
+        (:endgroup . nil)
+        ("URGENT" . ?u)
+        ("KEY" . ?k)
+        ("BONUS" . ?b)
+        ("noexport" . ?x)  
+        )
+      )
+
+  (setq org-tag-faces
+      '(
+        ("HOME" . (:foreground "GoldenRod" :weight bold))
+        ("RESEARCH" . (:foreground "GoldenRod" :weight bold))
+        ("TEACHING" . (:foreground "GoldenRod" :weight bold))
+        ("OS" . (:foreground "IndianRed1" :weight bold))   
+        ("DEV" . (:foreground "IndianRed1" :weight bold))   
+        ("WWW" . (:foreground "IndianRed1" :weight bold))
+        ("URGENT" . (:foreground "Red" :weight bold))  
+        ("KEY" . (:foreground "Red" :weight bold))  
+        ("EASY" . (:foreground "OrangeRed" :weight bold))  
+        ("MEDIUM" . (:foreground "OrangeRed" :weight bold))  
+        ("HARD" . (:foreground "OrangeRed" :weight bold))  
+        ("BONUS" . (:foreground "GoldenRod" :weight bold))
+        ("noexport" . (:foreground "LimeGreen" :weight bold))  
+        )
+  )
+
+  (setq org-enable-priority-commands nil)
+  (setq org-list-demote-modify-bullet (quote (("+" . "-")
+                                            ("*" . "-")
+                                            ("1." . "-")
+                                            ("1)" . "a)"))))
+
+  ;; Activate Babel languages
+  (use-package ob-gnuplot)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '( (ditaa . t) (sql . t) (C . t) (C ++ . t) (sh . t) (emacs-lisp t) (lisp . t)
+      (css . t) (awk . t) (js . t) (R . t) (python . t) (org . t) (plantuml . t) (gnuplot . t)
+      (haskell . t) (maxima . t)(calc . t) (mathomatic . t)))
+
+  ;; ditaa
+  (setq org-ditaa-jar-path "~/.emacs.d/private/local/ditaa0_9.jar")
+
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+  
+  (setq org-export-babel-evaluate nil)
+
+  (defun org-babel-tangle-block()
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively 'org-babel-tangle)
+  ))
+
+
+  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
+
+  (setq org-ascii-links-to-notes nil)
+  (setq org-ascii-headline-spacing (quote (1 . 1)))
+  (setq org-export-with-smart-quotes t)
+  
+  (require 'ox-publish)
+  (setq org-html-coding-system 'utf-8-unix) 
+
+  (
+  setq org-publish-project-alist
+      '(
+        ("html-static"
+         :base-directory "/data/www/static_html/"
+         :base-extension "html\\|xml\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz\\|csv\\|m"
+         :include (".htaccess")
+         :publishing-directory "/data/www/public_html/"
+         :recursive t
+         :publishing-function org-publish-attachment
+         )
+
+        ("org-notes"
+         :base-directory "/data/www/org"
+         :base-extension "org"
+         :publishing-directory "/data/www/public_html/org"
+         :recursive t
+         :exclude ".*-reveal\.org"        ; exclude org-reveal slides 
+         :publishing-function org-html-publish-to-html
+         :headline-levels 2               ; Just the default for this project.
+         :auto-sitemap t                  ; Generate sitemap.org automagically...
+         :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+         :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+         :with-creator nil    ; Disable the inclusion of "Created by Org" in the postamble.
+         :with-email nil      ; Disable the inclusion of "(your email)" in the postamble.
+         :with-author nil       ; Enable the inclusion of "Author: Your Name" in the postamble.
+         :auto-preamble t;         ; Enable auto preamble 
+         :auto-postamble t         ; Enable auto postamble 
+         :table-of-contents t        ; Set this to "t" if you want a table of contents, set to "nil" disables TOC.
+         :toc-levels 2               ; Just the default for this project.
+         :section-numbers nil        ; Set this to "t" if you want headings to have numbers.
+         :html-head-include-default-style nil ;Disable the default css style
+         :html-head-include-scripts nil ;Disable the default javascript snippet
+         :html-head "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.i3s.unice.fr/~malapert/css/worg.min.css\"/>\n<script type=\"text/javascript\" src=\"http://www.i3s.unice.fr/~malapert/js/ga.min.js\"></script>" ;Enable custom css style and other tags
+         :html-link-home "index.html"    ; Just the default for this project.
+         :html-link-up "../index.html"    ; Just the default for this project.
+         )
+
+        ("org-static"
+         :base-directory "/data/www/org"
+         :base-extension "html\\|xml\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz\\|csv\\|m"
+         :publishing-directory "/data/www/public_html/org/"
+         :recursive t
+         :publishing-function org-publish-attachment
+         :exclude "Rplots.pdf"
+         )
+
+        ("org" 
+         :components ("org-notes" "org-static" "html-static")
+         )
+
+        ("_org-notes"
+         :base-directory "/data/www/_org/"
+         :base-extension "org"
+         :publishing-directory "/data/www/private_html/"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :headline-levels 2               ; Just the default for this project.
+         :auto-preamble t
+         :auto-sitemap nil                  ; Do NOT Generate sitemap.org automagically...
+         :with-creator nil    ; Disable the inclusion of "Created by Org" in the postamble.
+         :with-email nil      ; Disable the inclusion of "(your email)" in the postamble.
+         :with-author nil       ; Enable the inclusion of "Author: Your Name" in the postamble.
+         :auto-preamble t;         ; Enable auto preamble 
+         :auto-postamble t         ; Enable auto postamble 
+         :table-of-contents t        ; Set this to "t" if you want a table of contents, set to "nil" disables TOC.
+         :toc-levels 2               ; Just the default for this project.
+         :section-numbers nil        ; Set this to "t" if you want headings to have numbers.
+         :html-head-include-default-style nil ;Disable the default css style
+         :html-head-include-scripts nil ;Disable the default javascript snippet     
+         :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.i3s.unice.fr/~malapert/css/worg.min.css\"/>" ;Enable custom css style
+         )
+
+        ("_org-static"
+         :base-directory "/data/www/_org/"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz"
+         :publishing-directory "/data/www/private_html"
+         :recursive t
+         :publishing-function org-publish-attachment
+         :exclude "Rplots.pdf"
+         )
+
+        ("_org" 
+         :components ("_org-notes" "_org-static")
+         )        
+        )
+      )
+
+  (setq org-html-head-include-default-style nil)
+  (setq org-html-head-include-scripts nil) 
+
+  (setf org-html-mathjax-options
+      '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+        (scale "100") 
+        (align "center") 
+        (indent "2em")
+        (mathml nil))
+      )
+  (setf org-html-mathjax-template
+      "<script type=\"text/javascript\" src=\"%PATH\"></script>")
+
+  (setq org-html-table-default-attributes
+        '(:border "0" :cellspacing "0" :cellpadding "6" :rules "none" :frame "none"))
+
+  
 
 
   (with-eval-after-load 'org
@@ -625,17 +846,9 @@ you should place your code here."
     (setq org-reveal-root "file:///home/dagnachew/.emacs.d/private/local/reveal.js")
     (add-to-list 'load-path (expand-file-name "periodic-commit-minor-mode" user-emacs-directory))
     
-  ;; Activate Babel languages
-    (use-package ob-gnuplot)
-     (org-babel-do-load-languages
-      'org-babel-load-languages
-      '( (ditaa . t) (sql . t) (C . t) (C ++ . t) (sh . t) (emacs-lisp t) (lisp . t)
-       (css . t) (awk . t) (js . t) (R . t) (python . t) (org . t) (plantuml . t) (gnuplot . t)
-       (haskell . t) (maxima . t)(calc . t) (mathomatic . t)))
-
-  ;; ditaa
-     (setq org-ditaa-jar-path "~/.emacs.d/private/local/ditaa0_9.jar")
      )
+
+  ;; Org-Mode end
 
 
   ;; History
@@ -673,21 +886,53 @@ you should place your code here."
 
   ;; spaceline
 
-  (use-package spaceline-all-the-icons
-   :after spaceline
-   :config
-   (spaceline-all-the-icons-theme)
-   (spaceline-all-the-icons--setup-anzu)
-   (spaceline-all-the-icons--setup-package-updates)
-   (spaceline-all-the-icons--setup-paradox)
-   (spaceline-all-the-icons--setup-neotree)
-  )
 
-  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons.el")  
+  (with-eval-after-load 'evil
+  (require 'evil-anzu))
+
+  ;;(use-package spaceline-all-the-icons
+  ;; :after spaceline
+  ;; :config
+  ;; (spaceline-all-the-icons-theme)
+  ;; (spaceline-all-the-icons--setup-anzu)
+  ;; (spaceline-all-the-icons--setup-package-updates)
+  ;; (spaceline-all-the-icons--setup-paradox)
+  ;; (spaceline-all-the-icons--setup-neotree)
+  ;;)
+  (use-package spaceline-all-the-icons
+  :after spaceline
+  :config
+  (setq spaceline-all-the-icons-icon-set-flycheck-slim (quote dots))
+  (setq spaceline-all-the-icons-icon-set-git-ahead (quote commit))
+  ;; (setq spaceline-all-the-icons-icon-set-window-numbering (quote square))
+  (setq spaceline-all-the-icons-flycheck-alternate t)
+  (setq spaceline-all-the-icons-highlight-file-name t)
+  (setq spaceline-all-the-icons-separator-type (quote none))
+  (spaceline-all-the-icons-theme)
+  (spaceline-all-the-icons--setup-anzu)
+  (spaceline-all-the-icons--setup-package-updates)
+  (spaceline-all-the-icons--setup-paradox)
+  (spaceline-all-the-icons--setup-neotree)
+  (spaceline-toggle-all-the-icons-vc-icon-on)
+  (spaceline-toggle-all-the-icons-fullscreen-on)
+  (spaceline-toggle-all-the-icons-flycheck-status-on)
+  (spaceline-toggle-all-the-icons-git-status-on)
+  (spaceline-toggle-all-the-icons-vc-icon-on)
+  (spaceline-toggle-all-the-icons-mode-icon-on)
+  (spaceline-toggle-all-the-icons-package-updates-on)
+  (spaceline-toggle-all-the-icons-text-scale-on)
+  (spaceline-toggle-all-the-icons-region-info-on))
+  
+
+  ;;(load-file "~/.emacs.d/private/local/spaceline-all-the-icons.el")  
   (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-segments.el")
   (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-separators.el")
 
   ;;(load-file "~/.emacs.d/private/local/modeline.el")
+
+  (setq powerline-image-apple-rgb t)
+  (setq ns-use-srgb-colorspace nil)
+
 
   ;; pdf tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -695,8 +940,10 @@ you should place your code here."
    TeX-source-correlate-start-server t)
 
 
-
-
+  ;; elfeed
+  (require 'elfeed-org)
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org"))
 
   ;; ranger customization
   ;;You toggle the use of - to enter ranger with `ranger-enter-with-minus`.
@@ -758,7 +1005,11 @@ you should place your code here."
           (lambda ()
             (toggle-truncate-lines t)))
 
-
+  ;; scss
+  (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.5/bin") exec-path))
+  (add-to-list 'load-path (expand-file-name "~/.emacs.d/private/local/scss-mode.el"))
+  (autoload 'scss-mode "scss-mode")
+  (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 
   ;; Maxima
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/maxima/")
@@ -801,7 +1052,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (eldoc-eval counsel zeal-at-point white-sand-theme restclient-helm rebecca-theme ranger org-mime ob-restclient ob-http nlinum-relative nlinum idris-mode prop-menu helm-dash fasd exotica-theme ein request-deferred websocket deferred company-restclient restclient know-your-http-well mu4e-maildirs-extension mu4e-alert zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-drill org-dropbox yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (elpy counsel-projectile zeal-at-point white-sand-theme restclient-helm rebecca-theme ranger org-mime ob-restclient ob-http nlinum-relative nlinum idris-mode prop-menu helm-dash fasd exotica-theme ein request-deferred websocket deferred company-restclient restclient know-your-http-well mu4e-maildirs-extension mu4e-alert zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-drill org-dropbox yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
