@@ -344,7 +344,7 @@ values."
    dotspacemacs-show-transient-state-title t
    ;; If non nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
-   dotspacemacs-mode-line-theme 'all-the-icon
+   dotspacemacs-mode-line-theme 'all-the-icons 
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
    ;; file format
