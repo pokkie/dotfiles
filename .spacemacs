@@ -36,6 +36,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      asciidoc
+     amharic
      auto-completion
      better-defaults
      bibtex
@@ -81,7 +82,8 @@ values."
      fasd
      finance
      go
-     haskell
+     (haskell :variables
+              haskell-enable-ghc-mod-support t)
      idris
      ipython-notebook
      java
@@ -223,9 +225,10 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
+                         
+                         base16-ocean
                          doom-one
                          spacemacs-dark
-                         base16-ocean
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -340,13 +343,7 @@ values."
    dotspacemacs-show-transient-state-title t
    ;; If non nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
-   dotspacemacs-mode-line-theme 'all-the-icons
-   ;;dotspacemacs-mode-line-theme '(spacemacs :separator 'slant :separator-scale 1.3)
-
-   ;;dotspacemacs-mode-line-theme (if (display-graphic-p)
-   ;;                               '(all-the-icons :separator arrow :separator-scale 1.3)
-   ;;                               '(spacemacs :separator arrow :separator-scale 1.3))
-
+   dotspacemacs-mode-line-theme 'all-the-icon
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
    ;; file format
@@ -462,6 +459,9 @@ you should place your code here."
   ;; lang settings
   (set-language-environment "UTF-8")
   (set-default-coding-systems 'utf-8)
+
+  ;; fancy symbols
+  (global-prettify-symbols-mode t)
 
   ;; Fira code
   ;; This works when using emacs --daemon + emacsclient
@@ -609,7 +609,6 @@ you should place your code here."
 
 
 
-
   ;; erc configuration
   (setq erc-prompt-for-nickserv-password nil)
 
@@ -622,6 +621,14 @@ you should place your code here."
   (provide 'emacs-orgmode-config)
   (require 'ox-reveal)
   (require 'ox)
+  (require 'ox-latex)
+  (require 'ox-bibtex)
+  (require 'ox-beamer)
+  (require 'ox-md)
+  (require 'ox-publish)
+  (require 'org-agenda)
+    
+
 
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
@@ -694,6 +701,9 @@ you should place your code here."
         )
   )
 
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))) 
+  (setq org-ellipsis "⤵")
   (setq org-enable-priority-commands nil)
   (setq org-list-demote-modify-bullet (quote (("+" . "-")
                                             ("*" . "-")
@@ -731,7 +741,6 @@ you should place your code here."
   (setq org-ascii-headline-spacing (quote (1 . 1)))
   (setq org-export-with-smart-quotes t)
   
-  (require 'ox-publish)
   (setq org-html-coding-system 'utf-8-unix) 
 
   (
@@ -745,6 +754,13 @@ you should place your code here."
          :recursive t
          :publishing-function org-publish-attachment
          )
+
+        ("pdf"
+            :base-directory  "/data/org-mode/"
+            :base-extension "org"
+            :publishing-directory "/data/org-mode/pdf"
+            :publishing-function org-latex-publish-to-pdf
+            )
 
         ("org-notes"
          :base-directory "/data/www/org"
@@ -838,7 +854,20 @@ you should place your code here."
   (setq org-html-table-default-attributes
         '(:border "0" :cellspacing "0" :cellpadding "6" :rules "none" :frame "none"))
 
-  
+
+  ;; Exporting to PDF
+
+  ;;I want to produce PDFs with syntax highlighting in the code. The best way to do that seems to be with the minted package, but that package shells out to pygments to do the actual work. pdflatex usually disallows shell commands; this enables that.
+
+  (setq org-latex-pdf-process
+      '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+  ;; Include the minted package in all of my LaTeX exports.
+
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-listings 'minted)
 
 
   (with-eval-after-load 'org
@@ -865,6 +894,14 @@ you should place your code here."
           regexp-search-ring))
 
 
+  ;; doom-themes
+  ;;(require 'doom-themes)
+  ;;(setq doom-themes-enable-bold t 
+  ;;      doom-themes-enable-italic t)
+  ;;(doom-themes-visual-bell-config)
+  ;;(doom-themes-neotree-config)
+  ;;(doom-themes-org-config)
+
   ;; notmuch
   (setq notmuch/address-lookup-bin "/usr/local/bin/notmuch-addrlookup")
 
@@ -881,24 +918,20 @@ you should place your code here."
 
   ;; neotree
 
-  (load-file "~/.emacs.d/private/local/doom-themes-neotree.el")
+  ;;(load-file "~/.emacs.d/private/local/doom-themes-neotree.el")
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow ))
 
 
   ;; spaceline
 
 
-  (with-eval-after-load 'evil
-  (require 'evil-anzu))
 
-  ;;(use-package spaceline-all-the-icons
-  ;; :after spaceline
-  ;; :config
-  ;; (spaceline-all-the-icons-theme)
-  ;; (spaceline-all-the-icons--setup-anzu)
-  ;; (spaceline-all-the-icons--setup-package-updates)
-  ;; (spaceline-all-the-icons--setup-paradox)
-  ;; (spaceline-all-the-icons--setup-neotree)
-  ;;)
+  (with-eval-after-load 'evil
+    (require 'evil-anzu))
+  
+  (require 'spaceline-all-the-icons)
+  (require 'all-the-icons)
+
   (use-package spaceline-all-the-icons
   :after spaceline
   :config
@@ -922,28 +955,40 @@ you should place your code here."
   (spaceline-toggle-all-the-icons-package-updates-on)
   (spaceline-toggle-all-the-icons-text-scale-on)
   (spaceline-toggle-all-the-icons-region-info-on))
-  
 
-  ;;(load-file "~/.emacs.d/private/local/spaceline-all-the-icons.el")  
-  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-segments.el")
-  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-separators.el")
 
-  ;;(load-file "~/.emacs.d/private/local/modeline.el")
 
-  (setq powerline-image-apple-rgb t)
-  (setq ns-use-srgb-colorspace nil)
+  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons.el")
+  ;;(load-file "~/.emacs.d/private/local/spaceline-all-the-icons-segments.el")
+  (load-file "~/.emacs.d/private/local/spaceline-all-the-icons-doom-segments.el")
+  ;;(load-file "~/.emacs.d/private/local/spaceline-all-the-icons-separators.el")
 
+  ;; spaceline ended
 
   ;; pdf tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
    TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
    TeX-source-correlate-start-server t)
 
+  ;; pdf tools ended
+
+
 
   ;; elfeed
+  (setq browse-url-browser-function 'firefox)
   (require 'elfeed-org)
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/.emacs.d/private/elfeed.org"))
+
+  (defun bjm/elfeed-show-visit-gui ()
+  "Wrapper for elfeed-show-visit to use gui browser instead of eww"
+  (interactive)
+  (let ((browse-url-generic-program "/usr/bin/xdg-open"))
+    (elfeed-show-visit t)))
+
+  (define-key elfeed-show-mode-map (kbd "B") 'bjm/elfeed-show-visit-gui)
+
+  ;; elfeed end
 
   ;; ranger customization
   ;;You toggle the use of - to enter ranger with `ranger-enter-with-minus`.
@@ -975,6 +1020,10 @@ you should place your code here."
   ;;To set the max files size (in MB), set the following parameter:
   (setq ranger-max-preview-size 10)
 
+
+  ;; haskell
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-to-list 'exec-path "~/.local/bin/")
 
   ;; sql
   (setq sql-connection-alist
@@ -1052,7 +1101,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (elpy counsel-projectile zeal-at-point white-sand-theme restclient-helm rebecca-theme ranger org-mime ob-restclient ob-http nlinum-relative nlinum idris-mode prop-menu helm-dash fasd exotica-theme ein request-deferred websocket deferred company-restclient restclient know-your-http-well mu4e-maildirs-extension mu4e-alert zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-drill org-dropbox yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (counsel-projectile counsel zeal-at-point white-sand-theme restclient-helm rebecca-theme ranger org-mime ob-restclient ob-http nlinum-relative nlinum idris-mode prop-menu helm-dash fasd exotica-theme ein request-deferred websocket deferred company-restclient restclient know-your-http-well mu4e-maildirs-extension mu4e-alert zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme vimrc-mode graphviz-dot-mode dactyl-mode org-beautify-theme org-drill org-dropbox yapfify yaml-mode xterm-color web-beautify vmd-mode unfill toml-mode sql-indent spaceline-all-the-icons smeargle shell-pop racer pyvenv pytest pyenv-mode py-isort prodigy pip-requirements pandoc-mode ox-reveal ox-pandoc ht ox-gfm outshine outorg orgit org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow livid-mode skewer-mode live-py-mode ledger-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc intero hy-mode htmlize hlint-refactor hindent helm-pydoc helm-hoogle helm-gitignore helm-company helm-c-yasnippet helm-bibtex parsebib haskell-snippets go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md geiser fuzzy flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flycheck evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-commentary ess-smart-equals ess-R-data-view ctable ess julia-mode eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks ensime sbt-mode scala-mode elm-mode elfeed-web simple-httpd elfeed-org elfeed-goodies ace-jump-mode noflet elfeed disaster diff-hl deft cython-mode csv-mode company-tern dash-functional tern company-statistics company-go go-mode company-ghci company-ghc ghc haskell-mode company-emacs-eclim eclim company-cabal company-c-headers company-auctex company-anaconda coffee-mode cmm-mode cmake-mode clang-format cargo rust-mode biblio biblio-core base16-theme autothemer auto-yasnippet yasnippet auto-dictionary auctex-latexmk auctex anaconda-mode pythonic all-the-icons memoize font-lock+ alchemist company elixir-mode adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
