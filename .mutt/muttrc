@@ -1,8 +1,8 @@
-source "gpg -d ~/.mutt/passwords.gpg |"
+source "gpg -d ~/.mutt/password.gpg |"
 
 set editor              = "vim"                                        # use vim as the default editor
 
-set from                = "Dagnachew Argaw <victorparmar@gmail.com>"
+set from                = "Dagnachew Argaw <dagnachewa@gmail.com>"
 set edit_headers        = yes
 
 # Gmail info
@@ -130,3 +130,5 @@ set sort_alias		= alias
 set reverse_alias	= yes
 set reverse_name	= yes
 source $alias_file
+source ~/.mutt/colors
+
