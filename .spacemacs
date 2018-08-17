@@ -93,7 +93,7 @@ This function should only modify configuration layer settings."
      git
      graphviz   
      helm
-
+     html
      ;; programming languages support 
      (c-c++ :variables c-c++-enable-clang-support t)
      elixir
@@ -117,8 +117,9 @@ This function should only modify configuration layer settings."
             latex-enable-folding t
             latex-enable-auto-fill t) 
      (markdown :variables markdown-live-preview-engine 'vmd)
+
+
      neotree
-     notmuch
      (org :variables
           org-enable-github-support t
           org-enable-reveal-js-support t)
@@ -126,7 +127,10 @@ This function should only modify configuration layer settings."
      pass
      pdf
      plantuml
+
+     ;; Manage external services from within Emacs
      prodigy
+
      protobuf 
      restclient
      (shell :variables
@@ -155,7 +159,7 @@ This function should only modify configuration layer settings."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   ;; To use a local version of a package, use the `:location' property:
+   ;; ar To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(json-mode request bbdb)
@@ -164,7 +168,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(exec-path-from-shell)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -283,6 +287,7 @@ It should only modify the values of Spacemacs settings."
    ;; additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
    dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -366,7 +371,7 @@ It should only modify the values of Spacemacs settings."
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
-   dotspacemacs-auto-save-file-location `original
+   dotspacemacs-auto-save-file-location `nil
 
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
@@ -818,7 +823,7 @@ before packages are loaded."
     (require 'ox-md)
     (require 'ox-publish)
     (require 'org-agenda)
-    
+    (require 'org-ref)
 
 
     (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -831,9 +836,9 @@ before packages are loaded."
     (setq org-use-fast-todo-selection t)
     (setq org-startup-truncated nil)
 
-    (setq org-directory (expand-file-name "/data/org-mode/org"))
+    (setq org-directory (expand-file-name "~/Dropbox/ORG/org"))
     (setq org-default-notes-file (concat org-directory "/mygtd.org"))
-    (setq org-agenda-files '("/data/org-mode/org" "/data/www" ))
+    (setq org-agenda-files '("~/Dropbox/ORG/org" "/data/www" ))
   
     (setq org-todo-keywords
       '(
@@ -938,25 +943,25 @@ before packages are loaded."
      setq org-publish-project-alist
           '(
             ("html-static"
-             :base-directory "/data/www/static_html/"
+             :base-directory "~/Dropbox/www/static_html/"
              :base-extension "html\\|xml\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz\\|csv\\|m"
              :include (".htaccess")
-             :publishing-directory "/data/www/public_html/"
+             :publishing-directory "~/Dropbox/www/public_html/"
              :recursive t
              :publishing-function org-publish-attachment
              )
 
             ("pdf"
-             :base-directory  "/data/org-mode/"
+             :base-directory  "~/Dropbox/ORG/"
              :base-extension "org"
-             :publishing-directory "/data/org-mode/pdf"
+             :publishing-directory "~/Dropbox/ORG/pdf"
              :publishing-function org-latex-publish-to-pdf
              )
 
             ("org-notes"
-             :base-directory "/data/www/org"
+             :base-directory "~/Dropbox/www/org"
              :base-extension "org"
-             :publishing-directory "/data/www/public_html/org"
+             :publishing-directory "~/Dropbox/www/public_html/org"
              :recursive t
              :exclude ".*-reveal\.org"        ; exclude org-reveal slides 
              :publishing-function org-html-publish-to-html
@@ -980,9 +985,9 @@ before packages are loaded."
              )
 
             ("org-static"
-             :base-directory "/data/www/org"
+             :base-directory "~/Dropbox/www/org"
              :base-extension "html\\|xml\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz\\|csv\\|m"
-             :publishing-directory "/data/www/public_html/org/"
+             :publishing-directory "~/Dropbox/www/public_html/org/"
              :recursive t
              :publishing-function org-publish-attachment
              :exclude "Rplots.pdf"
@@ -993,9 +998,9 @@ before packages are loaded."
              )
 
             ("_org-notes"
-             :base-directory "/data/www/_org/"
+             :base-directory "~/Dropbox/www/_org/"
              :base-extension "org"
-             :publishing-directory "/data/www/private_html/"
+             :publishing-directory "~/Dropbox/www/private_html/"
              :recursive t
              :publishing-function org-html-publish-to-html
              :headline-levels 2               ; Just the default for this project.
@@ -1015,9 +1020,9 @@ before packages are loaded."
              )
 
             ("_org-static"
-             :base-directory "/data/www/_org/"
+             :base-directory "~/Dropbox/www/_org/"
              :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz"
-             :publishing-directory "/data/www/private_html"
+             :publishing-directory "~/Dropbox/www/private_html"
              :recursive t
              :publishing-function org-publish-attachment
              :exclude "Rplots.pdf"
@@ -1078,23 +1083,14 @@ before packages are loaded."
 
   (add-hook 'after-save-hook 'cfengine-permissions-policy-owner-only nil 'make-it-local)
 
-  ;; notmuch
-  (setq notmuch/address-lookup-bin "/usr/local/bin/notmuch-addrlookup")
-
-  (setq notmuch/gnus-alias-identities
-      '(
-        ("home" nil
-         "Dagnachew Argaw <dagnachewa@gmail.com>" ;; Sender address
-         nil                                       ;; Organization header
-         nil                                       ;; Extra headers
-         nil                                       ;; Extra body text
-         ;;"~/.signature")))
-         )))
 
 
 
   ;; elfeed
   (setq browse-url 'firefox)
+
+  ;; paradox github token
+  (setq paradox-github-token "~/.emacs.d/private/token.gpg")
 
   ;; ranger customization
 
@@ -1162,8 +1158,6 @@ before packages are loaded."
             (toggle-truncate-lines t)))
 
 
-  (setq paradox-github-token "d9ae8071e97c4e424e7133ff0ff702e2f7c5340c")
-
   ;; scss
   (setq exec-path (cons (expand-file-name "~/.gem/ruby/2.5/bin") exec-path))
   (add-to-list 'load-path (expand-file-name "~/.emacs.d/private/local/scss-mode.el"))
@@ -1195,7 +1189,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ob-cfengine3 evil-snipe zenburn-theme zen-and-art-theme zeal-at-point yasnippet-snippets yapfify yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tide tao-theme tangotango-theme tango-plus-theme tango-2-theme symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle shell-pop seti-theme reverse-theme restclient-helm restart-emacs rebecca-theme ranger rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme protobuf-mode professional-theme prodigy plantuml-mode planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox pandoc-mode ox-reveal ox-pandoc ox-gfm overseer orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-ipython ob-http ob-elixir noctilux-theme neotree naquadah-theme nameless mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-gitflow madhat2r-theme macrostep lush-theme lsp-ui lsp-python lsp-javascript-typescript lorem-ipsum livid-mode live-py-mode link-hint light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme intero inkpot-theme indent-guide importmagic idris-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-pass helm-notmuch helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme graphviz-dot-mode grandshell-theme gotham-theme google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator fasd farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-ledger evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-commentary evil-cleverparens evil-args evil-anzu eval-sexp-fu ess-R-data-view espresso-theme eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies ein editorconfig dumb-jump dracula-theme dotenv-mode doom-themes django-theme disaster diminish diff-hl deft define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dante dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode counsel-projectile company-tern company-statistics company-rtags company-restclient company-lsp company-go company-ghci company-ghc company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme bbdb base16-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adoc-mode ace-window ace-link ace-jump-helm-line))))
+    (zenburn-theme zen-and-art-theme zeal-at-point yasnippet-snippets yapfify yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tide tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restclient-helm restart-emacs rebecca-theme ranger rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode protobuf-mode professional-theme prodigy plantuml-mode planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox pandoc-mode ox-reveal ox-pandoc ox-gfm overseer orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-ipython ob-http ob-elixir ob-cfengine3 noctilux-theme neotree naquadah-theme nameless mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-gitflow madhat2r-theme macrostep lush-theme lsp-ui lsp-python lsp-javascript-typescript lorem-ipsum livid-mode live-py-mode link-hint light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme intero inkpot-theme indent-guide importmagic impatient-mode idris-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-pass helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme graphviz-dot-mode grandshell-theme gotham-theme google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md geiser gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator fasd farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-snipe evil-org evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-ledger evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-commentary evil-cleverparens evil-args evil-anzu eval-sexp-fu ess-R-data-view espresso-theme eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks emmet-mode elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies ein editorconfig dumb-jump dracula-theme dotenv-mode doom-themes django-theme disaster diminish diff-hl deft define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dante dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode counsel-projectile company-web company-tern company-statistics company-rtags company-restclient company-lsp company-go company-ghci company-ghc company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme bbdb base16-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adoc-mode ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
