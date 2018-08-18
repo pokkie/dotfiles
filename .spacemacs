@@ -286,7 +286,7 @@ It should only modify the values of Spacemacs settings."
    ;; to create your own spaceline theme. Value can be a symbol or list with\
    ;; additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator cup :separator-scale 1.5)
    
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
@@ -300,7 +300,7 @@ It should only modify the values of Spacemacs settings."
                                :weight normal
                                :width normal
                                :antialias 1
-                               :powerline-scale 1.2)
+                               :powerline-scale 1.5)
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -649,7 +649,12 @@ before packages are loaded."
   (spaceline-toggle-all-the-icons-text-scale-on)
   (spaceline-toggle-all-the-icons-region-info-on))
 
-  ;; spaceline setting end 
+  (setq powerline-image-apple-rgb t)
+
+  ;; spaceline setting end
+
+  ;; writegood-mode
+  (global-set-key "\C-cg" 'writegood-mode)
 
   ;; Fira code
   ;; This works when using emacs --daemon + emacsclient
@@ -1050,6 +1055,18 @@ before packages are loaded."
     (setq org-html-table-default-attributes
         '(:border "0" :cellspacing "0" :cellpadding "6" :rules "none" :frame "none"))
 
+
+    ;; org-ref
+    (setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
+
+    ;; see org-ref for use of these variables
+    (setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+      org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib")
+      org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
+
+    (setq bibtex-completion-bibliography "~/Dropbox/bibliography/references.bib"
+      bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
+      bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")  
 
     ;; Exporting to PDF
 
