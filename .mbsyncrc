@@ -1,0 +1,25 @@
+
+IMAPAccount gmail-dagnachew
+Host imap.gmail.com
+User dagnachewa@gmail.com
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/dagnachew/mailpass.gpg"
+SSLType IMAPS
+SSLVersion TLSv1.2
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore gmail-dagnachew-remote
+Account gmail-dagnachew
+
+MaildirStore gmail-dagnachew-local
+SubFolders Verbatim
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/INBOX
+
+Channel gmail-dagnachew
+Master :gmail-dagnachew-remote:
+Slave :gmail-dagnachew-local:
+# Exclude everything under the internal [Gmail] folder, except the interesting folders
+Patterns INBOX "[Gmail]/Sent-mail" "[Gmail]/Starred" "[Gmail]/All Mail" "[Gmail]/Trash"
+Create Both
+SyncState *
+Sync All
