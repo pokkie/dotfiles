@@ -13,3 +13,6 @@
 [submodule ".zim"]
 	path = .zim
 	url = https://github.com/dagnachewa/zimfw
+[submodule ".emacs.d"]
+	path = .emacs.d
+	url = https://github.com/dagnachewa/spacemacs
