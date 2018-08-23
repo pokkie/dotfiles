@@ -7,12 +7,12 @@
 [submodule ".SpaceVim.d"]
 	path = .SpaceVim.d
 	url = https://github.com/dagnachewa/SpaceVim
-[submodule ".emacs.d"]
-	path = .emacs.d
-	url = https://github.com/dagnachewa/spacemacs
 [submodule "/home/dagnachew/.zprezto"]
 	path = /home/dagnachew/.zprezto
 	url = https://github.com/dagnachewa/prezto
 [submodule ".zim"]
 	path = .zim
 	url = https://github.com/dagnachewa/zimfw
+[submodule ".emacs.d"]
+	path = .emacs.d
+	url = https://github.com/dagnachewa/spacemacs
