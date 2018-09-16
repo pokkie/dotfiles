@@ -594,7 +594,7 @@ before packages are loaded."
 
   ;; Package archives setting
 
-  (require 'package)
+  (use-package package)
 
   (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -654,10 +654,10 @@ before packages are loaded."
   ;; spaceline
 
   (with-eval-after-load 'evil
-    (require 'evil-anzu))
+    (use-package evil-anzu))
   
-  (require 'spaceline-all-the-icons)
-  (require 'all-the-icons)
+  (use-package spaceline-all-the-icons)
+  (use-package all-the-icons)
 
   (use-package spaceline-all-the-icons
   :after spaceline
@@ -960,7 +960,7 @@ before packages are loaded."
         )
       )
 
-    (require 'org-bullets)
+    (use-package org-bullets)
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))) 
     (setq org-ellipsis "⤵")
     (setq org-enable-priority-commands nil)
@@ -1282,7 +1282,7 @@ before packages are loaded."
   (setq mu4e-headers-results-limit 5000)
   (setq mu4e-enable-mode-line t)
 
-  (require 'smtpmail)
+  (use-package smtpmail)
 
   (setq
    send-mail-function 'smtpmail-send-it
@@ -1375,7 +1375,8 @@ before packages are loaded."
 
   (add-hook 'racer-mode-hook #'company-mode)
 
-  (require 'rust-mode)
+  (use-package rust-mode)
+
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t)
 
