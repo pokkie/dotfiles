@@ -609,7 +609,8 @@ before packages are loaded."
 
   ;; A secure Emacs environment
 
-  (require 'cl)
+  (use-package cl
+    :after elpy)
   (setq tls-checktrust t)
 
   (setq python (or (executable-find "py.exe")
@@ -852,16 +853,41 @@ before packages are loaded."
 
   (with-eval-after-load 'org
     (provide 'emacs-orgmode-config)
-    (require 'ox-reveal)
-    (require 'ox)
-    (require 'ox-latex)
-    (require 'ox-bibtex)
-    (require 'ox-beamer)
-    (require 'ox-md)
-    (require 'ox-publish)
-    (require 'org-agenda)
-    (require 'org-ref)
 
+    (use-package ox-reveal
+      :disabled
+      :ensure t
+      :after org
+      :config
+      (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+      (setq org-reveal-mathjax t))
+
+    (use-package ox
+      :after org)
+    (use-package ox-latex
+      :after org)
+    (use-package ox-bibtex
+      :after org)
+    (use-package ox-beamer
+      :after org
+      :config
+      (progn
+        ;; allow for export=>beamer by placing
+        ;; #+LaTeX_CLASS: beamer in org files
+        (add-to-list 'org-latex-classes
+                 '("beamer"
+                   "\\documentclass[presentation]{beamer}"
+                   ("\\section{%s}"        . "\\section*{%s}")
+                   ("\\subsection{%s}"     . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}"  . "\\subsubsection*{%s}")))))
+    (use-package ox-md
+      :after org)
+    (use-package ox-publish
+      :after org)
+    (use-package org-agenda 
+      :after org)
+    (use-package org-ref
+      :after org)
 
     (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
