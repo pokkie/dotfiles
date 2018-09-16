@@ -142,8 +142,6 @@ This function should only modify configuration layer settings."
      (mu4e :variables
            mu4e-installation-path "/usr/share/emacs/site-lisp"
            mu4e-account-list t)
-
-     neotree
      (org :variables
           org-enable-github-support t
           org-enable-reveal-js-support t)
@@ -202,7 +200,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(exec-path-from-shell)
+   dotspacemacs-excluded-packages '(exec-path-from-shell
+                                    neotree)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -610,7 +609,7 @@ before packages are loaded."
   ;; A secure Emacs environment
 
   (use-package cl
-    :after elpy)
+    :after python)
   (setq tls-checktrust t)
 
   (setq python (or (executable-find "py.exe")
@@ -647,16 +646,22 @@ before packages are loaded."
 
   
   ;; neotree
-
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
   ;;(load-file "~/.emacs.d/private/doom-themes-neotree.el")
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow ))
+  ;;(setq neo-theme (if (display-graphic-p) 'icons 'arrow ))
 
   ;; spaceline
-
   (with-eval-after-load 'evil
     (use-package evil-anzu))
   
-  (use-package spaceline-all-the-icons)
   (use-package all-the-icons)
 
   (use-package spaceline-all-the-icons
@@ -685,7 +690,7 @@ before packages are loaded."
 
   (setq powerline-image-apple-rgb t)
 
-  ;; spaceline setting end
+  ;;=== spaceline configuration end ===
 
   ;; writegood-mode
   (global-set-key "\C-cg" 'writegood-mode)
@@ -824,7 +829,7 @@ before packages are loaded."
   (add-hook 'prog-mode-hook
             #'add-fira-code-symbol-keywords)
 
-  ;; Fira Code setting end
+  ;;=== Fira Code font configuration===
 
   ;; History
   ;;From http://www.wisdomandwonder.com/wp-content/uploads/2014/03/C3F.html:
@@ -847,7 +852,7 @@ before packages are loaded."
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
   ;; erc configuration
-  (setq erc-prompt-for-nickserv-password nil)
+  ;;(setq erc-prompt-for-nickserv-password nil)
 
   ;; Org-mode
 
@@ -1146,7 +1151,7 @@ before packages are loaded."
     
   )
 
-  ;; Org-Mode end
+  ;;=== end Org-Mode configuration ===
 
 
   ;; clang-format
@@ -1178,6 +1183,7 @@ before packages are loaded."
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
   ;; scala
+  
   (setq-default flycheck-scalastylerc "~/.emacs.d/private/")
 
 
@@ -1217,14 +1223,27 @@ before packages are loaded."
     (setq ranger-max-preview-size 10)
   )
 
+  ;; dash
+  (use-package dash
+    :ensure t)
+
   ;; elfeed
+  (use-package elfeed
+  :ensure t
+  :bind (:map elfeed-search-mode-map
+	      ("q" . bjm/elfeed-save-db-and-bury)
+	      ("Q" . bjm/elfeed-save-db-and-bury)
+	      ("m" . elfeed-toggle-star)
+	      ("M" . elfeed-toggle-star)
+	      )
+  )
   ;;(require 'elfeed-org)
-  ;;(setq browse-url 'firefox)
+  (setq browse-url 'firefox)
+
+  ;;=== elfeed configuration end ===
 
   ;; mu4e
-
   ;;(load-file "~/.emacs.d/private/mu4e-headers.el")
-
   (setq mu4e-use-fancy-chars t)
   (setq mu4e-account-alist
         '(("gmail"
@@ -1239,7 +1258,6 @@ before packages are loaded."
   (setq mu4e-sent-folder "/data/.mail/gmail/Sent-mail")
   (setq mu4e-drafts-folder "/data/.mail/gmail/drafts")
   (setq mu4e-get-mail-command "mbsync -V gmail")
-
   ;;mu4e-headers
   (setq mu4e-headers-has-child-prefix '("+" . "")
         mu4e-headers-empty-parent-prefix '("-" . "")
@@ -1299,6 +1317,8 @@ before packages are loaded."
    starttls-extra-arguments nil
    starttls-use-gnutls t
    ) 
+
+  ;;=== end mu4e configuration ===
 
   ;; notmuch
 
@@ -1361,25 +1381,30 @@ before packages are loaded."
 
   ;; ocaml
 
-  ;; sql
-  (setq sql-connection-alist
-      '((server1 (sql-product 'postgres)
-                  (sql-port 5432)
-                  (sql-server "localhost")
-                  (sql-user "dagnachew")
-                  (sql-database "postgres"))))
 
   ;; rust
+  (use-package rust-mode
+    :mode ("\\.rs$" . rust-mode)
+    :bind (("C-c <tab>" . rust-format-buffer))
+    :config
+    (progn
+      (setq rust-format-on-save t)
+      (setq company-tooltip-align-annotations t)))
+
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
-
   (add-hook 'racer-mode-hook #'company-mode)
 
-  (use-package rust-mode)
+  ;;=== end rust configuration ===
 
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-  (setq company-tooltip-align-annotations t)
-
+  
+  ;; sql
+  (setq sql-connection-alist
+        '((server1 (sql-product 'postgres)
+                   (sql-port 5432)
+                   (sql-server "localhost")
+                   (sql-user "dagnachew")
+                   (sql-database "postgres"))))
   ;;(defun my-sql-server1 ()
   ;;  (interactive)
   ;;  (my-sql-connect 'postgres 'server1))
@@ -1401,11 +1426,16 @@ before packages are loaded."
           (lambda ()
             (toggle-truncate-lines t)))
 
-  ;; end sql
+  ;;=== end sql configuration ===
 
   ;; ycmd
-  (setq ycmd-server-command '("python" "/usr/share/ycmd/ycmd"))
-  (setq ycmd-force-semantic-completion t)
+  (use-package ycmd
+    :config
+    (add-hook 'python-mode-hook 'ycmd-mode)
+    (add-hook 'c-mode-hook 'ycmd-mode)
+    (add-hook 'c++-mode-hook 'ycmd-mode) 
+    (setq ycmd-server-command '("python" "/usr/share/ycmd/ycmd"))
+    (setq ycmd-force-semantic-completion t))
 
   ;; scss
   (autoload 'scss-mode "scss-mode")
