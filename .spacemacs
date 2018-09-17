@@ -1428,6 +1428,13 @@ before packages are loaded."
 
   ;;=== end sql configuration ===
 
+
+  ;; tmux
+  (use-package tmux)
+
+  ;; treemacs
+  (use-package treemacs)
+
   ;; ycmd
   (use-package ycmd
     :config
