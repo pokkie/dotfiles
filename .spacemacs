@@ -978,9 +978,24 @@ before packages are loaded."
     (use-package ob-gnuplot)
     (org-babel-do-load-languages
      'org-babel-load-languages
-     '( (ditaa . t) (sql . t) (C . t) (C ++ . t) (shell . t) (emacs-lisp t) (lisp . t)
-      (css . t) (awk . t) (js . t) (R . t) (python . t) (org . t) (plantuml . t) (gnuplot . t)
+     '( (ditaa . t) (sql . t) (C . t) (C ++ . t) (emacs-lisp t) (lisp . t)
+      (css . t) (awk . t) (js . t) (R . t) (org . t) (plantuml . t) (gnuplot . t)
       (haskell . t) (maxima . t)(calc . t) (mathomatic . t)))
+
+    (use-package ob-python
+      :defer t
+      :ensure org-plus-contrib
+      :commands (org-babel-execute:python))
+
+    (use-package ob-shell
+      :defer t
+      :ensure org-plus-contrib
+      :commands
+      (org-babel-execute:sh
+       org-babel-expand-body:sh
+
+       org-babel-execute:zsh
+       org-babel-expand-body:zsh))
 
     ;; ditaa
     (setq org-ditaa-jar-path "~/.emacs.d/private/local/ditaa0_9.jar")
