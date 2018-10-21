@@ -310,12 +310,13 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
+                         
                          darktooth
-                         doom-peacock
-                         doom-spacegrey
-                         sanityinc-tomorrow-night
                          gruvbox
                          spacemacs-dark
+                         sanityinc-tomorrow-night
+                         doom-peacock
+                         doom-spacegrey
                          )
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
@@ -334,7 +335,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Fira Code"
+   dotspacemacs-default-font '("Iosevka"
                                :size 17
                                :weight normal
                                :width normal
@@ -461,7 +462,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-at-startup t
 
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
@@ -470,7 +471,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
@@ -535,7 +536,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
    ;;dotspacemacs-persistent-server nil
-   dotspacemacs-persistent-server t
+   dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
@@ -676,6 +677,68 @@ before packages are loaded."
       ;;(load-file "~/.emacs.d/private/doom-themes-neotree.el")
       ;;(setq neo-theme (if (display-graphic-p) 'icons 'arrow )))
 
+  ;;== neotree ended
+
+  ;; treemacs
+  (use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+          treemacs-deferred-git-apply-delay   0.5
+          treemacs-display-in-side-window     t
+          treemacs-file-event-delay           5000
+          treemacs-file-follow-delay          0.2
+          treemacs-follow-after-init          t
+          treemacs-follow-recenter-distance   0.1
+          treemacs-goto-tag-strategy          'refetch-index
+          treemacs-indentation                2
+          treemacs-indentation-string         " "
+          treemacs-is-never-other-window      nil
+          treemacs-max-git-entries            5000
+          treemacs-no-png-images              nil
+          treemacs-project-follow-cleanup     nil
+          treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+          treemacs-recenter-after-file-follow nil
+          treemacs-recenter-after-tag-follow  nil
+          treemacs-show-cursor                nil
+          treemacs-show-hidden-files          t
+          treemacs-silent-filewatch           nil
+          treemacs-silent-refresh             nil
+          treemacs-sorting                    'alphabetic-desc
+          treemacs-space-between-root-nodes   t
+          treemacs-tag-follow-cleanup         t
+          treemacs-tag-follow-delay           1.5
+          treemacs-width                      35)
+
+    ;; The default width and height of the icons is 22 pixels. If you are
+    ;; using a Hi-DPI display, uncomment this to double the icon size.
+    ;;(treemacs-resize-icons 44)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode t)
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null (executable-find "python3"))))
+      (`(t . t)
+       (treemacs-git-mode 'extended))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+  ;; treemacs end
+
   ;; sly
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-common-lisp-mode)
 
@@ -711,146 +774,398 @@ before packages are loaded."
 
   (setq powerline-image-apple-rgb t)
 
-  ;;=== spaceline configuration end ===
+  ;;=== spaceline end ===
 
   ;; writegood-mode
   (global-set-key "\C-cg" 'writegood-mode)
 
-  ;; Fira code
-  ;; This works when using emacs --daemon + emacsclient
-  (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
-  ;; This works when using emacs without server/client
-  (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
-  ;; I haven't found one statement that makes both of the above situations work, so I use both for now
+  ;; I use Spacemacs, so I put this in user-config
+  ;; Note that the script above only generates the long list of pairs.
+  ;; The surrounding code is stolen from the PragmataPro scripts floating around on Gist.
 
-  (defconst fira-code-font-lock-keywords-alist
-  (mapcar (lambda (regex-char-pair)
-            `(,(car regex-char-pair)
-              (0 (prog1 ()
-                   (compose-region (match-beginning 1)
-                                   (match-end 1)
-                                   ;; The first argument to concat is a string containing a literal tab
-                                   ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
-          '(("\\(www\\)"                   #Xe100)
-            ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
-            ("\\(\\*\\*\\*\\)"             #Xe102)
-            ("\\(\\*\\*/\\)"               #Xe103)
-            ("\\(\\*>\\)"                  #Xe104)
-            ("[^*]\\(\\*/\\)"              #Xe105)
-            ("\\(\\\\\\\\\\)"              #Xe106)
-            ("\\(\\\\\\\\\\\\\\)"          #Xe107)
-            ("\\({-\\)"                    #Xe108)
-            ;; ("\\(\\[\\]\\)"                #Xe109) This is the [] ligature and I don't like
-            ("\\(::\\)"                    #Xe10a)
-            ("\\(:::\\)"                   #Xe10b)
-            ("[^=]\\(:=\\)"                #Xe10c)
-            ("\\(!!\\)"                    #Xe10d)
-            ("\\(!=\\)"                    #Xe10e)
-            ("\\(!==\\)"                   #Xe10f)
-            ("\\(-}\\)"                    #Xe110)
-            ("\\(--\\)"                    #Xe111)
-            ("\\(---\\)"                   #Xe112)
-            ("\\(-->\\)"                   #Xe113)
-            ("[^-]\\(->\\)"                #Xe114)
-            ("\\(->>\\)"                   #Xe115)
-            ("\\(-<\\)"                    #Xe116)
-            ("\\(-<<\\)"                   #Xe117)
-            ("\\(-~\\)"                    #Xe118)
-            ("\\(#{\\)"                    #Xe119)
-            ("\\(#\\[\\)"                  #Xe11a)
-            ("\\(##\\)"                    #Xe11b)
-            ("\\(###\\)"                   #Xe11c)
-            ("\\(####\\)"                  #Xe11d)
-            ("\\(#(\\)"                    #Xe11e)
-            ("\\(#\\?\\)"                  #Xe11f)
-            ("\\(#_\\)"                    #Xe120)
-            ("\\(#_(\\)"                   #Xe121)
-            ("\\(\\.-\\)"                  #Xe122)
-            ("\\(\\.=\\)"                  #Xe123)
-            ("\\(\\.\\.\\)"                #Xe124)
-            ("\\(\\.\\.<\\)"               #Xe125)
-            ("\\(\\.\\.\\.\\)"             #Xe126)
-            ("\\(\\?=\\)"                  #Xe127)
-            ("\\(\\?\\?\\)"                #Xe128)
-            ("\\(;;\\)"                    #Xe129)
-            ("\\(/\\*\\)"                  #Xe12a)
-            ("\\(/\\*\\*\\)"               #Xe12b)
-            ("\\(/=\\)"                    #Xe12c)
-            ("\\(/==\\)"                   #Xe12d)
-            ("\\(/>\\)"                    #Xe12e)
-            ("\\(//\\)"                    #Xe12f)
-            ("\\(///\\)"                   #Xe130)
-            ("\\(&&\\)"                    #Xe131)
-            ("\\(||\\)"                    #Xe132)
-            ("\\(||=\\)"                   #Xe133)
-            ;("[^|]\\(|=\\)"                #Xe134)
-            ("\\(|>\\)"                    #Xe135)
-            ("\\(\\^=\\)"                  #Xe136)
-            ("\\(\\$>\\)"                  #Xe137)
-            ("\\(\\+\\+\\)"                #Xe138)
-            ("\\(\\+\\+\\+\\)"             #Xe139)
-            ("\\(\\+>\\)"                  #Xe13a)
-            ("\\(=:=\\)"                   #Xe13b)
-            ;("[^!/]\\(==\\)[^>]"           #Xe13c)
-            ("\\(===\\)"                   #Xe13d)
-            ("\\(==>\\)"                   #Xe13e)
-            ;("[^=]\\(=>\\)"                #Xe13f)
-            ("\\(=>>\\)"                   #Xe140)
-            ("\\(<=\\)"                    #Xe141)
-            ("\\(=<<\\)"                   #Xe142)
-            ("\\(=/=\\)"                   #Xe143)
-            ("\\(>-\\)"                    #Xe144)
-            ("\\(>=\\)"                    #Xe145)
-            ("\\(>=>\\)"                   #Xe146)
-            ("[^-=]\\(>>\\)"               #Xe147)
-            ("\\(>>-\\)"                   #Xe148)
-            ("\\(>>=\\)"                   #Xe149)
-            ("\\(>>>\\)"                   #Xe14a)
-            ("\\(<\\*\\)"                  #Xe14b)
-            ("\\(<\\*>\\)"                 #Xe14c)
-            ("\\(<|\\)"                    #Xe14d)
-            ("\\(<|>\\)"                   #Xe14e)
-            ("\\(<\\$\\)"                  #Xe14f)
-            ("\\(<\\$>\\)"                 #Xe150)
-            ("\\(<!--\\)"                  #Xe151)
-            ("\\(<-\\)"                    #Xe152)
-            ("\\(<--\\)"                   #Xe153)
-            ("\\(<->\\)"                   #Xe154)
-            ("\\(<\\+\\)"                  #Xe155)
-            ("\\(<\\+>\\)"                 #Xe156)
-            ("\\(<=\\)"                    #Xe157)
-            ("\\(<==\\)"                   #Xe158)
-            ("\\(<=>\\)"                   #Xe159)
-            ("\\(<=<\\)"                   #Xe15a)
-            ("\\(<>\\)"                    #Xe15b)
-            ("[^-=]\\(<<\\)"               #Xe15c)
-            ("\\(<<-\\)"                   #Xe15d)
-            ("\\(<<=\\)"                   #Xe15e)
-            ("\\(<<<\\)"                   #Xe15f)
-            ("\\(<~\\)"                    #Xe160)
-            ("\\(<~~\\)"                   #Xe161)
-            ("\\(</\\)"                    #Xe162)
-            ("\\(</>\\)"                   #Xe163)
-            ("\\(~@\\)"                    #Xe164)
-            ("\\(~-\\)"                    #Xe165)
-            ("\\(~=\\)"                    #Xe166)
-            ("\\(~>\\)"                    #Xe167)
-            ("[^<]\\(~~\\)"                #Xe168)
-            ("\\(~~>\\)"                   #Xe169)
-            ("\\(%%\\)"                    #Xe16a)
-            ;; ("\\(x\\)"                   #Xe16b) This ended up being hard to do properly so i'm leaving it out.
-            ("[^:=]\\(:\\)[^:=]"           #Xe16c)
-            ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
-            ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f)
-            )))
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
 
-  (defun add-fira-code-symbol-keywords ()
-  (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
+  (defun setup-iosevka-ligatures ()
+    (setq prettify-symbols-alist
+          (append prettify-symbols-alist '(
 
-  (add-hook 'prog-mode-hook
-            #'add-fira-code-symbol-keywords)
+                                           ;; Double-ended hyphen arrows ----------------
+                                           ("<->" . #Xe100)
+                                           ("<-->" . #Xe101)
+                                           ("<--->" . #Xe102)
+                                           ("<---->" . #Xe103)
+                                           ("<----->" . #Xe104)
 
-  ;;=== Fira Code font configuration===
+                                           ;; Double-ended equals arrows ----------------
+                                           ("<=>" . #Xe105)
+                                           ("<==>" . #Xe106)
+                                           ("<===>" . #Xe107)
+                                           ("<====>" . #Xe108)
+                                           ("<=====>" . #Xe109)
+
+                                           ;; Double-ended asterisk operators ----------------
+                                           ("<**>" . #Xe10a)
+                                           ("<***>" . #Xe10b)
+                                           ("<****>" . #Xe10c)
+                                           ("<*****>" . #Xe10d)
+
+                                           ;; HTML comments ----------------
+                                           ("<!--" . #Xe10e)
+                                           ("<!---" . #Xe10f)
+
+                                           ;; Three-char ops with discards ----------------
+                                           ("<$" . #Xe110)
+                                           ("<$>" . #Xe111)
+                                           ("$>" . #Xe112)
+                                           ("<." . #Xe113)
+                                           ("<.>" . #Xe114)
+                                           (".>" . #Xe115)
+                                           ("<*" . #Xe116)
+                                           ("<*>" . #Xe117)
+                                           ("*>" . #Xe118)
+                                           ("<\\" . #Xe119)
+                                           ("<\\>" . #Xe11a)
+                                           ("\\>" . #Xe11b)
+                                           ("</" . #Xe11c)
+                                           ("</>" . #Xe11d)
+                                           ("/>" . #Xe11e)
+                                           ("<\"" . #Xe11f)
+                                           ("<\">" . #Xe120)
+                                           ("\">" . #Xe121)
+                                           ("<'" . #Xe122)
+                                           ("<'>" . #Xe123)
+                                           ("'>" . #Xe124)
+                                           ("<^" . #Xe125)
+                                           ("<^>" . #Xe126)
+                                           ("^>" . #Xe127)
+                                           ("<&" . #Xe128)
+                                           ("<&>" . #Xe129)
+                                           ("&>" . #Xe12a)
+                                           ("<%" . #Xe12b)
+                                           ("<%>" . #Xe12c)
+                                           ("%>" . #Xe12d)
+                                           ("<@" . #Xe12e)
+                                           ("<@>" . #Xe12f)
+                                           ("@>" . #Xe130)
+                                           ("<#" . #Xe131)
+                                           ("<#>" . #Xe132)
+                                           ("#>" . #Xe133)
+                                           ("<+" . #Xe134)
+                                           ("<+>" . #Xe135)
+                                           ("+>" . #Xe136)
+                                           ("<-" . #Xe137)
+                                           ("<->" . #Xe138)
+                                           ("->" . #Xe139)
+                                           ("<!" . #Xe13a)
+                                           ("<!>" . #Xe13b)
+                                           ("!>" . #Xe13c)
+                                           ("<?" . #Xe13d)
+                                           ("<?>" . #Xe13e)
+                                           ("?>" . #Xe13f)
+                                           ("<|" . #Xe140)
+                                           ("<|>" . #Xe141)
+                                           ("|>" . #Xe142)
+                                           ("<:" . #Xe143)
+                                           ("<:>" . #Xe144)
+                                           (":>" . #Xe145)
+
+                                           ;; Colons ----------------
+                                           ("::" . #Xe146)
+                                           (":::" . #Xe147)
+                                           ("::::" . #Xe148)
+
+                                           ;; Arrow-like operators ----------------
+                                           ("->" . #Xe149)
+                                           ("->-" . #Xe14a)
+                                           ("->--" . #Xe14b)
+                                           ("->>" . #Xe14c)
+                                           ("->>-" . #Xe14d)
+                                           ("->>--" . #Xe14e)
+                                           ("->>>" . #Xe14f)
+                                           ("->>>-" . #Xe150)
+                                           ("->>>--" . #Xe151)
+                                           ("-->" . #Xe152)
+                                           ("-->-" . #Xe153)
+                                           ("-->--" . #Xe154)
+                                           ("-->>" . #Xe155)
+                                           ("-->>-" . #Xe156)
+                                           ("-->>--" . #Xe157)
+                                           ("-->>>" . #Xe158)
+                                           ("-->>>-" . #Xe159)
+                                           ("-->>>--" . #Xe15a)
+                                           (">-" . #Xe15b)
+                                           (">--" . #Xe15c)
+                                           (">>-" . #Xe15d)
+                                           (">>--" . #Xe15e)
+                                           (">>>-" . #Xe15f)
+                                           (">>>--" . #Xe160)
+                                           ("=>" . #Xe161)
+                                           ("=>=" . #Xe162)
+                                           ("=>==" . #Xe163)
+                                           ("=>>" . #Xe164)
+                                           ("=>>=" . #Xe165)
+                                           ("=>>==" . #Xe166)
+                                           ("=>>>" . #Xe167)
+                                           ("=>>>=" . #Xe168)
+                                           ("=>>>==" . #Xe169)
+                                           ("==>" . #Xe16a)
+                                           ("==>=" . #Xe16b)
+                                           ("==>==" . #Xe16c)
+                                           ("==>>" . #Xe16d)
+                                           ("==>>=" . #Xe16e)
+                                           ("==>>==" . #Xe16f)
+                                           ("==>>>" . #Xe170)
+                                           ("==>>>=" . #Xe171)
+                                           ("==>>>==" . #Xe172)
+                                           (">=" . #Xe173)
+                                           (">==" . #Xe174)
+                                           (">>=" . #Xe175)
+                                           (">>==" . #Xe176)
+                                           (">>>=" . #Xe177)
+                                           (">>>==" . #Xe178)
+                                           ("<-" . #Xe179)
+                                           ("-<-" . #Xe17a)
+                                           ("--<-" . #Xe17b)
+                                           ("<<-" . #Xe17c)
+                                           ("-<<-" . #Xe17d)
+                                           ("--<<-" . #Xe17e)
+                                           ("<<<-" . #Xe17f)
+                                           ("-<<<-" . #Xe180)
+                                           ("--<<<-" . #Xe181)
+                                           ("<--" . #Xe182)
+                                           ("-<--" . #Xe183)
+                                           ("--<--" . #Xe184)
+                                           ("<<--" . #Xe185)
+                                           ("-<<--" . #Xe186)
+                                           ("--<<--" . #Xe187)
+                                           ("<<<--" . #Xe188)
+                                           ("-<<<--" . #Xe189)
+                                           ("--<<<--" . #Xe18a)
+                                           ("-<" . #Xe18b)
+                                           ("--<" . #Xe18c)
+                                           ("-<<" . #Xe18d)
+                                           ("--<<" . #Xe18e)
+                                           ("-<<<" . #Xe18f)
+                                           ("--<<<" . #Xe190)
+                                           ("<=" . #Xe191)
+                                           ("=<=" . #Xe192)
+                                           ("==<=" . #Xe193)
+                                           ("<<=" . #Xe194)
+                                           ("=<<=" . #Xe195)
+                                           ("==<<=" . #Xe196)
+                                           ("<<<=" . #Xe197)
+                                           ("=<<<=" . #Xe198)
+                                           ("==<<<=" . #Xe199)
+                                           ("<==" . #Xe19a)
+                                           ("=<==" . #Xe19b)
+                                           ("==<==" . #Xe19c)
+                                           ("<<==" . #Xe19d)
+                                           ("=<<==" . #Xe19e)
+                                           ("==<<==" . #Xe19f)
+                                           ("<<<==" . #Xe1a0)
+                                           ("=<<<==" . #Xe1a1)
+                                           ("==<<<==" . #Xe1a2)
+                                           ("=<" . #Xe1a3)
+                                           ("==<" . #Xe1a4)
+                                           ("=<<" . #Xe1a5)
+                                           ("==<<" . #Xe1a6)
+                                           ("=<<<" . #Xe1a7)
+                                           ("==<<<" . #Xe1a8)
+
+                                           ;; Monadic operators ----------------
+                                           (">=>" . #Xe1a9)
+                                           (">->" . #Xe1aa)
+                                           (">-->" . #Xe1ab)
+                                           (">==>" . #Xe1ac)
+                                           ("<=<" . #Xe1ad)
+                                           ("<-<" . #Xe1ae)
+                                           ("<--<" . #Xe1af)
+                                           ("<==<" . #Xe1b0)
+
+                                           ;; Composition operators ----------------
+                                           (">>" . #Xe1b1)
+                                           (">>>" . #Xe1b2)
+                                           ("<<" . #Xe1b3)
+                                           ("<<<" . #Xe1b4)
+
+                                           ;; Lens operators ----------------
+                                           (":+" . #Xe1b5)
+                                           (":-" . #Xe1b6)
+                                           (":=" . #Xe1b7)
+                                           ("+:" . #Xe1b8)
+                                           ("-:" . #Xe1b9)
+                                           ("=:" . #Xe1ba)
+                                           ("=^" . #Xe1bb)
+                                           ("=+" . #Xe1bc)
+                                           ("=-" . #Xe1bd)
+                                           ("=*" . #Xe1be)
+                                           ("=/" . #Xe1bf)
+                                           ("=%" . #Xe1c0)
+                                           ("^=" . #Xe1c1)
+                                           ("+=" . #Xe1c2)
+                                           ("-=" . #Xe1c3)
+                                           ("*=" . #Xe1c4)
+                                           ("/=" . #Xe1c5)
+                                           ("%=" . #Xe1c6)
+
+                                           ;; Logical ----------------
+                                           ("/\\" . #Xe1c7)
+                                           ("\\/" . #Xe1c8)
+
+                                           ;; Semigroup/monoid operators ----------------
+                                           ("<>" . #Xe1c9)
+                                           ("<+" . #Xe1ca)
+                                           ("<+>" . #Xe1cb)
+                                           ("+>" . #Xe1cc)
+                                           ))))
+
+  (defun refresh-pretty ()
+    (prettify-symbols-mode -1)
+    (prettify-symbols-mode +1))
+
+  ;; Hooks for modes in which to install the Iosevka ligatures
+  (mapc (lambda (hook)
+          (add-hook hook (lambda () (setup-iosevka-ligatures) (refresh-pretty))))
+        '(text-mode-hook
+          prog-mode-hook))
+  (global-prettify-symbols-mode +1)
+
+  ;;=== Iosevka end ===
+;; ;; Fira code
+;; ;; This works when using emacs --daemon + emacsclient
+;; (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
+;; ;; This works when using emacs without server/client
+;; (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
+;; ;; I haven't found one statement that makes both of the above situations work, so I use both for now
+;;
+;; (defconst fira-code-font-lock-keywords-alist
+;; (mapcar (lambda (regex-char-pair)
+;;           `(,(car regex-char-pair)
+;;             (0 (prog1 ()
+;;                  (compose-region (match-beginning 1)
+;;                                  (match-end 1)
+;;                                  ;; The first argument to concat is a string containing a literal tab
+;;                                  ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
+;;         '(("\\(www\\)"                   #Xe100)
+;;           ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
+;;           ("\\(\\*\\*\\*\\)"             #Xe102)
+;;           ("\\(\\*\\*/\\)"               #Xe103)
+;;           ("\\(\\*>\\)"                  #Xe104)
+;;           ("[^*]\\(\\*/\\)"              #Xe105)
+;;           ("\\(\\\\\\\\\\)"              #Xe106)
+;;           ("\\(\\\\\\\\\\\\\\)"          #Xe107)
+;;           ("\\({-\\)"                    #Xe108)
+;;           ;; ("\\(\\[\\]\\)"                #Xe109) This is the [] ligature and I don't like
+;;           ("\\(::\\)"                    #Xe10a)
+;;           ("\\(:::\\)"                   #Xe10b)
+;;           ("[^=]\\(:=\\)"                #Xe10c)
+;;           ("\\(!!\\)"                    #Xe10d)
+;;           ("\\(!=\\)"                    #Xe10e)
+;;           ("\\(!==\\)"                   #Xe10f)
+;;           ("\\(-}\\)"                    #Xe110)
+;;           ("\\(--\\)"                    #Xe111)
+;;           ("\\(---\\)"                   #Xe112)
+;;           ("\\(-->\\)"                   #Xe113)
+;;           ("[^-]\\(->\\)"                #Xe114)
+;;           ("\\(->>\\)"                   #Xe115)
+;;           ("\\(-<\\)"                    #Xe116)
+;;           ("\\(-<<\\)"                   #Xe117)
+;;           ("\\(-~\\)"                    #Xe118)
+;;           ("\\(#{\\)"                    #Xe119)
+;;           ("\\(#\\[\\)"                  #Xe11a)
+;;           ("\\(##\\)"                    #Xe11b)
+;;           ("\\(###\\)"                   #Xe11c)
+;;           ("\\(####\\)"                  #Xe11d)
+;;           ("\\(#(\\)"                    #Xe11e)
+;;           ("\\(#\\?\\)"                  #Xe11f)
+;;           ("\\(#_\\)"                    #Xe120)
+;;           ("\\(#_(\\)"                   #Xe121)
+;;           ("\\(\\.-\\)"                  #Xe122)
+;;           ("\\(\\.=\\)"                  #Xe123)
+;;           ("\\(\\.\\.\\)"                #Xe124)
+;;           ("\\(\\.\\.<\\)"               #Xe125)
+;;           ("\\(\\.\\.\\.\\)"             #Xe126)
+;;           ("\\(\\?=\\)"                  #Xe127)
+;;           ("\\(\\?\\?\\)"                #Xe128)
+;;           ("\\(;;\\)"                    #Xe129)
+;;           ("\\(/\\*\\)"                  #Xe12a)
+;;           ("\\(/\\*\\*\\)"               #Xe12b)
+;;           ("\\(/=\\)"                    #Xe12c)
+;;           ("\\(/==\\)"                   #Xe12d)
+;;           ("\\(/>\\)"                    #Xe12e)
+;;           ("\\(//\\)"                    #Xe12f)
+;;           ("\\(///\\)"                   #Xe130)
+;;           ("\\(&&\\)"                    #Xe131)
+;;           ("\\(||\\)"                    #Xe132)
+;;           ("\\(||=\\)"                   #Xe133)
+;;           ;("[^|]\\(|=\\)"                #Xe134)
+;;           ("\\(|>\\)"                    #Xe135)
+;;           ("\\(\\^=\\)"                  #Xe136)
+;;           ("\\(\\$>\\)"                  #Xe137)
+;;           ("\\(\\+\\+\\)"                #Xe138)
+;;           ("\\(\\+\\+\\+\\)"             #Xe139)
+;;           ("\\(\\+>\\)"                  #Xe13a)
+;;           ("\\(=:=\\)"                   #Xe13b)
+;;           ;("[^!/]\\(==\\)[^>]"           #Xe13c)
+;;           ("\\(===\\)"                   #Xe13d)
+;;           ("\\(==>\\)"                   #Xe13e)
+;;           ;("[^=]\\(=>\\)"                #Xe13f)
+;;           ("\\(=>>\\)"                   #Xe140)
+;;           ("\\(<=\\)"                    #Xe141)
+;;           ("\\(=<<\\)"                   #Xe142)
+;;           ("\\(=/=\\)"                   #Xe143)
+;;           ("\\(>-\\)"                    #Xe144)
+;;           ("\\(>=\\)"                    #Xe145)
+;;           ("\\(>=>\\)"                   #Xe146)
+;;           ("[^-=]\\(>>\\)"               #Xe147)
+;;           ("\\(>>-\\)"                   #Xe148)
+;;           ("\\(>>=\\)"                   #Xe149)
+;;           ("\\(>>>\\)"                   #Xe14a)
+;;           ("\\(<\\*\\)"                  #Xe14b)
+;;           ("\\(<\\*>\\)"                 #Xe14c)
+;;           ("\\(<|\\)"                    #Xe14d)
+;;           ("\\(<|>\\)"                   #Xe14e)
+;;           ("\\(<\\$\\)"                  #Xe14f)
+;;           ("\\(<\\$>\\)"                 #Xe150)
+;;           ("\\(<!--\\)"                  #Xe151)
+;;           ("\\(<-\\)"                    #Xe152)
+;;           ("\\(<--\\)"                   #Xe153)
+;;           ("\\(<->\\)"                   #Xe154)
+;;           ("\\(<\\+\\)"                  #Xe155)
+;;           ("\\(<\\+>\\)"                 #Xe156)
+;;           ("\\(<=\\)"                    #Xe157)
+;;           ("\\(<==\\)"                   #Xe158)
+;;           ("\\(<=>\\)"                   #Xe159)
+;;           ("\\(<=<\\)"                   #Xe15a)
+;;           ("\\(<>\\)"                    #Xe15b)
+;;           ("[^-=]\\(<<\\)"               #Xe15c)
+;;           ("\\(<<-\\)"                   #Xe15d)
+;;           ("\\(<<=\\)"                   #Xe15e)
+;;           ("\\(<<<\\)"                   #Xe15f)
+;;           ("\\(<~\\)"                    #Xe160)
+;;           ("\\(<~~\\)"                   #Xe161)
+;;           ("\\(</\\)"                    #Xe162)
+;;           ("\\(</>\\)"                   #Xe163)
+;;           ("\\(~@\\)"                    #Xe164)
+;;           ("\\(~-\\)"                    #Xe165)
+;;           ("\\(~=\\)"                    #Xe166)
+;;           ("\\(~>\\)"                    #Xe167)
+;;           ("[^<]\\(~~\\)"                #Xe168)
+;;           ("\\(~~>\\)"                   #Xe169)
+;;           ("\\(%%\\)"                    #Xe16a)
+;;           ;; ("\\(x\\)"                   #Xe16b) This ended up being hard to do properly so i'm leaving it out.
+;;           ("[^:=]\\(:\\)[^:=]"           #Xe16c)
+;;           ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
+;;           ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f)
+;;           )))
+;;
+;; (defun add-fira-code-symbol-keywords ()
+;; (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
+;;
+;; (add-hook 'prog-mode-hook
+;;           #'add-fira-code-symbol-keywords)
+;;
+;; ;;=== Fira Code font end===
 
   ;; History
   ;;From http://www.wisdomandwonder.com/wp-content/uploads/2014/03/C3F.html:
@@ -892,8 +1207,12 @@ before packages are loaded."
       :after org)
     (use-package ox-latex
       :after org)
+
     (use-package ox-hugo
+      :ensure t            
       :after ox)
+    (use-package ox-hugo-auto-export)
+
     (use-package ox-bibtex
       :after org)
     (use-package ox-beamer
@@ -903,11 +1222,11 @@ before packages are loaded."
         ;; allow for export=>beamer by placing
         ;; #+LaTeX_CLASS: beamer in org files
         (add-to-list 'org-latex-classes
-                 '("beamer"
-                   "\\documentclass[presentation]{beamer}"
-                   ("\\section{%s}"        . "\\section*{%s}")
-                   ("\\subsection{%s}"     . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}"  . "\\subsubsection*{%s}")))))
+                     '("beamer"
+                       "\\documentclass[presentation]{beamer}"
+                       ("\\section{%s}"        . "\\section*{%s}")
+                       ("\\subsection{%s}"     . "\\subsection*{%s}")
+                       ("\\subsubsection{%s}"  . "\\subsubsection*{%s}")))))
     (use-package ox-md
       :after org)
     (use-package ox-publish
@@ -932,78 +1251,78 @@ before packages are loaded."
     (setq org-agenda-files '("~/Dropbox/ORG/org" "/data/www" ))
   
     (setq org-todo-keywords
-      '(
-        (sequence "IDEA(i)" "TODO(t)" "STARTED(s)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)")
-        (sequence "|" "CANCELED(c)" "DELEGATED(l)" "SOMEDAY(f)")
-        ))
+          '(
+            (sequence "IDEA(i)" "TODO(t)" "STARTED(s)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)")
+            (sequence "|" "CANCELED(c)" "DELEGATED(l)" "SOMEDAY(f)")
+            ))
 
     (setq org-todo-keyword-faces
-      '(("IDEA" . (:foreground "GoldenRod" :weight bold))
-        ("NEXT" . (:foreground "IndianRed1" :weight bold))   
-        ("STARTED" . (:foreground "OrangeRed" :weight bold))
-        ("WAITING" . (:foreground "coral" :weight bold)) 
-        ("CANCELED" . (:foreground "LimeGreen" :weight bold))
-        ("DELEGATED" . (:foreground "LimeGreen" :weight bold))
-        ("SOMEDAY" . (:foreground "LimeGreen" :weight bold))
-        ))
+          '(("IDEA" . (:foreground "GoldenRod" :weight bold))
+            ("NEXT" . (:foreground "IndianRed1" :weight bold))   
+            ("STARTED" . (:foreground "OrangeRed" :weight bold))
+            ("WAITING" . (:foreground "coral" :weight bold)) 
+            ("CANCELED" . (:foreground "LimeGreen" :weight bold))
+            ("DELEGATED" . (:foreground "LimeGreen" :weight bold))
+            ("SOMEDAY" . (:foreground "LimeGreen" :weight bold))
+            ))
 
     (setq org-tag-persistent-alist 
-      '((:startgroup . nil)
-        ("HOME" . ?h) 
-        ("RESEARCH" . ?r)
-        ("TEACHING" . ?t)
-        (:endgroup . nil)
-        (:startgroup . nil)
-        ("OS" . ?o) 
-        ("DEV" . ?d)
-        ("WWW" . ?w)
-        (:endgroup . nil)
-        (:startgroup . nil)
-        ("EASY" . ?e)
-        ("MEDIUM" . ?m)
-        ("HARD" . ?a)
-        (:endgroup . nil)
-        ("URGENT" . ?u)
-        ("KEY" . ?k)
-        ("BONUS" . ?b)
-        ("noexport" . ?x)  
-        )
-      )
+          '((:startgroup . nil)
+            ("HOME" . ?h) 
+            ("RESEARCH" . ?r)
+            ("TEACHING" . ?t)
+            (:endgroup . nil)
+            (:startgroup . nil)
+            ("OS" . ?o) 
+            ("DEV" . ?d)
+            ("WWW" . ?w)
+            (:endgroup . nil)
+            (:startgroup . nil)
+            ("EASY" . ?e)
+            ("MEDIUM" . ?m)
+            ("HARD" . ?a)
+            (:endgroup . nil)
+            ("URGENT" . ?u)
+            ("KEY" . ?k)
+            ("BONUS" . ?b)
+            ("noexport" . ?x)  
+            )
+          )
 
     (setq org-tag-faces
-      '(
-        ("HOME" . (:foreground "GoldenRod" :weight bold))
-        ("RESEARCH" . (:foreground "GoldenRod" :weight bold))
-        ("TEACHING" . (:foreground "GoldenRod" :weight bold))
-        ("OS" . (:foreground "IndianRed1" :weight bold))   
-        ("DEV" . (:foreground "IndianRed1" :weight bold))   
-        ("WWW" . (:foreground "IndianRed1" :weight bold))
-        ("URGENT" . (:foreground "Red" :weight bold))  
-        ("KEY" . (:foreground "Red" :weight bold))  
-        ("EASY" . (:foreground "OrangeRed" :weight bold))  
-        ("MEDIUM" . (:foreground "OrangeRed" :weight bold))  
-        ("HARD" . (:foreground "OrangeRed" :weight bold))  
-        ("BONUS" . (:foreground "GoldenRod" :weight bold))
-        ("noexport" . (:foreground "LimeGreen" :weight bold))  
-        )
-      )
+          '(
+            ("HOME" . (:foreground "GoldenRod" :weight bold))
+            ("RESEARCH" . (:foreground "GoldenRod" :weight bold))
+            ("TEACHING" . (:foreground "GoldenRod" :weight bold))
+            ("OS" . (:foreground "IndianRed1" :weight bold))   
+            ("DEV" . (:foreground "IndianRed1" :weight bold))   
+            ("WWW" . (:foreground "IndianRed1" :weight bold))
+            ("URGENT" . (:foreground "Red" :weight bold))  
+            ("KEY" . (:foreground "Red" :weight bold))  
+            ("EASY" . (:foreground "OrangeRed" :weight bold))  
+            ("MEDIUM" . (:foreground "OrangeRed" :weight bold))  
+            ("HARD" . (:foreground "OrangeRed" :weight bold))  
+            ("BONUS" . (:foreground "GoldenRod" :weight bold))
+            ("noexport" . (:foreground "LimeGreen" :weight bold))  
+            )
+          )
 
     (use-package org-bullets)
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))) 
     (setq org-ellipsis "⤵")
     (setq org-enable-priority-commands nil)
     (setq org-list-demote-modify-bullet (quote (("+" . "-")
-                                            ("*" . "-")
-                                            ("1." . "-")
-                                            ("1)" . "a)"))))
+                                                ("*" . "-")
+                                                ("1." . "-")
+                                                ("1)" . "a)"))))
 
     ;; Activate Babel languages
     (use-package ob-gnuplot)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '( (ditaa . t) (sql . t) (C . t) (C ++ . t) (emacs-lisp t) (lisp . t)
-      (css . t) (awk . t) (js . t) (R . t) (org . t) (plantuml . t) (gnuplot . t)
-      (haskell . t) (maxima . t)(calc . t) (mathomatic . t)))
+        (css . t) (awk . t) (js . t) (R . t) (org . t) (plantuml . t) (gnuplot . t)
+        (haskell . t) (maxima . t)(calc . t) (mathomatic . t)))
 
     (use-package ob-python
       :defer t
@@ -1046,114 +1365,114 @@ before packages are loaded."
 
     (
      setq org-publish-project-alist
-          '(
-            ("html-static"
-             :base-directory "~/Dropbox/www/static_html/"
-             :base-extension "html\\|xml\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz\\|csv\\|m"
-             :include (".htaccess")
-             :publishing-directory "~/Dropbox/www/public_html/"
-             :recursive t
-             :publishing-function org-publish-attachment
-             )
+     '(
+       ("html-static"
+        :base-directory "~/Dropbox/www/static_html/"
+        :base-extension "html\\|xml\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz\\|csv\\|m"
+        :include (".htaccess")
+        :publishing-directory "~/Dropbox/www/public_html/"
+        :recursive t
+        :publishing-function org-publish-attachment
+        )
 
-            ("pdf"
-             :base-directory  "~/Dropbox/ORG/"
-             :base-extension "org"
-             :publishing-directory "~/Dropbox/ORG/pdf"
-             :publishing-function org-latex-publish-to-pdf
-             )
+       ("pdf"
+        :base-directory  "~/Dropbox/ORG/"
+        :base-extension "org"
+        :publishing-directory "~/Dropbox/ORG/pdf"
+        :publishing-function org-latex-publish-to-pdf
+        )
 
-            ("org-notes"
-             :base-directory "~/Dropbox/www/org"
-             :base-extension "org"
-             :publishing-directory "~/Dropbox/www/public_html/org"
-             :recursive t
-             :exclude ".*-reveal\.org"        ; exclude org-reveal slides 
-             :publishing-function org-html-publish-to-html
-             :headline-levels 2               ; Just the default for this project.
-             :auto-sitemap t                  ; Generate sitemap.org automagically...
-             :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
-             :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
-             :with-creator nil    ; Disable the inclusion of "Created by Org" in the postamble.
-             :with-email nil      ; Disable the inclusion of "(your email)" in the postamble.
-             :with-author nil       ; Enable the inclusion of "Author: Your Name" in the postamble.
-             :auto-preamble t;         ; Enable auto preamble 
-             :auto-postamble t         ; Enable auto postamble 
-             :table-of-contents t        ; Set this to "t" if you want a table of contents, set to "nil" disables TOC.
-             :toc-levels 2               ; Just the default for this project.
-             :section-numbers nil        ; Set this to "t" if you want headings to have numbers.
-             :html-head-include-default-style nil ;Disable the default css style
-             :html-head-include-scripts nil ;Disable the default javascript snippet
-             :html-head "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.i3s.unice.fr/~malapert/css/worg.min.css\"/>\n<script type=\"text/javascript\" src=\"http://www.i3s.unice.fr/~malapert/js/ga.min.js\"></script>" ;Enable custom css style and other tags
-             :html-link-home "index.html"    ; Just the default for this project.
-             :html-link-up "../index.html"    ; Just the default for this project.
-             )
+       ("org-notes"
+        :base-directory "~/Dropbox/www/org"
+        :base-extension "org"
+        :publishing-directory "~/Dropbox/www/public_html/org"
+        :recursive t
+        :exclude ".*-reveal\.org"       ; exclude org-reveal slides 
+        :publishing-function org-html-publish-to-html
+        :headline-levels 2              ; Just the default for this project.
+        :auto-sitemap t                 ; Generate sitemap.org automagically...
+        :sitemap-filename "sitemap.org" ; ... call it sitemap.org (it's the default)...
+        :sitemap-title "Sitemap"        ; ... with title 'Sitemap'.
+        :with-creator nil ; Disable the inclusion of "Created by Org" in the postamble.
+        :with-email nil ; Disable the inclusion of "(your email)" in the postamble.
+        :with-author nil ; Enable the inclusion of "Author: Your Name" in the postamble.
+        :auto-preamble t ;         ; Enable auto preamble 
+        :auto-postamble t               ; Enable auto postamble 
+        :table-of-contents t ; Set this to "t" if you want a table of contents, set to "nil" disables TOC.
+        :toc-levels 2        ; Just the default for this project.
+        :section-numbers nil ; Set this to "t" if you want headings to have numbers.
+        :html-head-include-default-style nil ;Disable the default css style
+        :html-head-include-scripts nil  ;Disable the default javascript snippet
+        :html-head "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.i3s.unice.fr/~malapert/css/worg.min.css\"/>\n<script type=\"text/javascript\" src=\"http://www.i3s.unice.fr/~malapert/js/ga.min.js\"></script>" ;Enable custom css style and other tags
+        :html-link-home "index.html"       ; Just the default for this project.
+        :html-link-up "../index.html"      ; Just the default for this project.
+        )
 
-            ("org-static"
-             :base-directory "~/Dropbox/www/org"
-             :base-extension "html\\|xml\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz\\|csv\\|m"
-             :publishing-directory "~/Dropbox/www/public_html/org/"
-             :recursive t
-             :publishing-function org-publish-attachment
-             :exclude "Rplots.pdf"
-             )
+       ("org-static"
+        :base-directory "~/Dropbox/www/org"
+        :base-extension "html\\|xml\\|css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz\\|csv\\|m"
+        :publishing-directory "~/Dropbox/www/public_html/org/"
+        :recursive t
+        :publishing-function org-publish-attachment
+        :exclude "Rplots.pdf"
+        )
 
-            ("org" 
-             :components ("org-notes" "org-static" "html-static")
-             )
+       ("org" 
+        :components ("org-notes" "org-static" "html-static")
+        )
 
-            ("_org-notes"
-             :base-directory "~/Dropbox/www/_org/"
-             :base-extension "org"
-             :publishing-directory "~/Dropbox/www/private_html/"
-             :recursive t
-             :publishing-function org-html-publish-to-html
-             :headline-levels 2               ; Just the default for this project.
-             :auto-preamble t
-             :auto-sitemap nil                  ; Do NOT Generate sitemap.org automagically...
-             :with-creator nil    ; Disable the inclusion of "Created by Org" in the postamble.
-             :with-email nil      ; Disable the inclusion of "(your email)" in the postamble.
-             :with-author nil       ; Enable the inclusion of "Author: Your Name" in the postamble.
-             :auto-preamble t;         ; Enable auto preamble 
-             :auto-postamble t         ; Enable auto postamble 
-             :table-of-contents t        ; Set this to "t" if you want a table of contents, set to "nil" disables TOC.
-             :toc-levels 2               ; Just the default for this project.
-             :section-numbers nil        ; Set this to "t" if you want headings to have numbers.
-             :html-head-include-default-style nil ;Disable the default css style
-             :html-head-include-scripts nil ;Disable the default javascript snippet     
-             :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.i3s.unice.fr/~malapert/css/worg.min.css\"/>" ;Enable custom css style
-             )
+       ("_org-notes"
+        :base-directory "~/Dropbox/www/_org/"
+        :base-extension "org"
+        :publishing-directory "~/Dropbox/www/private_html/"
+        :recursive t
+        :publishing-function org-html-publish-to-html
+        :headline-levels 2              ; Just the default for this project.
+        :auto-preamble t
+        :auto-sitemap nil         ; Do NOT Generate sitemap.org automagically...
+        :with-creator nil ; Disable the inclusion of "Created by Org" in the postamble.
+        :with-email nil ; Disable the inclusion of "(your email)" in the postamble.
+        :with-author nil ; Enable the inclusion of "Author: Your Name" in the postamble.
+        :auto-preamble t ;         ; Enable auto preamble 
+        :auto-postamble t               ; Enable auto postamble 
+        :table-of-contents t ; Set this to "t" if you want a table of contents, set to "nil" disables TOC.
+        :toc-levels 2        ; Just the default for this project.
+        :section-numbers nil ; Set this to "t" if you want headings to have numbers.
+        :html-head-include-default-style nil ;Disable the default css style
+        :html-head-include-scripts nil ;Disable the default javascript snippet     
+        :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.i3s.unice.fr/~malapert/css/worg.min.css\"/>" ;Enable custom css style
+        )
 
-            ("_org-static"
-             :base-directory "~/Dropbox/www/_org/"
-             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz"
-             :publishing-directory "~/Dropbox/www/private_html"
-             :recursive t
-             :publishing-function org-publish-attachment
-             :exclude "Rplots.pdf"
-             )
+       ("_org-static"
+        :base-directory "~/Dropbox/www/_org/"
+        :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|zip\\|gz"
+        :publishing-directory "~/Dropbox/www/private_html"
+        :recursive t
+        :publishing-function org-publish-attachment
+        :exclude "Rplots.pdf"
+        )
 
-            ("_org" 
-             :components ("_org-notes" "_org-static")
-             )        
-            )
-          )
+       ("_org" 
+        :components ("_org-notes" "_org-static")
+        )        
+       )
+     )
 
     (setq org-html-head-include-default-style nil)
     (setq org-html-head-include-scripts nil) 
 
     (setf org-html-mathjax-options
-      '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
-        (scale "100") 
-        (align "center") 
-        (indent "2em")
-        (mathml nil))
-      )
+          '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+            (scale "100") 
+            (align "center") 
+            (indent "2em")
+            (mathml nil))
+          )
     (setf org-html-mathjax-template
-      "<script type=\"text/javascript\" src=\"%PATH\"></script>")
+          "<script type=\"text/javascript\" src=\"%PATH\"></script>")
 
     (setq org-html-table-default-attributes
-        '(:border "0" :cellspacing "0" :cellpadding "6" :rules "none" :frame "none"))
+          '(:border "0" :cellspacing "0" :cellpadding "6" :rules "none" :frame "none"))
 
 
     ;; org-ref
@@ -1161,21 +1480,21 @@ before packages are loaded."
 
     ;; see org-ref for use of these variables
     (setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
-      org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib")
-      org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
+          org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib")
+          org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
 
     (setq bibtex-completion-bibliography "~/Dropbox/bibliography/references.bib"
-      bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
-      bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")  
+          bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
+          bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")  
 
     ;; Exporting to PDF
 
     ;;I want to produce PDFs with syntax highlighting in the code. The best way to do that seems to be with the minted package, but that package shells out to pygments to do the actual work. pdflatex usually disallows shell commands; this enables that.
 
     (setq org-latex-pdf-process
-      '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+          '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+            "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+            "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
     ;; Include the minted package in all of my LaTeX exports.
 
@@ -1186,7 +1505,7 @@ before packages are loaded."
     (setq org-reveal-root "file:///home/dagnachew/.emacs.d/private/local/reveal.js")
     (add-to-list 'load-path (expand-file-name "periodic-commit-minor-mode" user-emacs-directory))
     
-  )
+    )
 
   ;;=== end Org-Mode configuration ===
 
@@ -1273,6 +1592,13 @@ before packages are loaded."
   (add-to-load-path (expand-file-name "~/.emacs.d/private/all-the-icons-dired"))
   (load "all-the-icons-dired.el")
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+
+  ;; flycheck
+  (use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode t))
+
 
   ;; scala
   
