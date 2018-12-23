@@ -124,8 +124,10 @@ This function should only modify configuration layer settings."
               haskell-enable-ghci-ng-support t)
      idris
      ipython-notebook
+     java
      javascript
      lsp
+     nim
      ocaml
      python 
      racket
@@ -202,7 +204,7 @@ This function should only modify configuration layer settings."
    ;; ar To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(json-mode request bbdb company-irony company-jedi irony-eldoc)
+   dotspacemacs-additional-packages '(json-mode request bbdb company-irony company-jedi irony-eldoc objed ox-hugo emr telephone-line)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -603,14 +605,14 @@ before packages are loaded."
   (use-package package)
 
   (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+                      (not (gnutls-available-p))))
+         (proto (if no-ssl "http" "https")))
+    ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+    (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+    (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+    (when (< emacs-major-version 24)
+      ;; For important compatibility libraries like cl-lib
+      (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
   (package-initialize)
 
   ;; A secure Emacs environment
@@ -620,31 +622,31 @@ before packages are loaded."
   (setq tls-checktrust t)
 
   (setq python (or (executable-find "py.exe")
-                 (executable-find "python")
-                 ))
+                   (executable-find "python")
+                   ))
 
   (let ((trustfile
-       (replace-regexp-in-string
-        "\\\\" "/"
-        (replace-regexp-in-string
-         "\n" ""
-         (shell-command-to-string (concat python " -m certifi"))))))
-  (setq tls-program
-        (list
-         (format "gnutls-cli%s --x509cafile %s -p %%p %%h"
-                 (if (eq window-system 'w32) ".exe" "") trustfile)))
-  (setq gnutls-verify-error t)
-  (setq gnutls-trustfiles (list trustfile))) 
+         (replace-regexp-in-string
+          "\\\\" "/"
+          (replace-regexp-in-string
+           "\n" ""
+           (shell-command-to-string (concat python " -m certifi"))))))
+    (setq tls-program
+          (list
+           (format "gnutls-cli%s --x509cafile %s -p %%p %%h"
+                   (if (eq window-system 'w32) ".exe" "") trustfile)))
+    (setq gnutls-verify-error t)
+    (setq gnutls-trustfiles (list trustfile))) 
 
   ;; Disable line numbers in dired-mode, doc-view-mode, markdown-mode, org-mode, pdf-view-mode, text-mode as well as buffers over 1Mb
   (setq-default dotspacemacs-lines-numbers '(:relative nil
-                                           :disabled-for-modes dired-mode
-                                                               doc-view-mode
-                                                               markdown-mode
-                                                               org-mode
-                                                               pdf-view-mode
-                                                               text-mode
-                                           :size-limit-kb 1000))
+                                                       :disabled-for-modes dired-mode
+                                                       doc-view-mode
+                                                       markdown-mode
+                                                       org-mode
+                                                       pdf-view-mode
+                                                       text-mode
+                                                       :size-limit-kb 1000))
 
   ;; lang settings
   (set-language-environment "UTF-8")
@@ -662,80 +664,80 @@ before packages are loaded."
 
   ;; neotree
   ;;(use-package neotree
-    ;;:ensure t
-    ;;:defer
-    ;;:config
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-      ;;(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
-      ;;(load-file "~/.emacs.d/private/doom-themes-neotree.el")
-      ;;(setq neo-theme (if (display-graphic-p) 'icons 'arrow )))
+  ;;:ensure t
+  ;;:defer
+  ;;:config
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+  ;;(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+  ;;(load-file "~/.emacs.d/private/doom-themes-neotree.el")
+  ;;(setq neo-theme (if (display-graphic-p) 'icons 'arrow )))
 
   ;;== neotree ended
 
   ;; treemacs
   (use-package treemacs
-  :ensure t
-  :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-          treemacs-deferred-git-apply-delay   0.5
-          treemacs-display-in-side-window     t
-          treemacs-file-event-delay           5000
-          treemacs-file-follow-delay          0.2
-          treemacs-follow-after-init          t
-          treemacs-follow-recenter-distance   0.1
-          treemacs-goto-tag-strategy          'refetch-index
-          treemacs-indentation                2
-          treemacs-indentation-string         " "
-          treemacs-is-never-other-window      nil
-          treemacs-max-git-entries            5000
-          treemacs-no-png-images              nil
-          treemacs-project-follow-cleanup     nil
-          treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-recenter-after-file-follow nil
-          treemacs-recenter-after-tag-follow  nil
-          treemacs-show-cursor                nil
-          treemacs-show-hidden-files          t
-          treemacs-silent-filewatch           nil
-          treemacs-silent-refresh             nil
-          treemacs-sorting                    'alphabetic-desc
-          treemacs-space-between-root-nodes   t
-          treemacs-tag-follow-cleanup         t
-          treemacs-tag-follow-delay           1.5
-          treemacs-width                      35)
+    :ensure t
+    :defer t
+    :init
+    (with-eval-after-load 'winum
+      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+    :config
+    (progn
+      (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+            treemacs-deferred-git-apply-delay   0.5
+            treemacs-display-in-side-window     t
+            treemacs-file-event-delay           5000
+            treemacs-file-follow-delay          0.2
+            treemacs-follow-after-init          t
+            treemacs-follow-recenter-distance   0.1
+            treemacs-goto-tag-strategy          'refetch-index
+            treemacs-indentation                2
+            treemacs-indentation-string         " "
+            treemacs-is-never-other-window      nil
+            treemacs-max-git-entries            5000
+            treemacs-no-png-images              nil
+            treemacs-project-follow-cleanup     nil
+            treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+            treemacs-recenter-after-file-follow nil
+            treemacs-recenter-after-tag-follow  nil
+            treemacs-show-cursor                nil
+            treemacs-show-hidden-files          t
+            treemacs-silent-filewatch           nil
+            treemacs-silent-refresh             nil
+            treemacs-sorting                    'alphabetic-desc
+            treemacs-space-between-root-nodes   t
+            treemacs-tag-follow-cleanup         t
+            treemacs-tag-follow-delay           1.5
+            treemacs-width                      35)
 
-    ;; The default width and height of the icons is 22 pixels. If you are
-    ;; using a Hi-DPI display, uncomment this to double the icon size.
-    ;;(treemacs-resize-icons 44)
+      ;; The default width and height of the icons is 22 pixels. If you are
+      ;; using a Hi-DPI display, uncomment this to double the icon size.
+      ;;(treemacs-resize-icons 44)
 
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode t)
-    (pcase (cons (not (null (executable-find "git")))
-                 (not (null (executable-find "python3"))))
-      (`(t . t)
-       (treemacs-git-mode 'extended))
-      (`(t . _)
-       (treemacs-git-mode 'simple))))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t)
+      (treemacs-fringe-indicator-mode t)
+      (pcase (cons (not (null (executable-find "git")))
+                   (not (null (executable-find "python3"))))
+        (`(t . t)
+         (treemacs-git-mode 'extended))
+        (`(t . _)
+         (treemacs-git-mode 'simple))))
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ("C-x t 1"   . treemacs-delete-other-windows)
+          ("C-x t t"   . treemacs)
+          ("C-x t B"   . treemacs-bookmark)
+          ("C-x t C-t" . treemacs-find-file)
+          ("C-x t M-t" . treemacs-find-tag)))
 
   ;; treemacs end
 
@@ -745,36 +747,61 @@ before packages are loaded."
   ;; spaceline
   (with-eval-after-load 'evil
     (use-package evil-anzu))
-  
+ 
   (use-package all-the-icons)
-
+ 
   (use-package spaceline-all-the-icons
-  :after spaceline
-  :config
-  (setq spaceline-all-the-icons-icon-set-flycheck-slim (quote dots))
-  (setq spaceline-all-the-icons-icon-set-git-ahead (quote commit))
-  ;; (setq spaceline-all-the-icons-icon-set-window-numbering (quote square))
-  (setq spaceline-all-the-icons-flycheck-alternate t)
-  (setq spaceline-all-the-icons-highlight-file-name t)
-  (setq spaceline-all-the-icons-separator-type (quote cup))
-  (spaceline-all-the-icons-theme)
-  (spaceline-all-the-icons--setup-anzu)
-  (spaceline-all-the-icons--setup-package-updates)
-  (spaceline-all-the-icons--setup-paradox)
-  (spaceline-all-the-icons--setup-neotree)
-  (spaceline-toggle-all-the-icons-vc-icon-on)
-  (spaceline-toggle-all-the-icons-fullscreen-on)
-  (spaceline-toggle-all-the-icons-flycheck-status-on)
-  (spaceline-toggle-all-the-icons-git-status-on)
-  (spaceline-toggle-all-the-icons-vc-icon-on)
-  (spaceline-toggle-all-the-icons-mode-icon-on)
-  (spaceline-toggle-all-the-icons-package-updates-on)
-  (spaceline-toggle-all-the-icons-text-scale-on)
-  (spaceline-toggle-all-the-icons-region-info-on))
-
+    :after spaceline
+    :config
+    (setq spaceline-all-the-icons-icon-set-flycheck-slim (quote dots))
+    (setq spaceline-all-the-icons-icon-set-git-ahead (quote commit))
+    ;; (setq spaceline-all-the-icons-icon-set-window-numbering (quote square))
+    (setq spaceline-all-the-icons-flycheck-alternate t)
+    (setq spaceline-all-the-icons-highlight-file-name t)
+    (setq spaceline-all-the-icons-separator-type (quote cup))
+    (spaceline-all-the-icons-theme)
+    (spaceline-all-the-icons--setup-anzu)
+    (spaceline-all-the-icons--setup-package-updates)
+    (spaceline-all-the-icons--setup-paradox)
+    (spaceline-all-the-icons--setup-neotree)
+    (spaceline-toggle-all-the-icons-vc-icon-on)
+    (spaceline-toggle-all-the-icons-fullscreen-on)
+    (spaceline-toggle-all-the-icons-flycheck-status-on)
+    (spaceline-toggle-all-the-icons-git-status-on)
+    (spaceline-toggle-all-the-icons-vc-icon-on)
+    (spaceline-toggle-all-the-icons-mode-icon-on)
+    (spaceline-toggle-all-the-icons-package-updates-on)
+    (spaceline-toggle-all-the-icons-text-scale-on)
+    (spaceline-toggle-all-the-icons-region-info-on))
+ 
   (setq powerline-image-apple-rgb t)
 
   ;;=== spaceline end ===
+
+  ;; telephone-line modeline
+  ;;(require 'telephone-line)
+  ;;(setq telephone-line-primary-left-separator 'telephone-line-cubed-left
+  ;;    telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
+  ;;    telephone-line-primary-right-separator 'telephone-line-cubed-right
+  ;;    telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+  ;;(setq telephone-line-height 24
+  ;;    telephone-line-evil-use-short-tag t)
+  ;;(setq telephone-line-subseparator-faces '())
+  ;;(setq telephone-line-lhs
+  ;;    '((evil   . (telephone-line-evil-tag-segment))
+  ;;      (accent . (telephone-line-vc-segment
+  ;;                 telephone-line-erc-modified-channels-segment
+  ;;                 telephone-line-process-segment))
+  ;;      (nil    . (telephone-line-minor-mode-segment
+  ;;                 telephone-line-buffer-segment))))
+  ;;(setq telephone-line-rhs
+  ;;    '((nil    . (telephone-line-misc-info-segment))
+  ;;      (accent . (telephone-line-major-mode-segment))
+  ;;      (evil   . (telephone-line-airline-position-segment))))
+  ;;
+  ;;(telephone-line-mode 1)
+
+  (setq mode-icons-change-mode-name nil)
 
   ;; writegood-mode
   (global-set-key "\C-cg" 'writegood-mode)
@@ -1031,141 +1058,141 @@ before packages are loaded."
   (global-prettify-symbols-mode +1)
 
   ;;=== Iosevka end ===
-;; ;; Fira code
-;; ;; This works when using emacs --daemon + emacsclient
-;; (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
-;; ;; This works when using emacs without server/client
-;; (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
-;; ;; I haven't found one statement that makes both of the above situations work, so I use both for now
-;;
-;; (defconst fira-code-font-lock-keywords-alist
-;; (mapcar (lambda (regex-char-pair)
-;;           `(,(car regex-char-pair)
-;;             (0 (prog1 ()
-;;                  (compose-region (match-beginning 1)
-;;                                  (match-end 1)
-;;                                  ;; The first argument to concat is a string containing a literal tab
-;;                                  ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
-;;         '(("\\(www\\)"                   #Xe100)
-;;           ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
-;;           ("\\(\\*\\*\\*\\)"             #Xe102)
-;;           ("\\(\\*\\*/\\)"               #Xe103)
-;;           ("\\(\\*>\\)"                  #Xe104)
-;;           ("[^*]\\(\\*/\\)"              #Xe105)
-;;           ("\\(\\\\\\\\\\)"              #Xe106)
-;;           ("\\(\\\\\\\\\\\\\\)"          #Xe107)
-;;           ("\\({-\\)"                    #Xe108)
-;;           ;; ("\\(\\[\\]\\)"                #Xe109) This is the [] ligature and I don't like
-;;           ("\\(::\\)"                    #Xe10a)
-;;           ("\\(:::\\)"                   #Xe10b)
-;;           ("[^=]\\(:=\\)"                #Xe10c)
-;;           ("\\(!!\\)"                    #Xe10d)
-;;           ("\\(!=\\)"                    #Xe10e)
-;;           ("\\(!==\\)"                   #Xe10f)
-;;           ("\\(-}\\)"                    #Xe110)
-;;           ("\\(--\\)"                    #Xe111)
-;;           ("\\(---\\)"                   #Xe112)
-;;           ("\\(-->\\)"                   #Xe113)
-;;           ("[^-]\\(->\\)"                #Xe114)
-;;           ("\\(->>\\)"                   #Xe115)
-;;           ("\\(-<\\)"                    #Xe116)
-;;           ("\\(-<<\\)"                   #Xe117)
-;;           ("\\(-~\\)"                    #Xe118)
-;;           ("\\(#{\\)"                    #Xe119)
-;;           ("\\(#\\[\\)"                  #Xe11a)
-;;           ("\\(##\\)"                    #Xe11b)
-;;           ("\\(###\\)"                   #Xe11c)
-;;           ("\\(####\\)"                  #Xe11d)
-;;           ("\\(#(\\)"                    #Xe11e)
-;;           ("\\(#\\?\\)"                  #Xe11f)
-;;           ("\\(#_\\)"                    #Xe120)
-;;           ("\\(#_(\\)"                   #Xe121)
-;;           ("\\(\\.-\\)"                  #Xe122)
-;;           ("\\(\\.=\\)"                  #Xe123)
-;;           ("\\(\\.\\.\\)"                #Xe124)
-;;           ("\\(\\.\\.<\\)"               #Xe125)
-;;           ("\\(\\.\\.\\.\\)"             #Xe126)
-;;           ("\\(\\?=\\)"                  #Xe127)
-;;           ("\\(\\?\\?\\)"                #Xe128)
-;;           ("\\(;;\\)"                    #Xe129)
-;;           ("\\(/\\*\\)"                  #Xe12a)
-;;           ("\\(/\\*\\*\\)"               #Xe12b)
-;;           ("\\(/=\\)"                    #Xe12c)
-;;           ("\\(/==\\)"                   #Xe12d)
-;;           ("\\(/>\\)"                    #Xe12e)
-;;           ("\\(//\\)"                    #Xe12f)
-;;           ("\\(///\\)"                   #Xe130)
-;;           ("\\(&&\\)"                    #Xe131)
-;;           ("\\(||\\)"                    #Xe132)
-;;           ("\\(||=\\)"                   #Xe133)
-;;           ;("[^|]\\(|=\\)"                #Xe134)
-;;           ("\\(|>\\)"                    #Xe135)
-;;           ("\\(\\^=\\)"                  #Xe136)
-;;           ("\\(\\$>\\)"                  #Xe137)
-;;           ("\\(\\+\\+\\)"                #Xe138)
-;;           ("\\(\\+\\+\\+\\)"             #Xe139)
-;;           ("\\(\\+>\\)"                  #Xe13a)
-;;           ("\\(=:=\\)"                   #Xe13b)
-;;           ;("[^!/]\\(==\\)[^>]"           #Xe13c)
-;;           ("\\(===\\)"                   #Xe13d)
-;;           ("\\(==>\\)"                   #Xe13e)
-;;           ;("[^=]\\(=>\\)"                #Xe13f)
-;;           ("\\(=>>\\)"                   #Xe140)
-;;           ("\\(<=\\)"                    #Xe141)
-;;           ("\\(=<<\\)"                   #Xe142)
-;;           ("\\(=/=\\)"                   #Xe143)
-;;           ("\\(>-\\)"                    #Xe144)
-;;           ("\\(>=\\)"                    #Xe145)
-;;           ("\\(>=>\\)"                   #Xe146)
-;;           ("[^-=]\\(>>\\)"               #Xe147)
-;;           ("\\(>>-\\)"                   #Xe148)
-;;           ("\\(>>=\\)"                   #Xe149)
-;;           ("\\(>>>\\)"                   #Xe14a)
-;;           ("\\(<\\*\\)"                  #Xe14b)
-;;           ("\\(<\\*>\\)"                 #Xe14c)
-;;           ("\\(<|\\)"                    #Xe14d)
-;;           ("\\(<|>\\)"                   #Xe14e)
-;;           ("\\(<\\$\\)"                  #Xe14f)
-;;           ("\\(<\\$>\\)"                 #Xe150)
-;;           ("\\(<!--\\)"                  #Xe151)
-;;           ("\\(<-\\)"                    #Xe152)
-;;           ("\\(<--\\)"                   #Xe153)
-;;           ("\\(<->\\)"                   #Xe154)
-;;           ("\\(<\\+\\)"                  #Xe155)
-;;           ("\\(<\\+>\\)"                 #Xe156)
-;;           ("\\(<=\\)"                    #Xe157)
-;;           ("\\(<==\\)"                   #Xe158)
-;;           ("\\(<=>\\)"                   #Xe159)
-;;           ("\\(<=<\\)"                   #Xe15a)
-;;           ("\\(<>\\)"                    #Xe15b)
-;;           ("[^-=]\\(<<\\)"               #Xe15c)
-;;           ("\\(<<-\\)"                   #Xe15d)
-;;           ("\\(<<=\\)"                   #Xe15e)
-;;           ("\\(<<<\\)"                   #Xe15f)
-;;           ("\\(<~\\)"                    #Xe160)
-;;           ("\\(<~~\\)"                   #Xe161)
-;;           ("\\(</\\)"                    #Xe162)
-;;           ("\\(</>\\)"                   #Xe163)
-;;           ("\\(~@\\)"                    #Xe164)
-;;           ("\\(~-\\)"                    #Xe165)
-;;           ("\\(~=\\)"                    #Xe166)
-;;           ("\\(~>\\)"                    #Xe167)
-;;           ("[^<]\\(~~\\)"                #Xe168)
-;;           ("\\(~~>\\)"                   #Xe169)
-;;           ("\\(%%\\)"                    #Xe16a)
-;;           ;; ("\\(x\\)"                   #Xe16b) This ended up being hard to do properly so i'm leaving it out.
-;;           ("[^:=]\\(:\\)[^:=]"           #Xe16c)
-;;           ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
-;;           ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f)
-;;           )))
-;;
-;; (defun add-fira-code-symbol-keywords ()
-;; (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
-;;
-;; (add-hook 'prog-mode-hook
-;;           #'add-fira-code-symbol-keywords)
-;;
-;; ;;=== Fira Code font end===
+  ;; ;; Fira code
+  ;; ;; This works when using emacs --daemon + emacsclient
+  ;; (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
+  ;; ;; This works when using emacs without server/client
+  ;; (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
+  ;; ;; I haven't found one statement that makes both of the above situations work, so I use both for now
+  ;;
+  ;; (defconst fira-code-font-lock-keywords-alist
+  ;; (mapcar (lambda (regex-char-pair)
+  ;;           `(,(car regex-char-pair)
+  ;;             (0 (prog1 ()
+  ;;                  (compose-region (match-beginning 1)
+  ;;                                  (match-end 1)
+  ;;                                  ;; The first argument to concat is a string containing a literal tab
+  ;;                                  ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
+  ;;         '(("\\(www\\)"                   #Xe100)
+  ;;           ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
+  ;;           ("\\(\\*\\*\\*\\)"             #Xe102)
+  ;;           ("\\(\\*\\*/\\)"               #Xe103)
+  ;;           ("\\(\\*>\\)"                  #Xe104)
+  ;;           ("[^*]\\(\\*/\\)"              #Xe105)
+  ;;           ("\\(\\\\\\\\\\)"              #Xe106)
+  ;;           ("\\(\\\\\\\\\\\\\\)"          #Xe107)
+  ;;           ("\\({-\\)"                    #Xe108)
+  ;;           ;; ("\\(\\[\\]\\)"                #Xe109) This is the [] ligature and I don't like
+  ;;           ("\\(::\\)"                    #Xe10a)
+  ;;           ("\\(:::\\)"                   #Xe10b)
+  ;;           ("[^=]\\(:=\\)"                #Xe10c)
+  ;;           ("\\(!!\\)"                    #Xe10d)
+  ;;           ("\\(!=\\)"                    #Xe10e)
+  ;;           ("\\(!==\\)"                   #Xe10f)
+  ;;           ("\\(-}\\)"                    #Xe110)
+  ;;           ("\\(--\\)"                    #Xe111)
+  ;;           ("\\(---\\)"                   #Xe112)
+  ;;           ("\\(-->\\)"                   #Xe113)
+  ;;           ("[^-]\\(->\\)"                #Xe114)
+  ;;           ("\\(->>\\)"                   #Xe115)
+  ;;           ("\\(-<\\)"                    #Xe116)
+  ;;           ("\\(-<<\\)"                   #Xe117)
+  ;;           ("\\(-~\\)"                    #Xe118)
+  ;;           ("\\(#{\\)"                    #Xe119)
+  ;;           ("\\(#\\[\\)"                  #Xe11a)
+  ;;           ("\\(##\\)"                    #Xe11b)
+  ;;           ("\\(###\\)"                   #Xe11c)
+  ;;           ("\\(####\\)"                  #Xe11d)
+  ;;           ("\\(#(\\)"                    #Xe11e)
+  ;;           ("\\(#\\?\\)"                  #Xe11f)
+  ;;           ("\\(#_\\)"                    #Xe120)
+  ;;           ("\\(#_(\\)"                   #Xe121)
+  ;;           ("\\(\\.-\\)"                  #Xe122)
+  ;;           ("\\(\\.=\\)"                  #Xe123)
+  ;;           ("\\(\\.\\.\\)"                #Xe124)
+  ;;           ("\\(\\.\\.<\\)"               #Xe125)
+  ;;           ("\\(\\.\\.\\.\\)"             #Xe126)
+  ;;           ("\\(\\?=\\)"                  #Xe127)
+  ;;           ("\\(\\?\\?\\)"                #Xe128)
+  ;;           ("\\(;;\\)"                    #Xe129)
+  ;;           ("\\(/\\*\\)"                  #Xe12a)
+  ;;           ("\\(/\\*\\*\\)"               #Xe12b)
+  ;;           ("\\(/=\\)"                    #Xe12c)
+  ;;           ("\\(/==\\)"                   #Xe12d)
+  ;;           ("\\(/>\\)"                    #Xe12e)
+  ;;           ("\\(//\\)"                    #Xe12f)
+  ;;           ("\\(///\\)"                   #Xe130)
+  ;;           ("\\(&&\\)"                    #Xe131)
+  ;;           ("\\(||\\)"                    #Xe132)
+  ;;           ("\\(||=\\)"                   #Xe133)
+  ;;           ;("[^|]\\(|=\\)"                #Xe134)
+  ;;           ("\\(|>\\)"                    #Xe135)
+  ;;           ("\\(\\^=\\)"                  #Xe136)
+  ;;           ("\\(\\$>\\)"                  #Xe137)
+  ;;           ("\\(\\+\\+\\)"                #Xe138)
+  ;;           ("\\(\\+\\+\\+\\)"             #Xe139)
+  ;;           ("\\(\\+>\\)"                  #Xe13a)
+  ;;           ("\\(=:=\\)"                   #Xe13b)
+  ;;           ;("[^!/]\\(==\\)[^>]"           #Xe13c)
+  ;;           ("\\(===\\)"                   #Xe13d)
+  ;;           ("\\(==>\\)"                   #Xe13e)
+  ;;           ;("[^=]\\(=>\\)"                #Xe13f)
+  ;;           ("\\(=>>\\)"                   #Xe140)
+  ;;           ("\\(<=\\)"                    #Xe141)
+  ;;           ("\\(=<<\\)"                   #Xe142)
+  ;;           ("\\(=/=\\)"                   #Xe143)
+  ;;           ("\\(>-\\)"                    #Xe144)
+  ;;           ("\\(>=\\)"                    #Xe145)
+  ;;           ("\\(>=>\\)"                   #Xe146)
+  ;;           ("[^-=]\\(>>\\)"               #Xe147)
+  ;;           ("\\(>>-\\)"                   #Xe148)
+  ;;           ("\\(>>=\\)"                   #Xe149)
+  ;;           ("\\(>>>\\)"                   #Xe14a)
+  ;;           ("\\(<\\*\\)"                  #Xe14b)
+  ;;           ("\\(<\\*>\\)"                 #Xe14c)
+  ;;           ("\\(<|\\)"                    #Xe14d)
+  ;;           ("\\(<|>\\)"                   #Xe14e)
+  ;;           ("\\(<\\$\\)"                  #Xe14f)
+  ;;           ("\\(<\\$>\\)"                 #Xe150)
+  ;;           ("\\(<!--\\)"                  #Xe151)
+  ;;           ("\\(<-\\)"                    #Xe152)
+  ;;           ("\\(<--\\)"                   #Xe153)
+  ;;           ("\\(<->\\)"                   #Xe154)
+  ;;           ("\\(<\\+\\)"                  #Xe155)
+  ;;           ("\\(<\\+>\\)"                 #Xe156)
+  ;;           ("\\(<=\\)"                    #Xe157)
+  ;;           ("\\(<==\\)"                   #Xe158)
+  ;;           ("\\(<=>\\)"                   #Xe159)
+  ;;           ("\\(<=<\\)"                   #Xe15a)
+  ;;           ("\\(<>\\)"                    #Xe15b)
+  ;;           ("[^-=]\\(<<\\)"               #Xe15c)
+  ;;           ("\\(<<-\\)"                   #Xe15d)
+  ;;           ("\\(<<=\\)"                   #Xe15e)
+  ;;           ("\\(<<<\\)"                   #Xe15f)
+  ;;           ("\\(<~\\)"                    #Xe160)
+  ;;           ("\\(<~~\\)"                   #Xe161)
+  ;;           ("\\(</\\)"                    #Xe162)
+  ;;           ("\\(</>\\)"                   #Xe163)
+  ;;           ("\\(~@\\)"                    #Xe164)
+  ;;           ("\\(~-\\)"                    #Xe165)
+  ;;           ("\\(~=\\)"                    #Xe166)
+  ;;           ("\\(~>\\)"                    #Xe167)
+  ;;           ("[^<]\\(~~\\)"                #Xe168)
+  ;;           ("\\(~~>\\)"                   #Xe169)
+  ;;           ("\\(%%\\)"                    #Xe16a)
+  ;;           ;; ("\\(x\\)"                   #Xe16b) This ended up being hard to do properly so i'm leaving it out.
+  ;;           ("[^:=]\\(:\\)[^:=]"           #Xe16c)
+  ;;           ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
+  ;;           ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f)
+  ;;           )))
+  ;;
+  ;; (defun add-fira-code-symbol-keywords ()
+  ;; (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
+  ;;
+  ;; (add-hook 'prog-mode-hook
+  ;;           #'add-fira-code-symbol-keywords)
+  ;;
+  ;; ;;=== Fira Code font end===
 
   ;; History
   ;;From http://www.wisdomandwonder.com/wp-content/uploads/2014/03/C3F.html:
@@ -1208,10 +1235,10 @@ before packages are loaded."
     (use-package ox-latex
       :after org)
 
-    (use-package ox-hugo
-      :ensure t            
-      :after ox)
-    (use-package ox-hugo-auto-export)
+    ;;(use-package ox-hugo
+    ;;:ensure t            
+    ;;:after ox)
+    ;;(use-package ox-hugo-auto-export)
 
     (use-package ox-bibtex
       :after org)
@@ -1321,7 +1348,7 @@ before packages are loaded."
     (org-babel-do-load-languages
      'org-babel-load-languages
      '( (ditaa . t) (sql . t) (C . t) (C ++ . t) (emacs-lisp t) (lisp . t)
-        (css . t) (awk . t) (js . t) (R . t) (org . t) (plantuml . t) (gnuplot . t)
+        (css . t) (awk . t) (ipython .t) (js . t) (R . t) (org . t) (plantuml . t) (gnuplot . t)
         (haskell . t) (maxima . t)(calc . t) (mathomatic . t)))
 
     (use-package ob-python
@@ -1404,8 +1431,8 @@ before packages are loaded."
         :html-head-include-default-style nil ;Disable the default css style
         :html-head-include-scripts nil  ;Disable the default javascript snippet
         :html-head "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.i3s.unice.fr/~malapert/css/worg.min.css\"/>\n<script type=\"text/javascript\" src=\"http://www.i3s.unice.fr/~malapert/js/ga.min.js\"></script>" ;Enable custom css style and other tags
-        :html-link-home "index.html"       ; Just the default for this project.
-        :html-link-up "../index.html"      ; Just the default for this project.
+        :html-link-home "index.html"    ; Just the default for this project.
+        :html-link-up "../index.html"   ; Just the default for this project.
         )
 
        ("org-static"
@@ -1514,9 +1541,9 @@ before packages are loaded."
     :ensure t
     :init
     (progn
-    (ac-config-default)
+      (ac-config-default)
       (global-auto-complete-mode t)
-     ))
+      ))
 
   ;; company
   (use-package company
@@ -1549,17 +1576,17 @@ before packages are loaded."
     (add-hook 'irony-mode-hook #'irony-eldoc))
 
   (defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
+    (add-to-list 'company-backends 'company-jedi))
 
   (add-hook 'python-mode-hook 'my/python-mode-hook)
   (use-package company-jedi
     :ensure t
     :config
     (add-hook 'python-mode-hook 'jedi:setup)
-       )
+    )
 
   (defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
+    (add-to-list 'company-backends 'company-jedi))
 
   (add-hook 'python-mode-hook 'my/python-mode-hook)
 
@@ -1567,24 +1594,24 @@ before packages are loaded."
 
   ;; clang-format
   (defun clang-format-buffer-smart ()
-  "Reformat buffer if .clang-format exists in the projectile root."
-  (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
-    (clang-format-buffer)))
+    "Reformat buffer if .clang-format exists in the projectile root."
+    (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
+      (clang-format-buffer)))
 
   (defun clang-format-buffer-smart-on-save ()
-  "Add auto-save hook for clang-format-buffer-smart."
-  (add-hook 'before-save-hook 'clang-format-buffer-smart nil t))
+    "Add auto-save hook for clang-format-buffer-smart."
+    (add-hook 'before-save-hook 'clang-format-buffer-smart nil t))
 
   (spacemacs/add-to-hooks 'clang-format-buffer-smart-on-save
-                        '(c-mode-hook c++-mode-hook))
+                          '(c-mode-hook c++-mode-hook))
 
 
   ;; cfengine
   (defun cfengine-permissions-policy-owner-only ()
-  "If file starts with a shebang, make `buffer-file-name' executable"
-  (save-excursion
-    (set-file-modes buffer-file-name #o600)
-    (message (concat "Made " buffer-file-name " accessibly only by the owner (600)."))))
+    "If file starts with a shebang, make `buffer-file-name' executable"
+    (save-excursion
+      (set-file-modes buffer-file-name #o600)
+      (message (concat "Made " buffer-file-name " accessibly only by the owner (600)."))))
 
   (add-hook 'after-save-hook 'cfengine-permissions-policy-owner-only nil 'make-it-local)
 
@@ -1595,9 +1622,9 @@ before packages are loaded."
 
   ;; flycheck
   (use-package flycheck
-  :ensure t
-  :init
-  (global-flycheck-mode t))
+    :ensure t
+    :init
+    (global-flycheck-mode t))
 
 
   ;; scala
@@ -1639,7 +1666,7 @@ before packages are loaded."
     (setq ranger-ignored-extensions '("mkv" "iso" "mp4"))
     ;;To set the max files size (in MB), set the following parameter:
     (setq ranger-max-preview-size 10)
-  )
+    )
 
   ;; dash
   (use-package dash
@@ -1647,28 +1674,31 @@ before packages are loaded."
 
   ;; elfeed
   (use-package elfeed
-  :ensure t
-  :bind (:map elfeed-search-mode-map
-	      ("q" . bjm/elfeed-save-db-and-bury)
-	      ("Q" . bjm/elfeed-save-db-and-bury)
-	      ("m" . elfeed-toggle-star)
-	      ("M" . elfeed-toggle-star)
-	      )
-  )
+    :ensure t
+    :bind (:map elfeed-search-mode-map
+	              ("q" . bjm/elfeed-save-db-and-bury)
+	              ("Q" . bjm/elfeed-save-db-and-bury)
+	              ("m" . elfeed-toggle-star)
+	              ("M" . elfeed-toggle-star)
+	              )
+    )
   ;;(require 'elfeed-org)
   (setq browse-url 'firefox)
 
   ;;=== elfeed configuration end ===
+
+  ;; emacs refactoring emr
+  (define-key prog-mode-map (kbd "M-RET") 'emr-show-refactor-menu) 
 
   ;; mu4e
   ;;(load-file "~/.emacs.d/private/mu4e-headers.el")
   (setq mu4e-use-fancy-chars t)
   (setq mu4e-account-alist
         '(("gmail"
-         ;; Under each account, set the account-specific variables you want.
-         (mu4e-sent-messages-behavior delete)
-         (user-mail-address "dagnachewa@gmail.com")
-         (user-full-name "Dagnachew Argaw"))
+           ;; Under each account, set the account-specific variables you want.
+           (mu4e-sent-messages-behavior delete)
+           (user-mail-address "dagnachewa@gmail.com")
+           (user-full-name "Dagnachew Argaw"))
           ))
   
   (setq mu4e-maildir "/data/.mail/gmail")
@@ -1693,27 +1723,27 @@ before packages are loaded."
         mu4e-headers-encrypted-mark '("-" . "")
         mu4e-headers-signed-mark '("-" . "")
         mu4e-headers-unread-mark '("-" . ""))
-        mu4e-headers-first-child-prefix '("\\" . "")
-        mu4e-headers-duplicate-prefix '("=" . "")
-        mu4e-headers-default-prefix '("|" . "")
-        mu4e-headers-draft-mark '("D" . "")
-        mu4e-headers-flagged-mark '("F" . "")
-        mu4e-headers-new-mark '("N" . "")
-        mu4e-headers-passed-mark '("P" . "")
-        mu4e-headers-replied-mark '("R" . "")
-        mu4e-headers-seen-mark '("S" . "")
-        mu4e-headers-trashed-mark '("T" . "")
-        mu4e-headers-attach-mark '("a" . "")
-        mu4e-headers-encrypted-mark '("x" . "")
-        mu4e-headers-signed-mark '("s" . "")
-        mu4e-headers-unread-mark '("u" . "")
+  mu4e-headers-first-child-prefix '("\\" . "")
+  mu4e-headers-duplicate-prefix '("=" . "")
+  mu4e-headers-default-prefix '("|" . "")
+  mu4e-headers-draft-mark '("D" . "")
+  mu4e-headers-flagged-mark '("F" . "")
+  mu4e-headers-new-mark '("N" . "")
+  mu4e-headers-passed-mark '("P" . "")
+  mu4e-headers-replied-mark '("R" . "")
+  mu4e-headers-seen-mark '("S" . "")
+  mu4e-headers-trashed-mark '("T" . "")
+  mu4e-headers-attach-mark '("a" . "")
+  mu4e-headers-encrypted-mark '("x" . "")
+  mu4e-headers-signed-mark '("s" . "")
+  mu4e-headers-unread-mark '("u" . "")
 
 
   ;; setup some handy shortcuts
   (setq mu4e-maildir-shortcuts
-      '(("/INBOX"             . ?i)
-        ("/gmail/Sent-mail" . ?s)
-        ("/gmail/Trash"     . ?t)))
+        '(("/INBOX"             . ?i)
+          ("/gmail/Sent-mail" . ?s)
+          ("/gmail/Trash"     . ?t)))
 
   (setq mu4e-headers-results-limit 5000)
   (setq mu4e-enable-mode-line t)
@@ -1740,38 +1770,38 @@ before packages are loaded."
 
   ;; notmuch
 
- ;; setup the mail address and use name
- ;; (setq mail-user-agent 'message-user-agent)
- ;; (setq user-mail-address "dagnachewa@gmail.com"
- ;;     user-full-name "Dagnachew Argaw")
+  ;; setup the mail address and use name
+  ;; (setq mail-user-agent 'message-user-agent)
+  ;; (setq user-mail-address "dagnachewa@gmail.com"
+  ;;     user-full-name "Dagnachew Argaw")
   ;; smtp config
- ;; (setq smtpmail-smtp-server "smtp.gmail.com"
- ;;     message-send-mail-function 'message-smtpmail-send-it)
+  ;; (setq smtpmail-smtp-server "smtp.gmail.com"
+  ;;     message-send-mail-function 'message-smtpmail-send-it)
 
   ;; report problems with the smtp server
- ;; (setq smtpmail-debug-info t)
+  ;; (setq smtpmail-debug-info t)
   ;; add Cc and Bcc headers to the message buffer
- ;; (setq message-default-mail-headers "Cc: \nBcc: \n")
+  ;; (setq message-default-mail-headers "Cc: \nBcc: \n")
   ;; postponed message is put in the following draft directory
- ;; (setq message-auto-save-directory "~/.mail/gmail/drafts")
- ;; (setq message-kill-buffer-on-exit t)
+  ;; (setq message-auto-save-directory "~/.mail/gmail/drafts")
+  ;; (setq message-kill-buffer-on-exit t)
   ;; change the directory to store the sent mail
- ;; (setq message-directory "~/.mail/gmail/Sent-mail")
+  ;; (setq message-directory "~/.mail/gmail/Sent-mail")
 
   ;; refresh local mail box
   ;;(defun notmuch-exec-offlineimap ()
   ;; "execute offlineimap"
-    ;;(interactive)
-    ;;(set-process-sentinel
-     ;;(start-process-shell-command "offlineimap"
-     ;;                             "*offlineimap*"
-     ;;                             "offlineimap -o")
-     ;;'(lambda (process event)
-     ;;   (notmuch-refresh-all-buffers)
-     ;;   (let ((w (get-buffer-window "*offlineimap*")))
-     ;;     (when w
-     ;;       (with-selected-window w (recenter (window-end)))))))
-    ;;(popwin:display-buffer "*offlineimap*"))
+  ;;(interactive)
+  ;;(set-process-sentinel
+  ;;(start-process-shell-command "offlineimap"
+  ;;                             "*offlineimap*"
+  ;;                             "offlineimap -o")
+  ;;'(lambda (process event)
+  ;;   (notmuch-refresh-all-buffers)
+  ;;   (let ((w (get-buffer-window "*offlineimap*")))
+  ;;     (when w
+  ;;       (with-selected-window w (recenter (window-end)))))))
+  ;;(popwin:display-buffer "*offlineimap*"))
 
   ;;(add-to-list 'popwin:special-display-config
   ;;           '("*offlineimap*" :dedicated t :position bottom :stick t
@@ -1786,27 +1816,7 @@ before packages are loaded."
   ;; paradox github token
   (setq paradox-github-token "~/.emacs.d/private/token.gpg")
 
-  ;; pdf-tools
-  (use-package pdf-tools
-    :pin manual ;; manually update
-    :config
-    ;; initialise
-    (pdf-tools-install)
-    ;; open pdfs scaled to fit page
-    (setq-default pdf-view-display-size 'fit-page)
-    ;; automatically annotate highlights
-    (setq pdf-annot-activate-created-annotations t)
-    ;; use normal isearch
-    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-    ;; turn off cua so copy works
-    (add-hook 'pdf-view-mode-hook (lambda () (cua-mode 0)))
-    ;; more fine-grained zooming
-    (setq pdf-view-resize-factor 1.1)
-    ;; keyboard shortcuts
-    (define-key pdf-view-mode-map (kbd "h") 'pdf-annot-add-highlight-markup-annotation)
-    (define-key pdf-view-mode-map (kbd "t") 'pdf-annot-add-text-annotation)
-    (define-key pdf-view-mode-map (kbd "D") 'pdf-annot-delete))
-
+  
   ;; irony
   ;;(add-hook 'c++-mode-hook 'irony-mode)
   ;;(add-hook 'c-mode-hook 'irony-mode)
@@ -1816,6 +1826,10 @@ before packages are loaded."
   ;; haskell
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
   (add-to-list 'exec-path "~/.local/bin/")
+
+  ;; java
+  (setq eclim-eclipse-dirs '("~/usr/lib/eclipse/")
+        eclim-executable "~/usr/lib/eclipse/eclim")
 
   ;; ocaml
   (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
@@ -1858,18 +1872,18 @@ before packages are loaded."
     (require my-password "~/.emacs.d/private/my-password.el.gpg")
 
     (let ((connection-info (assoc connection sql-connection-alist))
-        (sql-password (car (last (assoc connection my-sql-password)))))
-    (delete sql-password connection-info)
-    (nconc connection-info `((sql-password ,sql-password)))
-    (setq sql-connection-alist (assq-delete-all connection sql-connection-alist))
-    (add-to-list 'sql-connection-alist connection-info))
+          (sql-password (car (last (assoc connection my-sql-password)))))
+      (delete sql-password connection-info)
+      (nconc connection-info `((sql-password ,sql-password)))
+      (setq sql-connection-alist (assq-delete-all connection sql-connection-alist))
+      (add-to-list 'sql-connection-alist connection-info))
 
     (setq sql-product product)
     (sql-connect connection))
 
   (add-hook 'sql-interactive-mode-hook
-          (lambda ()
-            (toggle-truncate-lines t)))
+            (lambda ()
+              (toggle-truncate-lines t)))
 
   ;;=== end sql configuration ===
 
@@ -1883,7 +1897,7 @@ before packages are loaded."
     (add-hook 'python-mode-hook 'ycmd-mode)
     (add-hook 'c-mode-hook 'ycmd-mode)
     (add-hook 'c++-mode-hook 'ycmd-mode) 
-    (setq ycmd-server-command '("python" "/usr/share/ycmd/ycmd"))
+    (setq ycmd-server-command '("python" "-u" "/usr/share/ycmd/ycmd"))
     (setq ycmd-force-semantic-completion t))
 
   ;; scss
@@ -1903,12 +1917,12 @@ before packages are loaded."
 
   ;; yasnippet
   (use-package yasnippet
-  :ensure t
-  :init
+    :ensure t
+    :init
     (yas-global-mode 1))
 
   (use-package yasnippet-snippets
-  :ensure t) 
+    :ensure t) 
 
   )
 
@@ -1926,7 +1940,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (zenburn-theme zen-and-art-theme zeal-at-point yasnippet-snippets yapfify xterm-color x86-lookup ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen utop use-package unfill underwater-theme ujelly-theme twittering-mode twilight-theme twilight-bright-theme twilight-anti-bright-theme tuareg treemacs-projectile treemacs-evil toxi-theme toml-mode toc-org tide tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle sly-repl-ansi-color sly-macrostep slim-mode shell-pop seti-theme scss-mode sass-mode salt-mode rjsx-mode reverse-theme restclient-helm restart-emacs rebecca-theme ranger rainbow-delimiters railscasts-theme racket-mode racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode protobuf-mode proof-general professional-theme prodigy pretty-mode prettify-utils prettier-js play-crystal plantuml-mode planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox pandoc-mode ox-reveal ox-pandoc ox-gfm overseer orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme ocp-indent occidental-theme obsidian-theme ob-restclient ob-ipython ob-http ob-elixir ob-crystal ob-cfengine3 noctilux-theme nasm-mode naquadah-theme nameless mwim mvn mustang-theme multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme meghanada maven-test-mode material-theme markdown-toc majapahit-theme magithub magit-svn magit-gitflow magit-gh-pulls madhat2r-theme lush-theme lsp-ui lsp-python lsp-javascript-typescript lsp-java lsp-go lorem-ipsum livid-mode live-py-mode link-hint light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme irony-eldoc ir-black-theme intero inkpot-theme inf-crystal indent-guide importmagic impatient-mode idris-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-pass helm-mu helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme groovy-mode groovy-imports graphviz-dot-mode grandshell-theme gradle-mode gotham-theme google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md geiser geeknote gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-ocaml flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-crystal flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator fasd farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-snipe evil-org evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-ledger evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-commentary evil-cleverparens evil-args evil-anzu eval-sexp-fu ess-R-data-view espresso-theme eshell-z eshell-prompt-extras esh-help erlang ensime emmet-mode elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies ein editorconfig dumb-jump dracula-theme dotenv-mode doom-themes django-theme disaster diminish diff-hl deft define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dante dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode counsel-projectile company-ycmd company-web company-tern company-statistics company-rtags company-restclient company-lsp company-jedi company-irony company-go company-ghci company-ghc company-emacs-eclim company-coq company-cabal company-c-headers company-auctex company-anaconda common-lisp-snippets column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote bm birds-of-paradise-plus-theme bbdb badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-complete-rst auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme ameba all-the-icons-ivy all-the-icons-dired alect-themes alchemist aggressive-indent afternoon-theme adoc-mode ace-link ace-jump-helm-line ac-ispell))))
+    (zenburn-theme zen-and-art-theme zeal-at-point yasnippet-snippets yapfify xterm-color x86-lookup ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vimrc-mode vi-tilde-fringe uuidgen utop use-package unfill underwater-theme ujelly-theme twittering-mode twilight-theme twilight-bright-theme twilight-anti-bright-theme tuareg treemacs-projectile treemacs-evil toxi-theme toml-mode toc-org tide telephone-line tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle sly-repl-ansi-color sly-macrostep slim-mode shell-pop seti-theme scss-mode sass-mode salt-mode rjsx-mode reverse-theme restclient-helm restart-emacs rebecca-theme ranger rainbow-delimiters railscasts-theme racket-mode racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode protobuf-mode proof-general professional-theme prodigy pretty-mode prettify-utils prettier-js play-crystal plantuml-mode planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox pandoc-mode ox-reveal ox-pandoc ox-gfm overseer orgit organic-green-theme org-ref org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme ocp-indent occidental-theme obsidian-theme objed ob-restclient ob-ipython ob-http ob-elixir ob-crystal ob-cfengine3 noctilux-theme nim-mode nasm-mode naquadah-theme nameless mwim mvn mustang-theme multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme meghanada maven-test-mode material-theme markdown-toc majapahit-theme magithub magit-svn magit-gitflow magit-gh-pulls madhat2r-theme lush-theme lsp-ui lsp-python lsp-javascript-typescript lsp-java lsp-go lorem-ipsum livid-mode live-py-mode link-hint light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme irony-eldoc ir-black-theme intero inkpot-theme inf-crystal indent-guide importmagic impatient-mode idris-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-pass helm-mu helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme groovy-mode groovy-imports graphviz-dot-mode grandshell-theme gradle-mode gotham-theme google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md geiser geeknote gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-ocaml flycheck-nim flycheck-mix flycheck-ledger flycheck-haskell flycheck-elm flycheck-crystal flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator fasd farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-snipe evil-org evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-ledger evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-commentary evil-cleverparens evil-args evil-anzu eval-sexp-fu ess-R-data-view espresso-theme eshell-z eshell-prompt-extras esh-help erlang ensime emr emmet-mode elm-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies ein editorconfig dumb-jump dracula-theme dotenv-mode doom-themes django-theme disaster diminish diff-hl deft define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dante dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode counsel-projectile company-ycmd company-web company-tern company-statistics company-rtags company-restclient company-lsp company-jedi company-irony company-go company-ghci company-ghc company-emacs-eclim company-coq company-cabal company-c-headers company-auctex company-anaconda common-lisp-snippets column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clean-aindent-mode cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote bm birds-of-paradise-plus-theme bbdb badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-complete-rst auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme ameba all-the-icons-ivy all-the-icons-dired alect-themes alchemist aggressive-indent afternoon-theme adoc-mode ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
