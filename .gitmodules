@@ -15,7 +15,7 @@
 	url = https://github.com/dagnachewa/zimfw
 [submodule ".emacs.d"]
 	path = .emacs.d
-	url = https://github.com/dagnachewa/spacemacs
+	url = https://github.com/dagnachewa/doom-emacs
 [submodule "2bwm"]
 	path = 2bwm
 	url = https://github.com/dagnachewa/2bwm
