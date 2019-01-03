@@ -19,3 +19,7 @@
 [submodule "2bwm"]
 	path = 2bwm
 	url = https://github.com/dagnachewa/2bwm
+[submodule "/home/dagnachew/.emacs.d"]
+	path = /home/dagnachew/.emacs.d
+	url = https://github.com/dagnachewa/doom-emacs
+	branch = develop
