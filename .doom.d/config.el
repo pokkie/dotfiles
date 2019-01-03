@@ -201,3 +201,5 @@
           #'add-fira-code-symbol-keywords)
 
 ;; font setting
+
+
