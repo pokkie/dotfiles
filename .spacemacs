@@ -676,7 +676,7 @@ before packages are loaded."
   (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
   (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
   (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
-  (load-file "~/.emacs.d/private/doom-themes-neotree.el")
+  (load-file "~/.emacs.d/private/doom-theme-neotree.el")
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow )))
 
   ;;== neotree ended
