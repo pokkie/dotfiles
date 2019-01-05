@@ -21,5 +21,5 @@
 	url = https://github.com/dagnachewa/2bwm
 [submodule "/home/dagnachew/.emacs.d"]
 	path = /home/dagnachew/.emacs.d
-	url = https://github.com/dagnachewa/doom-emacs
+	url = https://github.com/dagnachewa/spacemacs
 	branch = develop
