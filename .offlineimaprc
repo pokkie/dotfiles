@@ -3,6 +3,7 @@
 
 [general]
 accounts = Gmail
+pythonfile = ~/.offlineimap.py
 
 maxsynaccounts = 1
 quick = 10
@@ -18,14 +19,14 @@ localrepository = GmailLocal
 remoterepository = GmailRemote
 autorefresh = 1
 maxage = 360
-
+postsynchook = /home/dagnachew/.config/offlineimap/postsync.sh
 
 
 [Repository GmailLocal]
 
 type = Maildir
 localfolders = ~/.mail/gmail
-nametrans = nt_local
+
 
 [Repository GmailRemote]
 
@@ -34,5 +35,6 @@ remoteuser = dagnachewa@gmail.com
 sslcacertificate = /etc/ssl/certs/ca-certificates.crt 
 realdelete = no 
 folderfilter = lambda foldername: foldername in ['[Gmail]/All Mail']
-remotepasseval = get_pass("Gmail")
-nametrans = nt_remote
+remotepasseval = get_pass()
+
+
