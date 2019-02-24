@@ -20,3 +20,6 @@
 	path = /home/dagnachew/.emacs.d
 	url = https://github.com/dagnachewa/spacemacs
 	branch = develop
+[submodule ".emacs.d"]
+	path = .emacs.d
+	url = https://github.com/dagnachewa/spacemacs
